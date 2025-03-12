@@ -1,9 +1,20 @@
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import SideBar from './SideBar';
+import TopBar from './Topbar';
+import ContentArea from './ContentArea';
+
 export default function App() {
+
     return (
-        <div className="bg-gray-100 p-4">
-            <h1 className="text-3xl font-bold text-blue-600">
-                ¡Laravel + React + Tailwind!
-            </h1>
-        </div>
+        <Router>
+            <main className="flex w-screen  h-screen bg-gray-200 fixed">
+                    <SideBar />
+                <div className="flex-1 flex flex-col">
+                    <TopBar />
+                    <ContentArea />
+                </div>
+            </main>
+        </Router>
     );
 }
