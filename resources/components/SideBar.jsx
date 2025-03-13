@@ -1,28 +1,57 @@
 import React from 'react';
+import Logo from '../imgs/logo.png';
+import HomeSVG from '../svg/HomeSVG';
+import { Link } from 'react-router-dom';
+import LogoutSVG from '../svg/LogoutSVG';
+import ActivitySVG from '../svg/ActivitySVG';
+import RegistersSVG from '../svg/RegistersSVG';
+import EmplooyesSVG from '../svg/EmplooyesSVG';
 
 export default function SideBar() {
     return (
-        <div className="flex flex-col justify-between p-4 bg-white shadow-lg w-[18%] rounded">
+        <div className="flex flex-col justify-between p-4 bg-white shadow-lg w-[18%] rounded border-r-1 border-gray-900/25">
             <div>
+
                 {/* Logo */}
-                <div className="mb-8">
-                    <img src="logo.png" alt="Logo" className="h-12 w-12" />
+                <div className="mb-2 p-4 flex items-center flex-col border-b-1 border-gray-900/25">
+                    <img src={Logo} alt="Logo" className="h-12" />
                 </div>
+
+
                 {/* Items */}
-                <ul>
-                    <li className="mb-4"> 
-                        Usuarios
-                    </li>
-                    <li className="mb-4">Registros</li>
-                    <li className="mb-4">Actividad</li>
-                </ul>
+                <div className='p-4 rounded'>
+                    <ul>
+                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex">
+                            <HomeSVG></HomeSVG>
+                            <Link to="/" className='px-4'>Home</Link>
+                        </li>
+                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex">
+                            <RegistersSVG></RegistersSVG>
+                            <Link to="/" className='px-4'>Registros</Link>
+                        </li>
+                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex">
+                            <ActivitySVG></ActivitySVG>
+                            <Link to="/activity" className='px-4'>Actividad</Link>
+                        </li>
+                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex">
+                            <EmplooyesSVG></EmplooyesSVG>
+                            <Link to="/users" className='px-4'>Empleados</Link>
+                        </li>
+                    </ul>
+                </div>
+
+
             </div>
             {/* Logout */}
-            <div>
-                <button className="bg-red-500 text-white py-2 px-4 rounded"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-                </svg>
-                    Logout</button>
+            <div className='p-4 rounded w-full border-t-1 border-gray-900/25'>
+                <ul>
+                    <li className="mb-12 mt-2">
+                        <button className="bg-red-500 text-white py-3 px-8 rounded hover:bg-red-600 transition duration-300 flex items-center justify-center w-full">
+                            <LogoutSVG></LogoutSVG>
+                            <p className='pl-4'>Cerrar Sesion</p>
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     );

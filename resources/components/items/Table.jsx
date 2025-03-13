@@ -2,7 +2,7 @@ import React from 'react'
 
 function Table() {
     return (
-        <table class="table-auto">
+        <table className="table-auto">
             <thead>
                 <tr>
                     <th>Song</th>
