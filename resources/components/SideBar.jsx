@@ -6,6 +6,9 @@ import LogoutSVG from '../svg/LogoutSVG';
 import ActivitySVG from '../svg/ActivitySVG';
 import RegistersSVG from '../svg/RegistersSVG';
 import EmplooyesSVG from '../svg/EmplooyesSVG';
+import CompanySVG from '../svg/CompanySVG';
+import UserSVG from '../svg/UserSVG';
+import ContracSVG from '../svg/ContracSVG';
 
 export default function SideBar() {
     return (
@@ -23,19 +26,27 @@ export default function SideBar() {
                     <ul>
                         <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center font-semibold">
                             <HomeSVG></HomeSVG>
-                            <Link to="/" className='px-4 text-[20px]'>Home</Link>
+                            <Link to="/" className='px-4 text-[20px]'>Inicio</Link>
                         </li>
                         <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
-                            <RegistersSVG></RegistersSVG>
-                            <Link to="/register" className='px-4 text-[20px]'>Registros</Link>
+                            <CompanySVG></CompanySVG>
+                            <Link to="/empresa" className='px-4 text-[20px]'>Empresa</Link>
                         </li>
                         <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
                             <ActivitySVG></ActivitySVG>
-                            <Link to="/activity" className='px-4 text-[20px]'>Actividad</Link>
+                            <Link to="/paciente" className='px-4 text-[20px]'>Paciente</Link>
+                        </li>
+                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
+                            <UserSVG></UserSVG>
+                            <Link to="/usuario" className='px-4 text-[20px]'>Usuario</Link>
                         </li>
                         <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
                             <EmplooyesSVG></EmplooyesSVG>
-                            <Link to="/users" className='px-4 text-[20px]'>Empleados</Link>
+                            <Link to="/tipousuario" className='px-4 text-[20px]'>Tipo de usuario</Link>
+                        </li>
+                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
+                            <ContracSVG></ContracSVG>
+                            <Link to="/suscripcion" className='px-4 text-[20px]'>Suscripcion</Link>
                         </li>
                     </ul>
                 </div>
