@@ -8,8 +8,8 @@ import Login from './pages/Login';
 
 function ContentArea() {
     return (
-        <section className="bg-gray-200 h-full">
-            <div className="bg-white p-4 m-4 rounded-2xl overflow-scroll">
+        <section className="bg-gray-200 h-full ">
+            <div className="bg-white p-4 m-4 rounded-2xl max-h-[900px] overflow-x-hidden">
             <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/users" element={<Users />} />

@@ -10,7 +10,7 @@ function Home() {
     ];
 
     return (
-        <div className='flex flex-col m-8 '>
+        <div className='flex flex-col m-8'>
             <div className="grid grid-cols-4 gap-6 mt-6 m-8">
                 {metrics.map((metric, index) => (
                     <div key={index} className="bg-white p-6 border border-gray-900/25 rounded-lg shadow-md">

@@ -10,9 +10,12 @@ function Users() {
 
     return (
         <div className="container mx-auto p-6">
+            <div className="flex justify-between items-center bg-red-400 my-12 p-8">
+                Seccion de filtros
+            </div>
             <h2 className="text-2xl font-bold mb-4">Lista de Empleados</h2>
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <div className="">
+                <table className="min-w-full bg-white shadow-md rounded-lg ">
                     <thead className="bg-gray-800 text-white">
                         <tr>
                             <th className="py-3 px-6 text-left">Nombre</th>

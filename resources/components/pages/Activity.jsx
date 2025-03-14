@@ -11,7 +11,7 @@ function Activity() {
     return (
         <div className="container mx-auto p-6">
             <h2 className="text-2xl font-bold mb-4">Actividad Reciente</h2>
-            <div className="overflow-x-auto">
+            <div className="">
                 <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                     <thead className="bg-gray-800 text-white">
                         <tr>
