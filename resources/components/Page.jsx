@@ -4,17 +4,20 @@ import SideBar from './SideBar';
 import TopBar from './Topbar';
 import Login from './pages/Login';
 import ContentArea from './ContentArea';
+import Temporal from './pages/forms/temporal';
 
 export default function App() {
 
     return (
         <Router>
             <main className="flex w-screen  h-screen bg-gray-200 fixed">
-                    <SideBar />
+                    {/* <SideBar />
                 <div className="flex-1 flex flex-col">
                     <TopBar />
                     <ContentArea />
-                </div>
+                </div> */}
+
+                <Temporal />
             </main>
         </Router>
 
