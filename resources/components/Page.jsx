@@ -4,7 +4,13 @@ import SideBar from './SideBar';
 import TopBar from './Topbar';
 import Login from './pages/Login';
 import ContentArea from './ContentArea';
+
 import Temporal from './pages/forms/temporal';
+import CreateEmpresa from './pages/forms/CreateEmpresa';
+import PacientesForm from './pages/forms/PacientesForm';
+import SuscripcionForm from './pages/forms/SuscripcionForm';
+import TipoUsuarioForm from './pages/forms/TipoUsuarioForm';
+import UsuarioForm from './pages/forms/UsuarioFrom';
 
 export default function App() {
 
@@ -17,7 +23,18 @@ export default function App() {
                     <ContentArea />
                 </div> */}
 
-                <Temporal />
+
+                {/* <Temporal /> */}
+                
+                {/* <CreateEmpresa></CreateEmpresa> */}
+
+                {/* <PacientesForm></PacientesForm> */}
+
+                {/* <SuscripcionForm></SuscripcionForm> */}
+
+                {/* <TipoUsuarioForm></TipoUsuarioForm> */}
+
+                <UsuarioForm></UsuarioForm>
             </main>
         </Router>
 

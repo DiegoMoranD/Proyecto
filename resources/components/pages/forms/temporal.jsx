@@ -83,7 +83,7 @@ function temporal() {
                         <a href={"/admin"}>
                             <button
                                 type="submit"
-                                className="w-full mb-4 text-[18px] my-6 rounded-full bg-white text-emerald-800 hover:bg-emerald-600 hover:text-white py-2 transition-colors duration-300"
+                                className="w-full mb-6 text-[18px] my-6 rounded-full bg-white text-emerald-800 hover:bg-emerald-600 hover:text-white py-2 transition-colors duration-300"
                             >
                                 Iniciar sesion
                             </button>
