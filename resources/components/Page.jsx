@@ -2,15 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import SideBar from './SideBar';
 import TopBar from './Topbar';
-import Login from './pages/Login';
 import ContentArea from './ContentArea';
 
-import Temporal from './pages/forms/temporal';
 import CreateEmpresa from './pages/forms/CreateEmpresa';
 import PacientesForm from './pages/forms/PacientesForm';
 import SuscripcionForm from './pages/forms/SuscripcionForm';
 import TipoUsuarioForm from './pages/forms/TipoUsuarioForm';
 import UsuarioForm from './pages/forms/UsuarioFrom';
+import Login from './pages/forms/Login';
 
 export default function App() {
 
@@ -23,8 +22,7 @@ export default function App() {
                     <ContentArea />
                 </div> */}
 
-
-                {/* <Temporal /> */}
+                        <Login></Login>
                 
                 {/* <CreateEmpresa></CreateEmpresa> */}
 
@@ -34,7 +32,7 @@ export default function App() {
 
                 {/* <TipoUsuarioForm></TipoUsuarioForm> */}
 
-                <UsuarioForm></UsuarioForm>
+                {/* <UsuarioForm></UsuarioForm> */}
             </main>
         </Router>
 

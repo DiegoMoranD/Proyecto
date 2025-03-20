@@ -1,7 +1,6 @@
 import React from 'react'
 import Home from './pages/Home';
 import Users from './pages/Users';
-import Login from './pages/Login';
 import Empresa from './pages/Empresa';
 import Usuario from './pages/Usuario';
 import Paciente from './pages/Paciente';

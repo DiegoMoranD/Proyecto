@@ -1,10 +1,10 @@
 import React from 'react'
 
-function temporal() {
+function Login() {
     return (
         <div className=" bg-[#dbdbdb] text-white h-full flex justify-center items-center w-full">
             <div>
-                <div className=" bg-[#282B30] border border-slate-700 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative  ">
+                <div className=" min-w-[500px] bg-[#d63d17] border border-slate-700 rounded-3xl p-12 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative  ">
                     <h1 className=" text-4xl text-white font-bold text-center mb-6 py-4">
                         Iniciar sesion
                     </h1>
@@ -71,7 +71,7 @@ function temporal() {
                                 </svg>
                             </p>
                         </div>
-                        <div className="flex justify-between items-center my-4">
+                        {/* <div className="flex justify-between items-center my-4">
                             <div className="flex gap-2 items-center">
                                 <input type="checkbox" name="" id="" />
                                 <label htmlFor="Recordarme">Recordar</label>
@@ -79,16 +79,16 @@ function temporal() {
                             <span className=" text-blue-500 hover:text-cyan-400 cursor-pointer">
                                 Olvidaste tu contraseña
                             </span>
-                        </div>
+                        </div> */}
                         <a href={"/admin"}>
                             <button
                                 type="submit"
-                                className="w-full mb-6 text-[18px] my-6 rounded-full bg-white text-emerald-800 hover:bg-emerald-600 hover:text-white py-2 transition-colors duration-300"
+                                className="font-medium text-black w-full mb-6 text-[18px] my-6 rounded-full bg-white hover:bg-emerald-600 hover:text-white py-2 transition-colors duration-300"
                             >
                                 Iniciar sesion
                             </button>
                         </a>
-                        <div>
+                        {/* <div>
                             {" "}
                             <a href="/register">register</a>
                             <span className="m-4">
@@ -100,7 +100,7 @@ function temporal() {
                                     Craer una cuenta
                                 </a>
                             </span>
-                        </div>
+                        </div> */}
                     </form>
                 </div>
             </div>
@@ -108,4 +108,4 @@ function temporal() {
     )
 }
 
-export default temporal
+export default Login
