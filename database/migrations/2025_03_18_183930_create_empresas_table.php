@@ -17,11 +17,11 @@ return new class extends Migration
             $table->integer('telefono');
             $table->string('rfc');
             $table->string('cedula');
-            $table->unsignedBigInteger('suscripcion_id'); 
-            $table->foreign('suscripcion_id')->references('id')->on('suscripcions')->onDelete('cascade');
+            $table->unsignedBigInteger('suscripcion_id');
             $table->date('fecha_registro');
             $table->date('fecha_vencimiento');
             $table->datetime('fecha_compra');
+            $table->foreign('suscripcion_id')->references('id')->on('suscripcions')->onDelete('cascade');
             $table->timestamps();
         });
     }
