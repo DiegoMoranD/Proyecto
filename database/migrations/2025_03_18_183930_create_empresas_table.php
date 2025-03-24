@@ -14,14 +14,17 @@ return new class extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('correo');
             $table->integer('telefono');
             $table->string('rfc');
+            $table->string('tocken_acceso');
+            $table->integer('cuenta_valida');
             $table->string('cedula');
             $table->unsignedBigInteger('suscripcion_id');
+            $table->foreign('suscripcion_id')->references('id')->on('suscripcions')->onDelete('cascade');
             $table->date('fecha_registro');
             $table->date('fecha_vencimiento');
             $table->datetime('fecha_compra');
-            $table->foreign('suscripcion_id')->references('id')->on('suscripcions')->onDelete('cascade');
             $table->timestamps();
         });
     }

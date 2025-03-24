@@ -9,19 +9,22 @@ class Empresa extends Model
 {
     use HasFactory;
 
-    protected $table = 'EMPRESA';
-    protected $primaryKey = 'idEmpresa';
+    protected $table = 'empresas';
+    // protected $primaryKey = 'idEmpresa';
     public $timestamps = false;
 
     protected $fillable = [
-        'nombreEmpresa',
-        'telEmpresa',
-        'rfcEmpresa',
-        'cedulaEmpresa',
-        'suscripcionID',
-        'fechaRegistro',
-        'vencimientoSuscripcion',
-        'fechaCompraSus'
+        'nombre',
+        'correo',
+        'telefono',
+        'rfc',
+        'token_acceso',
+        'cuenta_valida',
+        'cedula',
+        'suscripcion_id',
+        'fecha_registro',
+        'fecha_vencimiento',
+        'fecha_compra'
     ];
 
     // Relación muchos a uno con SUSCRIPCION

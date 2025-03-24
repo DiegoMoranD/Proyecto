@@ -1,17 +1,36 @@
 import React from 'react'
 import Suscripcion from './Suscripcion';
+import { Search } from 'lucide-react';
 
 function Empresa() {
     const companies = [
         { id: 1, name: "TecuabiSoft", tel: "1234567890", rfc: "fdjke4r23", cedula: "asfsd32re3", suscripcion: "Activa", fechaRegistro: "2021-01-01", vencimiento: "2022-01-01", fechaCompra: "2021-01-01" },
-        { id: 1, name: "TecuabiSoft", tel: "1234567890", rfc: "fdjke4r23", cedula: "asfsd32re3", suscripcion: "Activa", fechaRegistro: "2021-01-01", vencimiento: "2022-01-01", fechaCompra: "2021-01-01" },
-        { id: 1, name: "TecuabiSoft", tel: "1234567890", rfc: "fdjke4r23", cedula: "asfsd32re3", suscripcion: "Activa", fechaRegistro: "2021-01-01", vencimiento: "2022-01-01", fechaCompra: "2021-01-01" },
+        { id: 2, name: "TecuabiSoft", tel: "1234567890", rfc: "fdjke4r23", cedula: "asfsd32re3", suscripcion: "Activa", fechaRegistro: "2021-01-01", vencimiento: "2022-01-01", fechaCompra: "2021-01-01" },
+        { id: 3, name: "TecuabiSoft", tel: "1234567890", rfc: "fdjke4r23", cedula: "asfsd32re3", suscripcion: "Activa", fechaRegistro: "2021-01-01", vencimiento: "2022-01-01", fechaCompra: "2021-01-01" },
     ];
 
     return (
         <div className="container mx-auto p-6">
             <div className="flex justify-between items-center bg-red-400 my-12 p-8">
-                Seccion de filtros
+                {/* <div>
+                    <div className="relative flex-grow">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Search className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Buscar por ID, Nombre, Teléfono, RFC o Cédula..."
+                            className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                        
+                    </div>
+
+                    <div>
+                        <select name="" id="">
+
+                        </select>
+                    </div>
+                </div> */}
             </div>
             <h2 className="text-2xl font-bold mb-4">Lista de Empleados</h2>
             <div className="">
@@ -40,7 +59,7 @@ function Empresa() {
                                 <td className="py-3 px-6">{company.suscripcion}</td>
                                 <td className="py-3 px-6">{company.fechaRegistro}</td>
                                 <td className="py-3 px-6">{company.vencimiento}</td>
-                                <td className="py-3 px-6">{company.fechaCompra}</td>                                
+                                <td className="py-3 px-6">{company.fechaCompra}</td>
                             </tr>
                         ))}
                     </tbody>

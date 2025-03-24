@@ -1,14 +1,14 @@
 import React from 'react';
-import Logo from '../imgs/logo.png';
-import HomeSVG from '../svg/HomeSVG';
+import Logo from './imgs/logo.png';
+import HomeSVG from './svg/HomeSVG';
 import { Link } from 'react-router-dom';
-import LogoutSVG from '../svg/LogoutSVG';
-import ActivitySVG from '../svg/ActivitySVG';
-import RegistersSVG from '../svg/RegistersSVG';
-import EmplooyesSVG from '../svg/EmplooyesSVG';
-import CompanySVG from '../svg/CompanySVG';
-import UserSVG from '../svg/UserSVG';
-import ContracSVG from '../svg/ContracSVG';
+import LogoutSVG from './svg/LogoutSVG';
+import ActivitySVG from './svg/ActivitySVG';
+import RegistersSVG from './svg/RegistersSVG';
+import EmplooyesSVG from './svg/EmplooyesSVG';
+import CompanySVG from './svg/CompanySVG';
+import UserSVG from './svg/UserSVG';
+import ContracSVG from './svg/ContracSVG';
 
 export default function SideBar() {
     return (
@@ -24,29 +24,41 @@ export default function SideBar() {
                 {/* Items */}
                 <div className='p-4 rounded'>
                     <ul>
-                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center font-semibold">
-                            <HomeSVG></HomeSVG>
-                            <Link to="/" className='px-4 text-[20px]'>Inicio</Link>
+                        <li className="">
+                            <Link to="/" className='px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center'>
+                                <HomeSVG></HomeSVG>
+                                <p className=' pl-4 text-[20px]'>Inicio</p>
+                            </Link>
                         </li>
-                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
-                            <CompanySVG></CompanySVG>
-                            <Link to="/empresa" className='px-4 text-[20px]'>Empresa</Link>
+                        <li className="">
+                            <Link to="/empresa" className='px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center'>
+                                <CompanySVG></CompanySVG>
+                                <p className=' pl-4 text-[20px]'>Empresa</p>
+                            </Link>
                         </li>
-                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
-                            <ActivitySVG></ActivitySVG>
-                            <Link to="/paciente" className='px-4 text-[20px]'>Paciente</Link>
+                        <li className="">
+                            <Link to="/paciente" className='px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center'>
+                                <ActivitySVG></ActivitySVG>
+                                <p className=' pl-4 text-[20px]'>Paciente</p>
+                            </Link>
                         </li>
-                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
-                            <UserSVG></UserSVG>
-                            <Link to="/usuario" className='px-4 text-[20px]'>Usuario</Link>
+                        <li className="">
+                            <Link to="/usuario" className='px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center'>
+                                <UserSVG></UserSVG>
+                                <p className=' pl-4 text-[20px]'>Usuario</p>
+                            </Link>
                         </li>
-                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
-                            <EmplooyesSVG></EmplooyesSVG>
-                            <Link to="/tipousuario" className='px-4 text-[20px]'>Tipo de usuario</Link>
+                        <li className="">
+                            <Link to="/tipousuario" className='px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center'>
+                                <EmplooyesSVG></EmplooyesSVG>
+                                <p className=' pl-4 text-[20px]'>Tipo de usuario</p>
+                            </Link>
                         </li>
-                        <li className="mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center">
-                            <ContracSVG></ContracSVG>
-                            <Link to="/suscripcion" className='px-4 text-[20px]'>Suscripcion</Link>
+                        <li className="">
+                            <Link to="/suscripcion" className='px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center'>
+                                <ContracSVG></ContracSVG>
+                                <p className=' pl-4 text-[20px]'>Suscripcion</p>
+                            </Link>
                         </li>
                     </ul>
                 </div>

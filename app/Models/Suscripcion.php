@@ -9,15 +9,14 @@ class Suscripcion extends Model
 {
     use HasFactory;
 
-    protected $table = 'suscripcion';
-    protected $primaryKey = 'idSuscripcion';
+    protected $table = 'suscripcions';
     public $timestamps = false;
 
     protected $fillable = [
-        'nombreSuscripcion',
-        'precioSuscripcion',
-        'descuentoSuscripcion',
-        'diasSuscripcion'
+        'nombre',
+        'precio',
+        'descuento',
+        'dias'
     ];
 
     public function empresas()

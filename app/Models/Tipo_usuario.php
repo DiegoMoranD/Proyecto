@@ -4,22 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Traits\HasRoles;
 
 class Tipo_usuario extends Model
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
 
-    protected $table = 'TIPOUSUARIO';
-    protected $primaryKey = 'idTipoUsuario';
+    protected $table = 'tipo_usuarios';
+    // protected $primaryKey = 'idTipoUsuario';
     public $timestamps = false;
 
     protected $fillable = [
-        'nombreTipo',
-        'registroPaciente',
-        'registroMedicamento',
-        'agendarCita',
-        'eliminarPaciente',
-        'eliminarCita'
+        'nombre_tipo',
+        'registro_paciente',
+        'registro_medicamento',
+        'agendar_cita',
+        'eliminar_paciente',
+        'eliminar_cita'
     ];
 
     // Relación de uno a muchos con USUARIO

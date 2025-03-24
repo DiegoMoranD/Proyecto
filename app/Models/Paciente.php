@@ -9,19 +9,18 @@ class Paciente extends Model
 {
     use HasFactory;
 
-    protected $table = 'PACIENTE';
-    protected $primaryKey = 'idPaciente';
+    protected $table = 'pacientes';
+    // protected $primaryKey = 'idPaciente';
     public $timestamps = false;
 
     protected $fillable = [
-        'nombrePaciente',
-        'fechaNac',
-        'tipoSangre',
+        'nombre',
+        'fecha_nacimiento',
+        'tipo_sangre',
         'peso',
         'altura',
         'imc',
-        'fechaRegistro',
-        'usuarioRegistro',
+        'fecha_registro',
         'empresaID'
     ];
 

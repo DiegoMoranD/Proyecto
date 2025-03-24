@@ -1,5 +1,5 @@
 import React from 'react'
-import Process from '../../imgs/process.jpg'
+import Process from '../imgs/process.jpg'
 
 function Home() {
     const metrics = [
