@@ -1,62 +1,59 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import SideBar from './sideBar';
-import TopBar from './Topbar';
+
+import ProtectedRoutes from './layouts/PageAuth/ProtectedRoutes';
+
+import AdminLayout from './layouts/AdminLayout';
 import ContentArea from './ContentArea';
 
-import CreateEmpresa from './pages/forms/CreateEmpresa';
-import PacientesForm from './pages/forms/PacientesForm';
-import SuscripcionForm from './pages/forms/SuscripcionForm';
-import TipoUsuarioForm from './pages/forms/TipoUsuarioForm';
-import UsuarioForm from './pages/forms/UsuarioFrom';
+import MedicoLayout from './layouts/MedicoLayout';
+
+import PacienteLayout from './layouts/PacienteLayout';
+
+import RecepcionLayout from './layouts/RecepcionLayout';
+
+import PublicLayout from './layouts/PublicLayout';
 import Login from './pages/forms/Login';
+import Register from './pages/forms/Register';
 
 export default function App() {
 
     return (
         <Router>
-            <main className="flex w-screen  h-screen bg-gray-200 fixed">
-                    <SideBar />
-                <div className="flex-1 flex flex-col">
-                    <TopBar />
-                    <ContentArea />
-                </div>
+            <Routes>
+                <Route path="/login" element={<PublicLayout />}>
+                    <Route index element={<Login></Login>}></Route>
+                </Route>
 
-                        {/* <Login></Login> */}
-                
-                {/* <CreateEmpresa></CreateEmpresa> */}
+                <Route path="/register" element={<PublicLayout />}>
+                    <Route index element={<Register></Register>}></Route>
+                </Route>
 
-                {/* <PacientesForm></PacientesForm> */}
+                <Route element={<ProtectedRoutes />}>
+                    <Route path='/admin' element={<AdminLayout />} >
+                        <Route index element={<ContentArea />}></Route>
+                    </Route>
+                </Route>
 
-                {/* <SuscripcionForm></SuscripcionForm> */}
+                <Route element={<ProtectedRoutes />}>
+                    <Route path='/medico' element={<MedicoLayout />} >
+                        <Route index element={<ContentArea />}></Route>
+                    </Route>
+                </Route>
 
-                {/* <TipoUsuarioForm></TipoUsuarioForm> */}
+                <Route element={<ProtectedRoutes />}>
+                    <Route path='/paciente' element={<PacienteLayout />} >
+                        <Route index element={<ContentArea />}></Route>
+                    </Route>
+                </Route>
 
-                {/* <UsuarioForm></UsuarioForm> */}
-            </main>
+                <Route element={<ProtectedRoutes />}>
+                    <Route path='/recepcion' element={<RecepcionLayout />} >
+                        <Route index element={<ContentArea />}></Route>
+                    </Route>
+                </Route>
+            </Routes>
         </Router>
 
-
-        // <Router>
-        //     <Routes>
-        //         {/* Ruta para el login */}
-        //         <Route path="/login" element={<Login />} />
-
-        //         {/* Rutas protegidas */}
-        //         {isAuthenticated ? (
-        //             <Route
-        //                 path="/*"
-        //                 element={
-        //                     <div className="flex">
-        //                         <SideBar />
-        //                         <ContentArea />
-        //                     </div>
-        //                 }
-        //             />
-        //         ) : (
-        //             <Route path="/*" element={<Navigate to="/login" />} />
-        //         )}
-        //     </Routes>
-        // </Router>
     );
 }

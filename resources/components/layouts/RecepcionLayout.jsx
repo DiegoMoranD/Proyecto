@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import AuthUser from './PageAuth/AuthUser'
 import SideBar from '../sideBar'
-import TopBar from '../Topbar'
+import TopBar from '../Topbar'  
 
-function AdminLayout() {
+function RecepcionLayout() {
     const { getRol } = AuthUser()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (getRol() != "admin") {
+        if (getRol() != "recepcion") {
             navigate("/login")
         }
     }, [])
@@ -19,10 +19,10 @@ function AdminLayout() {
             <SideBar />
             <div className="flex-1 flex flex-col">
                 <TopBar />
-                <Outlet></Outlet>
+                <Outlet />
             </div>
         </main>
     )
 }
 
-export default AdminLayout
+export default RecepcionLayout

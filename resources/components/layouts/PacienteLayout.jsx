@@ -4,12 +4,12 @@ import AuthUser from './PageAuth/AuthUser'
 import SideBar from '../sideBar'
 import TopBar from '../Topbar'
 
-function AdminLayout() {
+function PacienteLayout() {
     const { getRol } = AuthUser()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (getRol() != "admin") {
+        if (getRol() != "paciente") {
             navigate("/login")
         }
     }, [])
@@ -19,10 +19,10 @@ function AdminLayout() {
             <SideBar />
             <div className="flex-1 flex flex-col">
                 <TopBar />
-                <Outlet></Outlet>
+                <Outlet />
             </div>
         </main>
     )
 }
 
-export default AdminLayout
+export default PacienteLayout

@@ -18,7 +18,7 @@ class Empresa extends Model
         'correo',
         'telefono',
         'rfc',
-        'token_acceso',
+        'tocken_acceso',
         'cuenta_valida',
         'cedula',
         'suscripcion_id',

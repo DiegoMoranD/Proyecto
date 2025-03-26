@@ -7,9 +7,24 @@ use Illuminate\Http\Request;
 
 class SuscripcionAdminController extends Controller
 {
-    public function store(Request $request)
-    {
-        return response()->json($request, 200);
+    public function index(){
+
+    }
+
+    public function show(){
+        
+    }
+
+    public function store(){
+        
+    }
+
+    public function update(){
+        
+    }
+
+    public function destroy(){
+        
     }
 
 }

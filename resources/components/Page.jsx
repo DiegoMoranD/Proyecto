@@ -10,30 +10,17 @@ import SuscripcionForm from './pages/forms/SuscripcionForm';
 import TipoUsuarioForm from './pages/forms/TipoUsuarioForm';
 import UsuarioForm from './pages/forms/UsuarioFrom';
 import Login from './pages/forms/Login';
+import PublicLayout from './layouts/PublicLayout';
 
 export default function App() {
 
     return (
         <Router>
-            <main className="flex w-screen  h-screen bg-gray-200 fixed">
-                    <SideBar />
-                <div className="flex-1 flex flex-col">
-                    <TopBar />
-                    <ContentArea />
-                </div>
 
-                        {/* <Login></Login> */}
-                
-                {/* <CreateEmpresa></CreateEmpresa> */}
-
-                {/* <PacientesForm></PacientesForm> */}
-
-                {/* <SuscripcionForm></SuscripcionForm> */}
-
-                {/* <TipoUsuarioForm></TipoUsuarioForm> */}
-
-                {/* <UsuarioForm></UsuarioForm> */}
-            </main>
+            <Routes path="/login" element={<PublicLayout/>}>
+                <Route></Route>
+            </Routes>
+            
         </Router>
 
 
