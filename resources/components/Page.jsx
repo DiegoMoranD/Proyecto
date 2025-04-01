@@ -15,13 +15,13 @@ import PublicLayout from './layouts/PublicLayout';
 export default function App() {
 
     return (
-        <Router>
+        // <Router>
 
-            <Routes path="/login" element={<PublicLayout/>}>
-                <Route></Route>
-            </Routes>
+        //     <Routes path="/login" element={<PublicLayout/>}>
+        //         <Route></Route>
+        //     </Routes>
             
-        </Router>
+        // </Router>
 
 
         // <Router>

@@ -3,16 +3,17 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import AuthUser from './PageAuth/AuthUser'
 import SideBar from '../sideBar'
 import TopBar from '../Topbar'
+import ContentArea from '../ContentArea'
 
 function MedicoLayout() {
-    const { getRol } = AuthUser()
-    const navigate = useNavigate()
+    // const { getRol } = AuthUser()
+    // const navigate = useNavigate()
 
-    useEffect(() => {
-        if (getRol() != "medico") {
-            navigate("/login")
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (getRol() != "medico") {
+    //         navigate("/login")
+    //     }
+    // }, [])
 
     return (
         <main className="flex w-screen  h-screen bg-gray-200 fixed">

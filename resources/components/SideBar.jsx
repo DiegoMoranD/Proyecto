@@ -10,7 +10,23 @@ import CompanySVG from './svg/CompanySVG';
 import UserSVG from './svg/UserSVG';
 import ContracSVG from './svg/ContracSVG';
 
+import AuthUser from './layouts/PageAuth/AuthUser';
+import Config from './layouts/PageAuth/Config';
+
 export default function SideBar() {
+
+    const { getToken, getLogout } = AuthUser();
+
+    const logoutUser = async () => {
+        try {
+            const response = await Config.getLogout('/logout');
+            console.log(response);
+            getLogout();
+        } catch (error) {
+
+        }
+    };
+
     return (
         <div className="flex flex-col justify-between p-4 bg-white shadow-lg w-[17%] rounded border-r-1 border-gray-900/25">
             <div>
@@ -71,7 +87,7 @@ export default function SideBar() {
                     <li className="mb-12 mt-2">
                         <button className="bg-red-500 text-white py-3 px-8 rounded hover:bg-red-600 transition duration-300 flex items-center justify-center w-full">
                             <LogoutSVG></LogoutSVG>
-                            <Link to="/login" className='pl-4 text-[20px] font-bold'>Cerrar Sesion</Link>
+                            <Link onClick={logoutUser} to={"#"} className='pl-4 text-[20px] font-bold'>Cerrar Sesion</Link>
                         </button>
                     </li>
                 </ul>

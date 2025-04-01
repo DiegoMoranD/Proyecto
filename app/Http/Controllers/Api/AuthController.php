@@ -37,7 +37,7 @@ class AuthController extends Controller
         $input["password"] = bcrypt($input['password']);
 
         $user = User::create($input);
-        $user->assignRole('paciente');
+        $user->assignRole('admin');
 
         $response["success"] = true;
         // $response["token"] = $user->createToken("Moran")->plainTextToken;
@@ -82,10 +82,10 @@ class AuthController extends Controller
         return response()->json($response, 200);
     }
 
-    public function subirEmpresa(Request $request)
-    {
-        $data = new Empresas($request->all());
-        $data -> save();
-        return response()->json($data,200);
-    }
+    // public function subirEmpresa(Request $request)
+    // {
+    //     $data = new Empresas($request->all());
+    //     $data -> save();
+    //     return response()->json($data,200);
+    // }
 }

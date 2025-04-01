@@ -15,45 +15,43 @@ import RecepcionLayout from './layouts/RecepcionLayout';
 import PublicLayout from './layouts/PublicLayout';
 import Login from './pages/forms/Login';
 import Register from './pages/forms/Register';
+import Recuperar from './pages/forms/Recuperar';
 
 export default function App() {
 
     return (
         <Router>
             <Routes>
-                <Route path="/login" element={<PublicLayout />}>
-                    <Route index element={<Login></Login>}></Route>
-                </Route>
-
-                <Route path="/register" element={<PublicLayout />}>
-                    <Route index element={<Register></Register>}></Route>
+                <Route path="/" element={<PublicLayout />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/recuperar" element={<Recuperar />} />
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
-                    <Route path='/admin' element={<AdminLayout />} >
+                    <Route path="/admin/*" element={<AdminLayout />}>
+                        <Route path="home" element={<ContentArea />} />
+                    </Route>
+                </Route>
+
+                <Route element={<ProtectedRoutes />}>
+                    <Route path='/medico/*' element={<MedicoLayout />} >
                         <Route index element={<ContentArea />}></Route>
                     </Route>
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
-                    <Route path='/medico' element={<MedicoLayout />} >
+                    <Route path='/paciente/*' element={<PacienteLayout />} >
                         <Route index element={<ContentArea />}></Route>
                     </Route>
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
-                    <Route path='/paciente' element={<PacienteLayout />} >
-                        <Route index element={<ContentArea />}></Route>
-                    </Route>
-                </Route>
-
-                <Route element={<ProtectedRoutes />}>
-                    <Route path='/recepcion' element={<RecepcionLayout />} >
+                    <Route path='/recepcion/*' element={<RecepcionLayout />} >
                         <Route index element={<ContentArea />}></Route>
                     </Route>
                 </Route>
             </Routes>
         </Router>
-
     );
 }

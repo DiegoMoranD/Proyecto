@@ -1,103 +1,163 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import AuthUser from '../../layouts/PageAuth/AuthUser';
+import { useNavigate } from 'react-router-dom';
+import Config from '../../layouts/PageAuth/Config';
+import axios from 'axios';
 
 function Login() {
+    const { getToken, setToken } = AuthUser();
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
+    const [errors, setErrors] = useState({}); // Estado para manejar errores
+    const [showPassword, setShowPassword] = useState(false);
+
+    const isFormValid = email.trim() !== '' && password.trim() !== '';
+
+    useEffect(() => {
+        if (getToken()) {
+            const rol = sessionStorage.getItem('rol') ? JSON.parse(sessionStorage.getItem('rol')) : null;
+            if (rol === 'admin') {
+                navigate('/admin/home');
+            } else if (rol === 'medico') {
+                navigate('/medico/home');
+            } else if (rol === 'paciente') {
+                navigate('/paciente/home');
+            } else if (rol === 'recepcion') {
+                navigate('/recepcion/home');
+            }
+        }
+    }, []);
+
+    const validateFields = () => {
+        const newErrors = {};
+        if (!email) newErrors.email = 'El correo es requerido';
+        if (!password) newErrors.password = 'La contraseña es requerida';
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0; // Devuelve true si no hay errores
+    };
+
+    const submitLogin = async (e) => {
+        e.preventDefault();
+
+        if (!validateFields()) return; // Detiene el envío si hay errores
+
+        await axios
+            .get('/sanctum/csrf-cookie')
+            .then(() => {
+                Config.getLogin({ email, password }).then(({ data }) => {
+                    if (data.success) {
+                        const userRol = data.user.roles[0].name; // Obtén el rol del usuario
+                        setToken(data.user, data.token, userRol);
+
+                        // Redirige según el rol del usuario
+                        if (userRol === 'admin') {
+                            navigate('/admin/home');
+                        } else if (userRol === 'medico') {
+                            navigate('/medico/home');
+                        } else if (userRol === 'paciente') {
+                            navigate('/paciente/home');
+                        } else if (userRol === 'recepcion') {
+                            navigate('/recepcion/home');
+                        } else {
+                            setMessage('Rol no reconocido');
+                        }
+                    } else {
+                        setMessage('Credenciales incorrectas');
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('Error al obtener el CSRF cookie:', error);
+            });
+    };
+
     return (
-        <div className=" bg-[#dbdbdb] text-white h-full flex justify-center items-center w-full">
+        <div className="bg-[#dbdbdb] text-black h-screen flex justify-center items-center w-full">
             <div>
-                <div className=" min-w-[500px] bg-[#423734] border border-slate-700 rounded-3xl p-12 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative  ">
-                    <h1 className=" text-4xl text-white font-bold text-center mb-6 py-4">
-                        Iniciar sesion
+                <div className="min-w-[450px] bg-[#fff] border border-[#e11a31] rounded-2xl p-12 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
+                    <h1 className="text-4xl text-black font-bold text-center mb-6 py-4">
+                        Iniciar sesión
                     </h1>
-                    <form action="">
-                        <div className=" relative my-8">
+                    <form onSubmit={submitLogin}>
+                        {/* Campo de Email */}
+                        <div className="relative my-8">
                             <input
                                 type="email"
-                                required
-                                className="block w-[100%] py-2.5 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-white focus:border-blue-600 peer"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className={`block w-[100%] py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                                    } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
                                 placeholder=""
                             />
                             <label
                                 htmlFor=""
-                                className=" absolute text-sm text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                             >
                                 Email
                             </label>
-
-                            <p className=" absolute top-3 right-3">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
-                                    className="w-6 h-6"
-                                >
-                                    {" "}
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"
-                                    />
-                                </svg>
-                            </p>
+                            {errors.email && (
+                                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                            )}
                         </div>
-                        <div className=" relative my-8">
+
+                        {/* Campo de Contraseña */}
+                        <div className="relative my-8">
                             <input
-                                type="password"
-                                className="block w-[100%] py-2.5 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-white focus:border-blue-600 peer"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className={`block w-[100%] py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.password ? 'border-red-500' : 'border-gray-300'
+                                    } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
                                 placeholder=""
                             />
                             <label
                                 htmlFor=""
-                                className=" absolute text-sm text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                             >
                                 Contraseña
                             </label>
-
-                            <p className=" absolute top-3 right-3">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
-                                    className="w-6 h-6"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
-                                    />
-                                </svg>
-                            </p>
+                            {errors.password && (
+                                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                            )}
                         </div>
+
+                        {/* Mensaje de error general */}
+                        {message && (
+                            <p className="text-red-500 text-center mb-4">{message}</p>
+                        )}
                         <div className="flex justify-between items-center my-4">
                             <div className="flex gap-2 items-center">
-                                <input type="checkbox" name="" id="" />
-                                <label htmlFor="Recordarme">Recordar</label>
+                                <input
+                                    type="checkbox" id="showPassword"
+                                    checked={showPassword}
+                                    onChange={() => setShowPassword(!showPassword)} />
+                                <label htmlFor="showPassword">Mostrar contraseña</label>
                             </div>
-                            <span className=" text-blue-500 hover:text-cyan-400 cursor-pointer">
+                            <a href="/recuperar" className=" text-blue-500 hover:text-cyan-400 cursor-pointer">
                                 Olvidaste tu contraseña
-                            </span>
+                            </a>
                         </div>
-                        <a href={"/admin"}>
-                            <button
-                                type="submit"
-                                className="font-medium text-black w-full mb-6 text-[18px] my-6 rounded-full bg-white hover:bg-emerald-600 hover:text-white py-2 transition-colors duration-300"
-                            >
-                                Iniciar sesion
-                            </button>
-                        </a>
+                        <button
+                            onClick={submitLogin}
+                            type="submit"
+                            disabled={!isFormValid} // Deshabilita el botón si los campos están vacíos
+                            className={`font-medium text-black w-full mb-6 text-[18px] my-6 rounded-full ${isFormValid
+                                    ? 'bg-slate-300 hover:bg-[#e11a31] hover:text-white cursor-pointer'
+                                    : 'bg-gray-300 cursor-not-allowed'
+                                } py-2 transition-colors duration-300`}
+                        >
+                            Iniciar sesión
+                        </button>
                         <div>
-                            {" "}
-                            <a href="/register">register</a>
                             <span className="m-4">
-                                No tienes una cuenta?{" "}
+                                No tienes una cuenta?{' '}
                                 <a
-                                    className=" text-blue-500 hover:text-cyan-400 cursor-pointer"
-                                    href={"/register"}
+                                    className="text-blue-500 hover:text-cyan-400 cursor-pointer"
+                                    href="/register"
                                 >
-                                    Craer una cuenta
+                                    Crea una cuenta
                                 </a>
                             </span>
                         </div>
@@ -105,7 +165,7 @@ function Login() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;

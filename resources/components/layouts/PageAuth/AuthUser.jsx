@@ -5,8 +5,8 @@ function AuthUser() {
     const navigate = useNavigate();
     
     const getToken = () => {
-        const tokenString = sessionStorage.getItem('token')
-        const token = JSON.parse(tokenString)
+        const tokenString = sessionStorage.getItem('token');
+        const token = JSON.parse(tokenString);
         return token;
     }
 
@@ -26,7 +26,7 @@ function AuthUser() {
     const [user, setUser] = useState(getUser());
     const [rol, setRol] = useState(getRol());
 
-    const saveToken = (user, rol, token) => {
+    const saveToken = (user, token, rol) => {
         sessionStorage.setItem('token', JSON.stringify(token))
         sessionStorage.setItem('user', JSON.stringify(user))
         sessionStorage.setItem('rol', JSON.stringify(rol))

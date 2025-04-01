@@ -42,7 +42,7 @@ Route::prefix('v1')->group(function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function() {
         // Auth Routes
-        Route::post('/auth/logout',[AuthController::class, 'logout']);
+        Route::post('/auth/logout', [AuthController::class, 'logout']);
 
 
         // todo <-------------------- Rol Root y Admin -------------------->

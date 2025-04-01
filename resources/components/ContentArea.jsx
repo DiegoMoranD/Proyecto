@@ -13,15 +13,15 @@ function ContentArea() {
     return (
         <section className="bg-gray-200 h-full ">
             <div className="bg-white p-4 m-4 rounded-2xl max-h-[900px] overflow-x-hidden">
-            <Routes>
-                    <Route path="/" element={<Home />} />
+            {/* <Routes>
+                    <Route path="/home" element={<Home />} />
                     <Route path="/empresa" element={<Empresa />} />
                     <Route path="/tipousuario" element={<TipoUsuario />} />
                     <Route path="/suscripcion" element={<Suscripcion />} />
                     <Route path="/paciente" element={<Paciente />} />
                     <Route path="/usuario" element={<Usuario />} />
-                    {/* Agrega más rutas según sea necesario */}
-                </Routes>
+                </Routes> */}
+                Admin
             </div>
         </section>
     )
