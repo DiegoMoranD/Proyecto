@@ -63,11 +63,13 @@ class AuthController extends Controller
             $user = auth()->user();
             $user->hasRole('admin'); //error aqui undefined method hasRole
 
-            $response['token'] = $user->createToken("moran.app")->plainTextToken; //error aqui method createToken
+            $response['token'] = $user->createToken("caja.app")->plainTextToken; //error aqui method createToken
             $response['user'] = $user;
-            $response['message'] = "Logueado    ";
-            $response['success'] = true;
-        }
+            $response['message'] = "Logueado correctamente";
+        $response['success'] = true;
+    } else {
+        $response['message'] = "Credenciales incorrectas";
+    }
         return response()->json($response, 200);
     }
 
