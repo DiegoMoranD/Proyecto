@@ -16,6 +16,8 @@ import PublicLayout from './layouts/PublicLayout';
 import Login from './pages/forms/Login';
 import Register from './pages/forms/Register';
 import Recuperar from './pages/forms/Recuperar';
+import SuscripcionForm from './pages/forms/SuscripcionForm';
+
 
 export default function App() {
 
@@ -26,6 +28,7 @@ export default function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/recuperar" element={<Recuperar />} />
+                    <Route path="/sus" element={<SuscripcionForm />} />
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>

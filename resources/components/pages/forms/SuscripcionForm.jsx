@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import AuthUser from '../../layouts/PageAuth/AuthUser';
+import { useNavigate } from 'react-router-dom';
+import Config from "../../layouts/PageAuth/Config";
 
 const SuscripcionForm = () => {
   return (

@@ -159,6 +159,12 @@ function Login() {
                                 >
                                     Crea una cuenta
                                 </a>
+                                <a
+                                    className="text-blue-500 hover:text-cyan-400 cursor-pointer"
+                                    href="/sus"
+                                >
+                                    sus
+                                </a>
                             </span>
                         </div>
                     </form>

@@ -33,7 +33,7 @@ Route::prefix('v1')->group(function () {
 
 
     // ? Public Tests
-    Route::post('/test/suscripcion', [SuscripcionesController::class, 'store']);
+    Route::post('/auth/suscripcion', [SuscripcionesController::class, 'store']);
 
     Route::post('/test/empresa', [EmpresasController::class, 'store']);
 
