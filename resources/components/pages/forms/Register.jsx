@@ -5,13 +5,14 @@ import AuthUser from "../../layouts/PageAuth/AuthUser";
 
 function Register() {
     const { getToken } = AuthUser();
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
+    const [nombre, setNombre] = useState("");
+    const [correo, setCorreo] = useState("");
     const [telefono, setTelefono] = useState("");
-    const [materno, setMaterno] = useState("");
-    const [paterno, setPaterno] = useState("");
-    const [name, setName] = useState("");
+    const [rfc, setRfc] = useState("");
+    const [tockenAcceso, setTockenAcceso] = useState("");
+    const [cuentaValida, setCuentaValida] = useState("");
+    const [cedula, setCedula] = useState("");
+    const [suscripcionId, setSuscripcionId] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,35 +25,36 @@ function Register() {
         e.preventDefault();
 
         Config.getRegister({
-            name,
-            email,
-            password,
-            username,
+            nombre,
+            correo,
             telefono,
-            materno,
-            paterno,
+            rfc,
+            tocken_acceso: tockenAcceso,
+            cuenta_valida: cuentaValida,
+            cedula,
+            suscripcion_id: suscripcionId,
         }).then(({ data }) => {
             if (data.success) {
-                openModal(`Cuenta registrada bienvenido ${name}`, "/login");
+                openModal(`Empresa registrada exitosamente: ${nombre}`, "/login");
             }
         });
     };
 
     return (
         <div className="bg-[#626365] text-black h-screen flex justify-center items-center">
-            <div className=" bg-[#fff] border border-[#e11a31] rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
-                <h1 className=" text-4xl text-black/75 font-bold text-center mb-12">
-                    Registrarse
+            <div className="bg-[#fff] border border-[#e11a31] rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
+                <h1 className="text-4xl text-black/75 font-bold text-center mb-12">
+                    Registrar Empresa
                 </h1>
-                <form action="">
+                <form action="" className="grid grid-cols-2 gap-4">
                     {/* Nombre */}
-                    <div className="relative my-4">
+                    <div className="relative">
                         <input
                             type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
                             required
-                            className="block w-72 py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=""
                         />
                         <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -60,59 +62,29 @@ function Register() {
                         </label>
                     </div>
 
-                    {/* Apellido Paterno */}
-                    <div className="relative my-4">
+                    {/* Correo */}
+                    <div className="relative">
                         <input
-                            type="text"
-                            value={paterno}
-                            onChange={(e) => setPaterno(e.target.value)}
+                            type="email"
+                            value={correo}
+                            onChange={(e) => setCorreo(e.target.value)}
                             required
-                            className="block w-72 py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=""
                         />
                         <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                            Apellido Paterno
-                        </label>
-                    </div>
-
-                    {/* Apellido Materno */}
-                    <div className="relative my-4">
-                        <input
-                            type="text"
-                            value={materno}
-                            onChange={(e) => setMaterno(e.target.value)}
-                            required
-                            className="block w-72 py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder=""
-                        />
-                        <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                            Apellido Materno
-                        </label>
-                    </div>
-
-                    {/* Username */}
-                    <div className="relative my-4">
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                            className="block w-72 py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder=""
-                        />
-                        <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                            Nombre de Usuario
+                            Correo
                         </label>
                     </div>
 
                     {/* Teléfono */}
-                    <div className="relative my-4">
+                    <div className="relative">
                         <input
                             type="text"
                             value={telefono}
                             onChange={(e) => setTelefono(e.target.value)}
                             required
-                            className="block w-72 py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=""
                         />
                         <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -120,41 +92,86 @@ function Register() {
                         </label>
                     </div>
 
-                    {/* Email */}
-                    <div className="relative my-4">
+                    {/* RFC */}
+                    <div className="relative">
                         <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="text"
+                            value={rfc}
+                            onChange={(e) => setRfc(e.target.value)}
                             required
-                            className="block w-72 py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=""
                         />
                         <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                            Email
+                            RFC
                         </label>
                     </div>
 
-                    {/* Contraseña */}
-                    <div className="relative my-4">
+                    {/* Token de Acceso */}
+                    <div className="relative">
                         <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            type="text"
+                            value={tockenAcceso}
+                            onChange={(e) => setTockenAcceso(e.target.value)}
                             required
-                            className="block w-72 py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=""
                         />
                         <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                            Contraseña
+                            Token de Acceso
+                        </label>
+                    </div>
+
+                    {/* Cuenta Válida */}
+                    <div className="relative">
+                        <input
+                            type="text"
+                            value={cuentaValida}
+                            onChange={(e) => setCuentaValida(e.target.value)}
+                            required
+                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder=""
+                        />
+                        <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                            Cuenta Válida
+                        </label>
+                    </div>
+
+                    {/* Cédula */}
+                    <div className="relative">
+                        <input
+                            type="text"
+                            value={cedula}
+                            onChange={(e) => setCedula(e.target.value)}
+                            required
+                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder=""
+                        />
+                        <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                            Cédula
+                        </label>
+                    </div>
+
+                    {/* Suscripción ID */}
+                    <div className="relative">
+                        <input
+                            type="text"
+                            value={suscripcionId}
+                            onChange={(e) => setSuscripcionId(e.target.value)}
+                            required
+                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder=""
+                        />
+                        <label className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                            ID de Suscripción
                         </label>
                     </div>
 
                     <button
                         onClick={submitRegistro}
-                        className="w-full mb-4 text-[18px] mt-6 rounded-full bg-slate-300 hover:bg-[#e11a31] hover:text-white py-2 transition-colors duration-300 font-semibold"
+                        className="col-span-2 w-full mb-4 text-[18px] mt-6 rounded-full bg-slate-300 hover:bg-[#e11a31] hover:text-white py-2 transition-colors duration-300 font-semibold"
                     >
-                        Registrarse
+                        Registrar Empresa
                     </button>
 
                     <div>
