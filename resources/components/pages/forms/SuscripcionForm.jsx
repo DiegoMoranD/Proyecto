@@ -1,16 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import AuthUser from '../../layouts/PageAuth/AuthUser';
 import { useNavigate } from 'react-router-dom';
 import Config from "../../layouts/PageAuth/Config";
 
 const SuscripcionForm = () => {
+  const [nombre, setNombre] = useState('');
+  const [precio, setPrecio] = useState('');
+  const [descuento, setDescuento] = useState('');
+  const [dias, setDiasSuscripcion] = useState('');
+  
+  const sumitSuscripcion = async (e) => {
+    e.preventDefault();
+    await Config.getSuscripcionStore({
+      nombre,
+      precio,
+      descuento,
+      dias
+    })
+      .then((response) => {
+        console.log(response.data);
+        alert('Suscripción guardada con éxito');
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('Error al guardar la suscripción');
+      });
+    }
+
   return (
     <div className="min-w-[800px] h-fit mx-auto bg-white shadow-lg rounded-lg p-10 mt-10">
       <h2 className="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2 border-gray-950/30">
         Registro de Suscripción
       </h2>
 
-      <form>
+      <form onSubmit={sumitSuscripcion} className="space-y-4">
         <div className="grid grid-cols-1 gap-4">
           {/* Nombre de la Suscripción */}
           <div>
@@ -19,6 +41,8 @@ const SuscripcionForm = () => {
             </label>
             <input
               type="text"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
               placeholder="Ej: Premium Plus"
             />
@@ -29,6 +53,10 @@ const SuscripcionForm = () => {
             <label className="block text-gray-700 font-medium mb-1">Precio ($)</label>
             <input
               type="number"
+              value={precio}
+              onChange={(e) => setPrecio(e.target.value)}
+              min="0"
+              max="9999.99"
               step="0.01"
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
               placeholder="Ej: 99.99"
@@ -40,6 +68,8 @@ const SuscripcionForm = () => {
             <label className="block text-gray-700 font-medium mb-1">Descuento (%)</label>
             <input
               type="number"
+              value={descuento}
+              onChange={(e) => setDescuento(e.target.value)}
               step="1"
               min="0"
               max="100"
@@ -55,8 +85,11 @@ const SuscripcionForm = () => {
             </label>
             <input
               type="number"
-              step="1"
+              value={dias}
+              onChange={(e) => setDiasSuscripcion(e.target.value)}
               min="1"
+              max="365"
+              step="1"
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
               placeholder="Ej: 30"
             />

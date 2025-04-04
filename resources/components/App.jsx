@@ -28,7 +28,7 @@ export default function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/recuperar" element={<Recuperar />} />
-                    <Route path="/sus" element={<SuscripcionForm />} />
+                    <Route path="/suscripcion" element={<SuscripcionForm />} />
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
