@@ -35,7 +35,7 @@ Route::prefix('v1')->group(function () {
     // ? Public Tests
     Route::post('/auth/suscripcion', [SuscripcionesController::class, 'store']);
 
-    Route::post('/test/empresa', [EmpresasController::class, 'store']);
+    Route::post('/auth/empresa', [EmpresasController::class, 'store']);
 
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);
 
