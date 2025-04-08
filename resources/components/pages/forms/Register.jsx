@@ -6,7 +6,7 @@ import AuthUser from "../../layouts/PageAuth/AuthUser";
 function Register() {
     const { getToken } = AuthUser();
     const navigate = useNavigate();
-
+    
     // Estado para los datos de la empresa
     const [empresa, setEmpresa] = useState({
         nombre: "",
@@ -46,7 +46,7 @@ function Register() {
     const submitRegistro = async (e) => {
         e.preventDefault();
         setLoading(true);
-
+    
         try {
             // Registrar la empresa
             const empresaResponse = await Config.getEmpresaStore({
@@ -55,28 +55,35 @@ function Register() {
                 telefono: parseInt(empresa.telefono, 10), // Convertir a número entero
                 cedula: empresa.cedula,
                 suscripcion_id: empresa.suscripcion_id,
-                rfc: "default_rfc", // Agregar un valor por defecto si es necesario
-                tocken_acceso: "default_token", // Agregar un valor por defecto si es necesario
+                rfc: "default_rfc", // Valor por defecto
+                tocken_acceso: "default_token", // Valor por defecto
                 cuenta_valida: 1, // Valor por defecto
                 fecha_registro: new Date().toISOString().split("T")[0], // Fecha actual
                 fecha_vencimiento: "2025-12-31", // Fecha de ejemplo
                 fecha_compra: new Date().toISOString().split("T")[0], // Fecha actual
             });
-
+    
             const empresa_id = empresaResponse.data.id; // Obtener el ID de la empresa registrada
-
+    
+            if (!empresa_id) {
+                throw new Error("No se pudo obtener el ID de la empresa registrada.");
+            }
+    
             // Registrar el usuario con el ID de la empresa
             const usuarioData = { ...usuario, empresa_id };
             await Config.getUsuarioStore({
                 name: usuarioData.name,
                 paterno: usuarioData.paterno,
                 materno: usuarioData.materno,
+                username: "default_username", // Valor por defecto
+                tipo_usuario_id: 2, // Cambiado a "tipo_usuario_id" para coincidir con la base de datos
                 email: usuarioData.email,
                 password: usuarioData.password,
                 telefono: parseInt(usuarioData.telefono, 10), // Convertir a número entero
                 empresa_id: usuarioData.empresa_id,
+                remember_token: "default_token", // Valor por defecto
             });
-
+    
             alert("Empresa y usuario registrados exitosamente");
             navigate("/login");
         } catch (error) {
@@ -109,7 +116,7 @@ function Register() {
                             name="nombre"
                             value={empresa.nombre}
                             onChange={handleEmpresaChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Nombre de la Empresa"
                         />
@@ -120,7 +127,7 @@ function Register() {
                             name="correo"
                             value={empresa.correo}
                             onChange={handleEmpresaChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Correo de la Empresa"
                         />
@@ -131,7 +138,7 @@ function Register() {
                             name="telefono"
                             value={empresa.telefono}
                             onChange={handleEmpresaChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Teléfono de la Empresa"
                         />
@@ -142,7 +149,7 @@ function Register() {
                             name="cedula"
                             value={empresa.cedula}
                             onChange={handleEmpresaChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Cédula Profesional"
                         />
@@ -156,7 +163,7 @@ function Register() {
                             name="name"
                             value={usuario.name}
                             onChange={handleUsuarioChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Nombre del Usuario"
                         />
@@ -167,7 +174,7 @@ function Register() {
                             name="paterno"
                             value={usuario.paterno}
                             onChange={handleUsuarioChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Apellido Paterno"
                         />
@@ -178,7 +185,7 @@ function Register() {
                             name="materno"
                             value={usuario.materno}
                             onChange={handleUsuarioChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Apellido Materno"
                         />
@@ -189,7 +196,7 @@ function Register() {
                             name="email"
                             value={usuario.email}
                             onChange={handleUsuarioChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Email del Usuario"
                         />
@@ -200,7 +207,7 @@ function Register() {
                             name="password"
                             value={usuario.password}
                             onChange={handleUsuarioChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Contraseña"
                         />
@@ -211,7 +218,7 @@ function Register() {
                             name="telefono"
                             value={usuario.telefono}
                             onChange={handleUsuarioChange}
-                            required
+                            
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Teléfono del Usuario"
                         />

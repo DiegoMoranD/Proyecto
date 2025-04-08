@@ -7,7 +7,21 @@ use Illuminate\Http\Request;
 
 class EmpresasController extends Controller
 {
-    //
+    // // funcion para obtener todas las empresas
+    // public function index()
+    // {
+    //     $empresas = Empresa::all();
+    //     return response()->json($empresas);
+    // }
+    // // funcion para obtener una empresa por id
+    // public function show($id)
+    // {
+    //     $empresa = Empresa::find($id);
+    //     if (!$empresa) {
+    //         return response()->json(['message' => 'empresa no encontrada'], 404);
+    //     }
+    //     return response()->json($empresa);
+    // }
 
     public function store(Request $request)
     {
@@ -40,6 +54,9 @@ class EmpresasController extends Controller
 
         $empresas->save();
 
-        return response()->json(['message' => 'empresa registrada exitosamente'], 201);
+        return response()->json([
+            'message' => 'Empresa registrada exitosamente',
+            'id' => $empresas->id // Devolver el ID de la empresa creada
+        ], 201);
     }
 }
