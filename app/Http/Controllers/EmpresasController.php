@@ -2,32 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use Psy\Util\Str;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
 
 class EmpresasController extends Controller
 {
-    // // funcion para obtener todas las empresas
-    // public function index()
-    // {
-    //     $empresas = Empresa::all();
-    //     return response()->json($empresas);
-    // }
-    // // funcion para obtener una empresa por id
-    // public function show($id)
-    // {
-    //     $empresa = Empresa::find($id);
-    //     if (!$empresa) {
-    //         return response()->json(['message' => 'empresa no encontrada'], 404);
-    //     }
-    //     return response()->json($empresa);
-    // }
+    // funcion para obtener todas las empresas
+    public function index()
+    {
+        $empresas = Empresa::all();
+        return response()->json($empresas);
+    }
+    // funcion para obtener una empresa por id
+    public function show($id)
+    {
+        $empresa = Empresa::find($id);
+        if (!$empresa) {
+            return response()->json(['message' => 'empresa no encontrada'], 404);
+        }
+        return response()->json($empresa);
+    }
 
     public function store(Request $request)
     {
         $request->validate([
             'nombre' => 'string',
-            'correo' => 'string',
+            'correo' => 'required|email|unique:empresas,correo',
             'telefono' => 'integer',
             'rfc' => 'string',
             'tocken_acceso' => 'string',
@@ -44,7 +45,7 @@ class EmpresasController extends Controller
         $empresas->correo = $request->input('correo');
         $empresas->telefono = $request->input('telefono');
         $empresas->rfc = $request->input('rfc');
-        $empresas->tocken_acceso = $request->input('tocken_acceso');
+        $empresas->tocken_acceso = substr(bin2hex(random_bytes(5)), 0, 9);
         $empresas->cuenta_valida = $request->input('cuenta_valida');
         $empresas->cedula = $request->input('cedula');
         $empresas->suscripcion_id = $request->input('suscripcion_id');

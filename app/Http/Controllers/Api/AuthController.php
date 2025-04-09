@@ -10,12 +10,26 @@ use function Laravel\Prompts\error;
 
 class AuthController extends Controller
 {
-    //
+    // index function
+    public function index()
+    {
+        return response()->json(['message' => 'API funcionando']);
+    }
+    // show function
+    public function show($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'usuario no encontrado'], 404);
+        }
+        return response()->json($user);
+    }
+
     public function register(Request $request)
     {
-
         $response = ["success" => false];
 
+        // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'paterno' => 'required',
@@ -30,9 +44,19 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             $response = ["error" => $validator->errors()];
-            return response()->json($response, 200);
+            return response()->json($response, 422);
         }
 
+        // Verificar si el correo ya existe
+        $emailExists = User::where('email', $request->email)->exists();
+        if ($emailExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cuenta ya registrada'
+            ], 409); // Código de estado 409: Conflicto
+        }
+
+        // Crear el usuario
         $input = $request->all();
         $input["password"] = bcrypt($input['password']);
 
@@ -40,9 +64,8 @@ class AuthController extends Controller
         $user->assignRole('medico');
 
         $response["success"] = true;
-        // $response["token"] = $user->createToken("Moran")->plainTextToken;
 
-        return response()->json($request, 200);
+        return response()->json($response, 201); // Código de estado 201: Creado
     }
 
     public function login(Request $request)
@@ -66,15 +89,16 @@ class AuthController extends Controller
             $response['token'] = $user->createToken("caja.app")->plainTextToken; //error aqui method createToken
             $response['user'] = $user;
             $response['message'] = "Logueado correctamente";
-        $response['success'] = true;
-    } else {
-        $response['message'] = "Credenciales incorrectas";
-    }
+            $response['success'] = true;
+        } else {
+            $response['message'] = "Credenciales incorrectas";
+        }
         return response()->json($response, 200);
     }
 
-    public function logout(){
-        
+    public function logout()
+    {
+
         $response = ["success" => false];
         auth()->user()->tokens()->delete(); //error aqui method tokens
         $response = [
@@ -82,6 +106,13 @@ class AuthController extends Controller
             "message" => "Secion Cerrada"
         ];
         return response()->json($response, 200);
+    }
+
+    public function checkEmail(Request $request)
+    {
+        $emailExists = User::where('email', $request->email)->exists();
+
+        return response()->json(['exists' => $emailExists]);
     }
 
     // public function subirEmpresa(Request $request)

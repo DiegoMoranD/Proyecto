@@ -16,4 +16,5 @@ export default {
 
   // configuracion de usuarios
   getUsuarioStore: (data) => axios.post(`${base_api_url}/auth/register`, data),
+  getCheckEmail: (data) => axios.post(`${base_api_url}/auth/check-email`, data),
 }

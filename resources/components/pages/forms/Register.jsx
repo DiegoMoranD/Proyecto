@@ -2,11 +2,35 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Config from "../../layouts/PageAuth/Config";
 import AuthUser from "../../layouts/PageAuth/AuthUser";
+import Modal from "../../Modal";
 
 function Register() {
     const { getToken } = AuthUser();
     const navigate = useNavigate();
-    
+
+    const [errors, setErrors] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const validateFields = () => {
+        const newErrors = {};
+
+        // Validar campos de la empresa
+        if (!empresa.nombre.trim()) newErrors.nombre = "El nombre de la empresa es obligatorio.";
+        if (!empresa.correo.trim()) newErrors.correo = "El correo de la empresa es obligatorio.";
+        if (!empresa.telefono.trim()) newErrors.telefono = "El teléfono de la empresa es obligatorio.";
+        if (!empresa.cedula.trim()) newErrors.cedula = "La cédula profesional es obligatoria.";
+
+        // Validar campos del usuario
+        if (!usuario.name.trim()) newErrors.name = "El nombre del usuario es obligatorio.";
+        if (!usuario.paterno.trim()) newErrors.paterno = "El apellido paterno es obligatorio.";
+        if (!usuario.email.trim()) newErrors.email = "El email del usuario es obligatorio.";
+        if (!usuario.password.trim()) newErrors.password = "La contraseña es obligatoria.";
+        if (!usuario.telefono.trim()) newErrors.telefonoUsuario = "El teléfono del usuario es obligatorio.";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
+    };
+
     // Estado para los datos de la empresa
     const [empresa, setEmpresa] = useState({
         nombre: "",
@@ -21,7 +45,6 @@ function Register() {
         name: "", // Cambiado a "name" para coincidir con la base de datos
         paterno: "", // Cambiado a "paterno"    
         materno: "", // Cambiado a "materno"
-        email: "",
         password: "", // Cambiado a "password"
         telefono: "", // Debe ser un número entero
         empresa_id: null, // Cambiado a "empresa_id"
@@ -45,9 +68,27 @@ function Register() {
 
     const submitRegistro = async (e) => {
         e.preventDefault();
+
+        if (!validateFields()) {
+            setIsModalOpen(true); // Mostrar el modal si hay errores
+            return;
+        }
+
         setLoading(true);
-    
+
         try {
+            // Verificar si el correo ya existe
+            const emailCheckResponse = await Config.getCheckEmail({ email: empresa.email });
+            if (emailCheckResponse.data.exists) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    correo: "Cuenta ya registrada",
+                }));
+                setUsuario((prevEmpresa) => ({ ...prevEmpresa, correo: "" })); // Limpia el campo
+                setLoading(false);
+                return; // Detener el flujo si el correo ya existe
+            }
+
             // Registrar la empresa
             const empresaResponse = await Config.getEmpresaStore({
                 nombre: empresa.nombre,
@@ -62,13 +103,13 @@ function Register() {
                 fecha_vencimiento: "2025-12-31", // Fecha de ejemplo
                 fecha_compra: new Date().toISOString().split("T")[0], // Fecha actual
             });
-    
+
             const empresa_id = empresaResponse.data.id; // Obtener el ID de la empresa registrada
-    
+
             if (!empresa_id) {
                 throw new Error("No se pudo obtener el ID de la empresa registrada.");
             }
-    
+
             // Registrar el usuario con el ID de la empresa
             const usuarioData = { ...usuario, empresa_id };
             await Config.getUsuarioStore({
@@ -83,26 +124,69 @@ function Register() {
                 empresa_id: usuarioData.empresa_id,
                 remember_token: "default_token", // Valor por defecto
             });
-    
+
             alert("Empresa y usuario registrados exitosamente");
             navigate("/login");
         } catch (error) {
-            if (error.response && error.response.status === 422) {
-                // Mostrar errores específicos del backend
-                const errors = error.response.data.errors;
-                const errorMessages = Object.values(errors).flat().join("\n");
-                alert(`Errores de validación:\n${errorMessages}`);
-            } else {
-                console.error("Error al registrar:", error);
-                alert("Ocurrió un error al registrar los datos.");
+            if (error.response) {
+                if (error.response.status === 409) {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        correo: "Este correo ya está registrado",
+                    }));
+                    setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: "" })); // Limpia el campo
+                } else if (error.response.status === 422) {
+                    const errors = error.response.data.errors;
+                    const errorMessages = Object.values(errors).flat().join("\n");
+                    alert(`Errores de validación:\n${errorMessages}`);
+                } else {
+                    console.error("Error al registrar:", error);
+                    alert("Ocurrió un error al registrar los datos.");
+                }
             }
         } finally {
             setLoading(false);
         }
     };
 
+    const checkEmailExists = async () => {
+        if (!empresa.correo.trim()) return; // No hacer nada si el campo está vacío
+
+        try {
+            const response = await Config.getCheckEmail({ email: empresa.correo }); // Verificar en la tabla empresas
+            if (response.data.exists) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    correo: "Este correo ya está registrado",
+                }));
+                setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: "" })); // Limpia el campo
+            } else {
+                setErrors((prevErrors) => {
+                    const { correo, ...rest } = prevErrors; // Elimina el error de correo si no existe
+                    return rest;
+                });
+            }
+        } catch (error) {
+            console.error("Error al verificar el correo:", error);
+        }
+    };
+
     return (
         <div className="bg-[#626365] text-black h-screen flex justify-center items-center">
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title="Errores en el formulario"
+                message={
+                    <ul>
+                        {Object.values(errors).map((error, index) => (
+                            <li key={index} className="text-red-500">
+                                {error}
+                            </li>
+                        ))}
+                    </ul>
+                }
+            />
             <div className="bg-[#fff] border border-[#e11a31] rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
                 <h1 className="text-4xl text-black/75 font-bold text-center mb-12">
                     Registro de Empresa y Usuario
@@ -116,7 +200,7 @@ function Register() {
                             name="nombre"
                             value={empresa.nombre}
                             onChange={handleEmpresaChange}
-                            
+
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Nombre de la Empresa"
                         />
@@ -126,11 +210,17 @@ function Register() {
                             type="email"
                             name="correo"
                             value={empresa.correo}
-                            onChange={handleEmpresaChange}
-                            
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            onChange={(e) => {
+                                const email = e.target.value;
+                                setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: email }));
+                                setUsuario((prevUsuario) => ({ ...prevUsuario, email })); // Sincronizar el correo 
+                            }}
+                            onBlur={checkEmailExists} // Verificar si el correo ya existe al salir del campo
+
+                            className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.correo ? "border-red-500" : "border-gray-300"} border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                             placeholder="Correo de la Empresa"
                         />
+                        {errors.correo && <span className="text-red-500 text-sm mt-1">{errors.correo}</span>}
                     </div>
                     <div className="relative">
                         <input
@@ -138,7 +228,7 @@ function Register() {
                             name="telefono"
                             value={empresa.telefono}
                             onChange={handleEmpresaChange}
-                            
+
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Teléfono de la Empresa"
                         />
@@ -149,7 +239,7 @@ function Register() {
                             name="cedula"
                             value={empresa.cedula}
                             onChange={handleEmpresaChange}
-                            
+
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Cédula Profesional"
                         />
@@ -163,7 +253,7 @@ function Register() {
                             name="name"
                             value={usuario.name}
                             onChange={handleUsuarioChange}
-                            
+
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Nombre del Usuario"
                         />
@@ -174,7 +264,7 @@ function Register() {
                             name="paterno"
                             value={usuario.paterno}
                             onChange={handleUsuarioChange}
-                            
+
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Apellido Paterno"
                         />
@@ -185,29 +275,19 @@ function Register() {
                             name="materno"
                             value={usuario.materno}
                             onChange={handleUsuarioChange}
-                            
+
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Apellido Materno"
                         />
                     </div>
-                    <div className="relative">
-                        <input
-                            type="email"
-                            name="email"
-                            value={usuario.email}
-                            onChange={handleUsuarioChange}
-                            
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder="Email del Usuario"
-                        />
-                    </div>
+
                     <div className="relative">
                         <input
                             type="password"
                             name="password"
                             value={usuario.password}
                             onChange={handleUsuarioChange}
-                            
+
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Contraseña"
                         />
@@ -218,7 +298,7 @@ function Register() {
                             name="telefono"
                             value={usuario.telefono}
                             onChange={handleUsuarioChange}
-                            
+
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Teléfono del Usuario"
                         />
@@ -226,11 +306,10 @@ function Register() {
 
                     <button
                         type="submit"
-                        className={`col-span-2 w-full mb-4 text-[18px] mt-6 rounded-full ${
-                            loading
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-slate-300 hover:bg-[#e11a31] hover:text-white"
-                        } py-2 transition-colors duration-300 font-semibold`}
+                        className={`col-span-2 w-full mb-4 text-[18px] mt-6 rounded-full ${loading
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-slate-300 hover:bg-[#e11a31] hover:text-white"
+                            } py-2 transition-colors duration-300 font-semibold`}
                         disabled={loading}
                     >
                         {loading ? "Registrando..." : "Registrar"}

@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Api\Admin\EmpresaAdminController;
 use App\Http\Controllers\Api\Admin\PacienteAdminController;
 use App\Http\Controllers\Api\Admin\SuscripcionAdminController;
@@ -27,9 +28,11 @@ Route::prefix('v1')->group(function () {
 
     // Auth Routes
     // Route::get('/auth/{slug}',[AuthController::class, 'login']);
-    Route::post('/auth/login',[AuthController::class, 'login']);
+    Route::post('/auth/login', [AuthController::class, 'login']);
     // Route::get('/auth/{slug}',[AuthController::class, 'register']);
-    Route::post('/auth/register',[AuthController::class, 'register']);
+    Route::post('/auth/register', [AuthController::class, 'register']);
+    Route::post('/auth/check-email', [AuthController::class, 'checkEmail']);
+    //
 
 
     // ? Public Tests
@@ -41,7 +44,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);
 
 
-    Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth Routes
         Route::post('/auth/logout', [AuthController::class, 'logout']);
 
@@ -55,20 +58,17 @@ Route::prefix('v1')->group(function () {
 
 
         // ! <-------------------- Rol Medico -------------------->
-        Route::apiResource('/medico/example',PacienteMedicoController ::class);
-        
+        Route::apiResource('/medico/example', PacienteMedicoController::class);
+
 
         // ? <-------------------- Rol Paciente -------------------->
-        Route::apiResource('/medico/example',EmpresaPacienteController ::class);
-        Route::apiResource('/medico/example',UsuarioPacienteController ::class);
+        Route::apiResource('/medico/example', EmpresaPacienteController::class);
+        Route::apiResource('/medico/example', UsuarioPacienteController::class);
 
 
         // * z-------------------- Rol Recepcion -------------------->
-        Route::apiResource('/medico/example',PacienteRecepcionController ::class);
-
-        
+        Route::apiResource('/medico/example', PacienteRecepcionController::class);
     });
-
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
