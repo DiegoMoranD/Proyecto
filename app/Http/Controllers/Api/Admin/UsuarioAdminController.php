@@ -3,27 +3,16 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class UsuarioAdminController extends Controller
 {
-    public function index(){
-
-    }
-
-    public function show(){
-        
-    }
-
-    public function store(){
-        
-    }
-
-    public function update(){
-        
-    }
-
-    public function destroy(){
-        
+    // mostrar todos los usuarios
+    public function index()
+    {
+        // mosntrar a todos los usuarios
+        $usuarios = Usuario::all();
+        return response()->json($usuarios);
     }
 }
