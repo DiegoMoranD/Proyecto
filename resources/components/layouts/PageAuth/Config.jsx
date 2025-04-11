@@ -17,4 +17,7 @@ export default {
   // configuracion de usuarios
   getUsuarioStore: (data) => axios.post(`${base_api_url}/auth/register`, data),
   getCheckEmail: (data) => axios.post(`${base_api_url}/auth/check-email`, data),
+  getEmpresaByToken: (token) => axios.get(`${base_api_url}/auth/empresa/${token}`),
+  activateEmpresa: (token) => axios.post(`${base_api_url}/auth/activar-empresa/${token}`),
+
 }

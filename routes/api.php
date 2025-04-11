@@ -34,6 +34,9 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/check-email', [AuthController::class, 'checkEmail']);
     //
 
+    Route::get('/auth/empresa/{token}', [EmpresasController::class, 'getEmpresaByToken']);
+    Route::post('/auth/activar-empresa/{token}', [EmpresasController::class, 'activarEmpresa']);
+
 
     // ? Public Tests
     Route::post('/auth/suscripcion', [SuscripcionesController::class, 'store']);
@@ -58,23 +61,23 @@ Route::prefix('v1')->group(function () {
 
 
         // * <-------------------- Rol Medico -------------------->
-        Route::apiResource('/medico/paciente/table', [PacienteMedicoController::class, 'index']);
-        Route::apiResource('/medico/paciente/show', [PacienteMedicoController::class, 'show']);
-        Route::apiResource('/medico/paciente/store', [PacienteMedicoController::class, 'store']);
-        Route::apiResource('/medico/paciente/update', [PacienteMedicoController::class, 'update']);
+        // Route::apiResource('/medico/paciente/table', [PacienteMedicoController::class, 'index']);
+        // Route::apiResource('/medico/paciente/show', [PacienteMedicoController::class, 'show']);
+        // Route::apiResource('/medico/paciente/store', [PacienteMedicoController::class, 'store']);
+        // Route::apiResource('/medico/paciente/update', [PacienteMedicoController::class, 'update']);
 
 
         // ? <-------------------- Rol Paciente -------------------->
-        Route::apiResource('/paciente/empresa', [EmpresaPacienteController::class, 'index']);
-        Route::apiResource('/paciente/datos', [UsuarioPacienteController::class, 'index']);
-        Route::apiResource('/paciente/datos/update', [UsuarioPacienteController::class, 'update']);
+        // Route::apiResource('/paciente/empresa', [EmpresaPacienteController::class, 'index']);
+        // Route::apiResource('/paciente/datos', [UsuarioPacienteController::class, 'index']);
+        // Route::apiResource('/paciente/datos/update', [UsuarioPacienteController::class, 'update']);
 
 
         // todo <-------------------- Rol Recepcion -------------------->
-        Route::apiResource('/recepcion/table', [PacienteRecepcionController::class, 'index']);
-        Route::apiResource('/recepcion/show', [PacienteRecepcionController::class, 'show']);
-        Route::apiResource('/recepcion/store', [PacienteRecepcionController::class, 'store']);
-        Route::apiResource('/recepcion/update', [PacienteRecepcionController::class, 'update']);
+        // Route::apiResource('/recepcion/table', [PacienteRecepcionController::class, 'index']);
+        // Route::apiResource('/recepcion/show', [PacienteRecepcionController::class, 'show']);
+        // Route::apiResource('/recepcion/store', [PacienteRecepcionController::class, 'store']);
+        // Route::apiResource('/recepcion/update', [PacienteRecepcionController::class, 'update']);
     });
 });
 

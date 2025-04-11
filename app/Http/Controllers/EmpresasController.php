@@ -60,4 +60,41 @@ class EmpresasController extends Controller
             'id' => $empresas->id // Devolver el ID de la empresa creada
         ], 201);
     }
+
+    public function getEmpresaByToken($token)
+{
+    // Buscar la empresa por el token
+    $empresa = Empresa::where('tocken_acceso', $token)->first();
+
+    if (!$empresa) {
+        return response()->json(['message' => 'Token inválido o empresa no encontrada'], 404);
+    }
+
+    // Retornar los datos de la empresa
+    return response()->json([
+        'message' => 'Empresa encontrada',
+        'empresa' => [
+            'nombre' => $empresa->nombre,
+            'correo' => $empresa->correo,
+            'telefono' => $empresa->telefono,
+            'cuenta_valida' => $empresa->cuenta_valida,
+        ]
+    ], 200);
+}
+
+public function activarEmpresa($token)
+{
+    // Buscar la empresa por el token
+    $empresa = Empresa::where('tocken_acceso', $token)->first();
+
+    if (!$empresa) {
+        return response()->json(['message' => 'Token inválido o empresa no encontrada'], 404);
+    }
+
+    // Cambiar el estado de cuenta_valida a 0
+    $empresa->cuenta_valida = 0;
+    $empresa->save();
+
+    return response()->json(['message' => 'Cuenta activada exitosamente'], 200);
+}
 }

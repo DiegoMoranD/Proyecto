@@ -17,6 +17,7 @@ import Login from './pages/forms/Login';
 import Register from './pages/forms/Register';
 import Recuperar from './pages/forms/Recuperar';
 import SuscripcionForm from './pages/forms/SuscripcionForm';
+import ActivateEmpresa from './pages/forms/ActivateEmpresa';
 
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/recuperar" element={<Recuperar />} />
                     <Route path="/suscripcion" element={<SuscripcionForm />} />
+                    <Route path="/activar-empresa/:token" element={<ActivateEmpresa />} />
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
