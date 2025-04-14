@@ -30,18 +30,18 @@ class Empresa extends Model
     // Relación muchos a uno con SUSCRIPCION
     public function suscripcion()
     {
-        return $this->belongsTo(Suscripcion::class, 'suscripcionID', 'idSuscripcion');
+        return $this->belongsTo(Suscripcion::class, 'suscripcion_id', 'id');
     }
 
     // Relación de uno a muchos con USUARIO
     public function usuarios()
     {
-        return $this->hasMany(Usuario::class, 'empresaID', 'idEmpresa');
+        return $this->hasMany(Usuario::class, 'empresa_id', 'id');
     }
 
     // Relación de uno a muchos con PACIENTE
     public function pacientes()
     {
-        return $this->hasMany(Paciente::class, 'empresaID', 'idEmpresa');
+        return $this->hasMany(Paciente::class, 'empresa_id', 'id');
     }
 }

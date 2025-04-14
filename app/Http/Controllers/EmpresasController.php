@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Psy\Util\Str;
 use App\Models\Empresa;
+use App\Utils\PHPMailerHelper;
 use Illuminate\Http\Request;
 
 class EmpresasController extends Controller
@@ -55,46 +56,65 @@ class EmpresasController extends Controller
 
         $empresas->save();
 
+        // Enviar correo de validación
+        $token = $empresas->tocken_acceso;
+        $validationUrl = "http://127.0.0.1:8000/activar-empresa/{$token}";
+        $subject = "Activación de cuenta - TecuaniSoft";
+        $body = "
+        <h1>Bienvenido a TecuaniSoft</h1>
+        <p>Gracias por registrarte. Por favor, valida tu cuenta haciendo clic en el siguiente enlace:</p>
+        <a href='{$validationUrl}'>Activar Cuenta</a>
+        <p>Si no solicitaste este registro, ignora este mensaje.</p>
+    ";
+
+        $emailStatus = PHPMailerHelper::sendEmail($empresas->correo, $subject, $body);
+
+        if ($emailStatus !== true) {
+            return response()->json(['message' => $emailStatus], 500);
+        }
+
         return response()->json([
-            'message' => 'Empresa registrada exitosamente',
-            'id' => $empresas->id // Devolver el ID de la empresa creada
+            'message' => 'Empresa registrada exitosamente. Se ha enviado un correo de validación.',
+            'id' => $empresas->id
         ], 201);
     }
 
     public function getEmpresaByToken($token)
-{
-    // Buscar la empresa por el token
-    $empresa = Empresa::where('tocken_acceso', $token)->first();
+    {
+        // Buscar la empresa por el token
+        $empresa = Empresa::where('tocken_acceso', $token)->first();
 
-    if (!$empresa) {
-        return response()->json(['message' => 'Token inválido o empresa no encontrada'], 404);
+        if (!$empresa) {
+            return response()->json(['message' => 'Token inválido o empresa no encontrada'], 404);
+        }
+
+        // Retornar los datos de la empresa
+        return response()->json([
+            'message' => 'Empresa encontrada',
+            'empresa' => [
+                'nombre' => $empresa->nombre,
+                'correo' => $empresa->correo,
+                'telefono' => $empresa->telefono,
+                'cuenta_valida' => $empresa->cuenta_valida,
+            ]
+        ], 200);
     }
 
-    // Retornar los datos de la empresa
-    return response()->json([
-        'message' => 'Empresa encontrada',
-        'empresa' => [
-            'nombre' => $empresa->nombre,
-            'correo' => $empresa->correo,
-            'telefono' => $empresa->telefono,
-            'cuenta_valida' => $empresa->cuenta_valida,
-        ]
-    ], 200);
-}
+    public function activarEmpresa($token)
+    {
+        // Buscar la empresa por el token
+        $empresa = Empresa::where('tocken_acceso', $token)->first();
 
-public function activarEmpresa($token)
-{
-    // Buscar la empresa por el token
-    $empresa = Empresa::where('tocken_acceso', $token)->first();
+        if (!$empresa) {
+            return response()->json(['message' => 'Token inválido o empresa no encontrada'], 404);
+        }
 
-    if (!$empresa) {
-        return response()->json(['message' => 'Token inválido o empresa no encontrada'], 404);
+        // Cambiar el estado de cuenta_valida a 0
+        $empresa->cuenta_valida = 0;
+        // actualizar el tocken de acceso a null evitando un Integrity constraint violation
+        $empresa->tocken_acceso = null;
+        $empresa->save();
+
+        return response()->json(['message' => 'Cuenta activada exitosamente'], 200);
     }
-
-    // Cambiar el estado de cuenta_valida a 0
-    $empresa->cuenta_valida = 0;
-    $empresa->save();
-
-    return response()->json(['message' => 'Cuenta activada exitosamente'], 200);
-}
 }

@@ -84,15 +84,37 @@ class AuthController extends Controller
 
         if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = auth()->user();
-            $user->hasRole('admin'); //error aqui undefined method hasRole
 
-            $response['token'] = $user->createToken("caja.app")->plainTextToken; //error aqui method createToken
+            // Verificar si el usuario tiene una empresa asociada
+            if (!$user->empresa) {
+                $response['message'] = "No se encontró una empresa asociada al usuario.";
+                return response()->json($response, 403); // Código de estado 403: Prohibido
+            }
+
+            // Verificar si la cuenta de la empresa está validada
+            if ($user->empresa->cuenta_valida === 1) {
+                return response()->json(['message' => "Valide su cuenta desde el correo electrónico."], 403);
+            }
+
+            // Verificar el rol del usuario
+            if ($user->hasRole('admin')) {
+                $response['role'] = 'admin';
+            } elseif ($user->hasRole('medico')) {
+                $response['role'] = 'medico';
+            } elseif ($user->hasRole('paciente')) {
+                $response['role'] = 'paciente';
+            } elseif ($user->hasRole('recepcion')) {
+                $response['role'] = 'recepcion';
+            }
+
+            $response['token'] = $user->createToken("caja.app")->plainTextToken;
             $response['user'] = $user;
             $response['message'] = "Logueado correctamente";
             $response['success'] = true;
         } else {
             $response['message'] = "Credenciales incorrectas";
         }
+
         return response()->json($response, 200);
     }
 

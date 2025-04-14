@@ -33,13 +33,13 @@ class User extends Authenticatable
 
     public function tipoUsuario()
     {
-        return $this->belongsTo(Tipo_usuario::class, 'tipoUsuarioID', 'idTipoUsuario');
+        return $this->belongsTo(Tipo_usuario::class, 'tipo_usuario_id', 'id');
     }
 
     // Relación muchos a uno con EMPRESA
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class, 'empresaID', 'idEmpresa');
+        return $this->belongsTo(Empresa::class, 'empresa_id', 'id'); 
     }
 
     /**
