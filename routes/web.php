@@ -35,3 +35,7 @@ Route::get('/activar-empresa/{any}', function () {
 Route::get('/admin/{any}', function () {
     return view('welcome');
 });
+
+Route::get('/medico/{any}', function () {
+    return view('welcome');
+});

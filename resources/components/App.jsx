@@ -1,36 +1,43 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React from "react";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Navigate,
+} from "react-router-dom";
 
-import ProtectedRoutes from './layouts/PageAuth/ProtectedRoutes';
+import ProtectedRoutes from "./layouts/PageAuth/ProtectedRoutes";
 
-import AdminLayout from './layouts/AdminLayout';
-import ContentArea from './ContentArea';
+import AdminLayout from "./layouts/AdminLayout";
+import ContentArea from "./ContentArea";
 
-import MedicoLayout from './layouts/MedicoLayout';
+import MedicoLayout from "./layouts/MedicoLayout";
 
-import PacienteLayout from './layouts/PacienteLayout';
+import PacienteLayout from "./layouts/PacienteLayout";
 
-import RecepcionLayout from './layouts/RecepcionLayout';
+import RecepcionLayout from "./layouts/RecepcionLayout";
 
-import PublicLayout from './layouts/PublicLayout';
-import Login from './pages/forms/Login';
-import Register from './pages/forms/Register';
-import Recuperar from './pages/forms/Recuperar';
-import SuscripcionForm from './pages/forms/SuscripcionForm';
-import ActivateEmpresa from './pages/forms/ActivateEmpresa';
-
+import PublicLayout from "./layouts/PublicLayout";
+import Login from "./pages/forms/Login";
+import Register from "./pages/forms/Register";
+import Recuperar from "./pages/forms/Recuperar";
+import SuscripcionForm from "./pages/forms/SuscripcionForm";
+import ActivateEmpresa from "./pages/forms/ActivateEmpresa";
 
 export default function App() {
-
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<PublicLayout />}>
+                {/* <Route path="/" element={<PublicLayout />}>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/recuperar" element={<Recuperar />} />
                     <Route path="/suscripcion" element={<SuscripcionForm />} />
                     <Route path="/activar-empresa/:token" element={<ActivateEmpresa />} />
+                </Route> */}
+
+                <Route path="/" element={<PublicLayout />}>
+                    <Route path="/*" element={<ContentArea />} />
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
@@ -40,19 +47,19 @@ export default function App() {
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
-                    <Route path='/medico/*' element={<MedicoLayout />} >
+                    <Route path="/medico/*" element={<MedicoLayout />}>
                         <Route index element={<ContentArea />}></Route>
                     </Route>
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
-                    <Route path='/paciente/*' element={<PacienteLayout />} >
+                    <Route path="/paciente/*" element={<PacienteLayout />}>
                         <Route index element={<ContentArea />}></Route>
                     </Route>
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>
-                    <Route path='/recepcion/*' element={<RecepcionLayout />} >
+                    <Route path="/recepcion/*" element={<RecepcionLayout />}>
                         <Route index element={<ContentArea />}></Route>
                     </Route>
                 </Route>
