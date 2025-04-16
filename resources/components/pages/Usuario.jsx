@@ -18,11 +18,7 @@ function Usuario() {
                         <tr>
                             <th className="py-3 px-6 text-left">Nombre</th>
                             <th className="py-3 px-6 text-left">Apellido Paterno</th>
-                            <th className="py-3 px-6 text-left">Apellido Materno</th>
                             <th className="py-3 px-6 text-left">Telefono</th>
-                            <th className="py-3 px-6 text-left">Usuario</th>
-                            <th className="py-3 px-6 text-left">Contraseña</th>
-                            <th className="py-3 px-6 text-left">Tipo de Usuario</th>
                             <th className="py-3 px-6 text-left">Empresa</th>
                         </tr>
                     </thead>
@@ -31,11 +27,7 @@ function Usuario() {
                             <tr key={employee.id} className="border-b hover:bg-gray-100">
                                 <td className="py-3 px-6">{employee.name}</td>
                                 <td className="py-3 px-6">{employee.apPaterno}</td>
-                                <td className="py-3 px-6">{employee.apMaterno}</td>
                                 <td className="py-3 px-6">{employee.telefono}</td>
-                                <td className="py-3 px-6">{employee.username}</td>
-                                <td className="py-3 px-6">{employee.passUser}</td>
-                                <td className="py-3 px-6">{employee.tipoUser}</td>
                                 <td className="py-3 px-6">{employee.empresaId}</td>
                             </tr>
                         ))}
