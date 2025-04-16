@@ -12,7 +12,7 @@ import { Routes, Route } from "react-router-dom";
 function ContentArea() {
     return (
         <section className="bg-gray-200 h-full">
-            <div className="bg-white p-4 m-4 rounded-2xl max-h-[900px] overflow-x-hidden lg:max-w-[80%] md:max-w-[90%] sm:max-w-full mx-auto max-lg:bg-amber-300 max-sm:w-[0px]">
+            <div className="bg-white p-4 m-4 rounded-2xl overflow-x-hidden lg:max-w-[95%] md:max-w-[95%] sm:max-w-full mx-auto max-lg:bg-red-300 max-sm:w-fixed max-md:bg-blue-300 max-lg:w-full">
                 <Routes>
                     <Route path="/home" element={<Home />} />
                     <Route path="/empresa" element={<Empresa />} />

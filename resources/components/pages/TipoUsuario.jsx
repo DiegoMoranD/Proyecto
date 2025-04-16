@@ -7,7 +7,7 @@ function TipoUsuario() {
         { id: 3, name: "enfermera", registroPaciente: true, registroMedicamento: false, agenadrCita: true, eliminarPaciente: false, eliminacita: true, },
         { id: 4, name: "paciente", registroPaciente: false, registroMedicamento: false, agenadrCita: true, eliminarPaciente: false, eliminacita: true, },
     ];
-
+    
     return (
         <div className="container mx-auto p-6">
             <div className="flex justify-between items-center bg-red-400 my-12 p-8">
