@@ -26,7 +26,7 @@ export default function SideBar() {
     };
 
     return (
-        <div className={`flex flex-col justify-between p-4 bg-white shadow-lg w-[17%] rounded border-r-1 border-gray-900/25 lg:w-[18%] md:w-[25%] sm:w-full ${isOpen ? 'block' : 'hidden'} sm:block   max-2xl:text-red-500`}>	
+        <div className={`flex flex-col justify-between p-4 bg-white shadow-lg w-[17%] rounded border-r-1 border-gray-900/25 lg:w-[18%] md:w-[25%] sm:w-full ${isOpen ? 'block' : 'hidden'} sm:flex sm:justify-between`}>	
             <div>
                 {/* Logo */}
                 <div className="mb-2 p-4 flex items-center flex-col border-b-1 border-gray-900/25">
@@ -78,7 +78,7 @@ export default function SideBar() {
             {/* Logout */}
             <div className="p-4 rounded w-full border-t-1 border-gray-900/25">
                 <ul>
-                    <li className="mb-12 mt-2">
+                    <li className="">
                         <button className="bg-red-500 text-white py-3 px-8 rounded hover:bg-red-600 transition duration-300 flex items-center justify-center w-full">
                             <LogoutSVG />
                             <Link onClick={logoutUser} to={"#"} className="pl-4  font-bold max-2xl:text-[12px] max-2xl:pl-2">

@@ -10,12 +10,12 @@ function PublicLayout() {
         //     <Outlet></Outlet>
         // </div>
 
-        <main className="flex w-screen h-screen bg-gray-200">
+        <main className="flex w-screen h-screen bg-gray-200 fixed flex-col sm:flex-row">
             <SideBar />
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col">
                 <TopBar />
-                <div className="flex-1 p-4 overflow-auto">
-                    <ContentArea />
+                <div className="p-4 overflow-auto">
+                    <ContentArea /> {/* Renderiza las subrutas aquí */}
                 </div>
             </div>
         </main>
