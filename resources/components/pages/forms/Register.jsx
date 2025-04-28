@@ -16,19 +16,53 @@ function Register() {
 
         // Validar campos de la empresa
         if (!empresa.nombre.trim()) newErrors.nombre = "El nombre de la empresa es obligatorio.";
-        if (!empresa.correo.trim()) newErrors.correo = "El correo de la empresa es obligatorio.";
-        if (!empresa.telefono.trim()) newErrors.telefono = "El teléfono de la empresa es obligatorio.";
+        if (!empresa.correo.trim()) {
+            newErrors.correo = "El correo de la empresa es obligatorio.";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(empresa.correo)) {
+            newErrors.correo = "Formato de Email inválido: ejemplo@dominio.com";
+        }
+        if (!empresa.telefono.trim()) {
+            newErrors.telefono = "El teléfono de la empresa es obligatorio.";
+        } else if (!/^\d{10}$/.test(empresa.telefono)) {
+            newErrors.telefono = "El teléfono debe tener 10 dígitos.";
+        }
         if (!empresa.cedula.trim()) newErrors.cedula = "La cédula profesional es obligatoria.";
 
         // Validar campos del usuario
         if (!usuario.name.trim()) newErrors.name = "El nombre del usuario es obligatorio.";
         if (!usuario.paterno.trim()) newErrors.paterno = "El apellido paterno es obligatorio.";
-        if (!usuario.email.trim()) newErrors.email = "El email del usuario es obligatorio.";
-        if (!usuario.password.trim()) newErrors.password = "La contraseña es obligatoria.";
-        if (!usuario.telefono.trim()) newErrors.telefonoUsuario = "El teléfono del usuario es obligatorio.";
+        if (!usuario.email.trim()) {
+            newErrors.email = "El email del usuario es obligatorio.";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usuario.email)) {
+            newErrors.email = "Formato de Email inválido: ejemplo@dominio.com";
+        }
+        if (!usuario.password.trim()) {
+            newErrors.password = "La contraseña es obligatoria.";
+        } else {
+            const passwordStrength = checkPasswordStrength(usuario.password);
+            if (passwordStrength === "weak") {
+                newErrors.password = "Contraseña débil: usa al menos 8 caracteres, incluyendo letras, números y símbolos.";
+            }
+        }
+        if (!usuario.telefono.trim()) {
+            newErrors.telefonoUsuario = "El teléfono del usuario es obligatorio.";
+        } else if (!/^\d{10}$/.test(usuario.telefono)) {
+            newErrors.telefonoUsuario = "El teléfono debe tener 10 dígitos.";
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
+    };
+
+    const checkPasswordStrength = (password) => {
+        const weakRegex = /^.{0,7}$/; // Menos de 8 caracteres
+        const goodRegex = /^(?=.*[A-Za-z])(?=.*\d).{4,}$/; // Letras y números, al menos 8 caracteres
+        const strongRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{4,}$/; // Letras, números y símbolos
+
+        if (weakRegex.test(password)) return "weak";
+        if (goodRegex.test(password)) return "good";
+        if (strongRegex.test(password)) return "strong";
+        return "weak";
     };
 
     // Estado para los datos de la empresa
@@ -43,7 +77,7 @@ function Register() {
     // Estado para los datos del usuario
     const [usuario, setUsuario] = useState({
         name: "", // Cambiado a "name" para coincidir con la base de datos
-        paterno: "", // Cambiado a "paterno"    
+        paterno: "", // Cambiado a "paterno"        
         materno: "", // Cambiado a "materno"
         password: "", // Cambiado a "password"
         telefono: "", // Debe ser un número entero
@@ -187,20 +221,21 @@ function Register() {
                     </ul>
                 }
             />
-            <div className="bg-[#fff] border border-[#e11a31] rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
-                <h1 className="text-4xl text-black/75 font-bold text-center mb-12">
+            <div className="bg-[#fff] border border-[#e11a31] rounded-md p-6 md:p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative max-w-lg md:max-w-4xl mx-auto">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl text-black/75 font-bold text-center mb-8">
                     Registro de Empresa y Usuario
                 </h1>
-                <form onSubmit={submitRegistro} className="grid grid-cols-2 gap-4">
+                <form onSubmit={submitRegistro} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Datos de la Empresa */}
-                    <h2 className="col-span-2 text-2xl font-semibold mb-4">Datos de la Empresa</h2>
+                    <h2 className="col-span-2 text-xl sm:text-2xl font-semibold mb-4">
+                        Datos de la Empresa
+                    </h2>
                     <div className="relative">
                         <input
                             type="text"
                             name="nombre"
                             value={empresa.nombre}
                             onChange={handleEmpresaChange}
-
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Nombre de la Empresa"
                         />
@@ -213,11 +248,11 @@ function Register() {
                             onChange={(e) => {
                                 const email = e.target.value;
                                 setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: email }));
-                                setUsuario((prevUsuario) => ({ ...prevUsuario, email })); // Sincronizar el correo 
+                                setUsuario((prevUsuario) => ({ ...prevUsuario, email })); // Sincronizar el correo
                             }}
-                            onBlur={checkEmailExists} // Verificar si el correo ya existe al salir del campo
-
-                            className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.correo ? "border-red-500" : "border-gray-300"} border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                            onBlur={checkEmailExists}
+                            className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.correo ? "border-red-500" : "border-gray-300"
+                                } appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                             placeholder="Correo de la Empresa"
                         />
                         {errors.correo && <span className="text-red-500 text-sm mt-1">{errors.correo}</span>}
@@ -228,7 +263,6 @@ function Register() {
                             name="telefono"
                             value={empresa.telefono}
                             onChange={handleEmpresaChange}
-
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Teléfono de la Empresa"
                         />
@@ -239,21 +273,21 @@ function Register() {
                             name="cedula"
                             value={empresa.cedula}
                             onChange={handleEmpresaChange}
-
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Cédula Profesional"
                         />
                     </div>
 
                     {/* Datos del Usuario */}
-                    <h2 className="col-span-2 text-2xl font-semibold mt-8 mb-4">Datos del Usuario</h2>
+                    <h2 className="col-span-2 text-xl sm:text-2xl font-semibold mt-8 mb-4">
+                        Datos del Usuario
+                    </h2>
                     <div className="relative">
                         <input
                             type="text"
                             name="name"
                             value={usuario.name}
                             onChange={handleUsuarioChange}
-
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Nombre del Usuario"
                         />
@@ -264,7 +298,6 @@ function Register() {
                             name="paterno"
                             value={usuario.paterno}
                             onChange={handleUsuarioChange}
-
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Apellido Paterno"
                         />
@@ -275,22 +308,40 @@ function Register() {
                             name="materno"
                             value={usuario.materno}
                             onChange={handleUsuarioChange}
-
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Apellido Materno"
                         />
                     </div>
-
                     <div className="relative">
                         <input
                             type="password"
                             name="password"
                             value={usuario.password}
-                            onChange={handleUsuarioChange}
-
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            onChange={(e) => {
+                                setUsuario({ ...usuario, password: e.target.value });
+                            }}
+                            className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.password ? "border-red-500" : "border-gray-300"
+                                } appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                             placeholder="Contraseña"
                         />
+                        {errors.password && <span className="text-red-500 text-sm mt-1">{errors.password}</span>}
+                        <div className="mt-2 text-sm">
+                            Fortaleza:{" "}
+                            <span
+                                className={`font-bold ${checkPasswordStrength(usuario.password) === "weak"
+                                        ? "text-red-500"
+                                        : checkPasswordStrength(usuario.password) === "good"
+                                            ? "text-yellow-500"
+                                            : "text-green-500"
+                                    }`}
+                            >
+                                {checkPasswordStrength(usuario.password) === "weak"
+                                    ? "Débil"
+                                    : checkPasswordStrength(usuario.password) === "good"
+                                        ? "Buena"
+                                        : "Fuerte"}
+                            </span>
+                        </div>
                     </div>
                     <div className="relative">
                         <input
@@ -298,7 +349,6 @@ function Register() {
                             name="telefono"
                             value={usuario.telefono}
                             onChange={handleUsuarioChange}
-
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Teléfono del Usuario"
                         />
@@ -306,16 +356,16 @@ function Register() {
 
                     <button
                         type="submit"
-                        className={`col-span-2 w-full mb-4 text-[18px] mt-6 rounded-full ${loading
+                        className={`col-span-2 w-full md:w-auto mb-4 text-[16px] md:text-[18px] mt-6 rounded-full ${loading
                             ? "bg-gray-400 cursor-not-allowed"
                             : "bg-slate-300 hover:bg-[#e11a31] hover:text-white"
-                            } py-2 transition-colors duration-300 font-semibold`}
+                            } py-2 px-6 transition-colors duration-300 font-semibold`}
                         disabled={loading}
                     >
                         {loading ? "Registrando..." : "Registrar"}
                     </button>
 
-                    <div>
+                    <div className="col-span-2 text-center">
                         <span className="m-4">
                             Ya tienes una cuenta{" "}
                             <a

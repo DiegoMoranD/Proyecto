@@ -28,15 +28,15 @@ export default function App() {
     return (
         <Router>
             <Routes>
-                {/* <Route path="/" element={<PublicLayout />}>
+                <Route>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/recuperar" element={<Recuperar />} />
                     <Route path="/suscripcion" element={<SuscripcionForm />} />
                     <Route path="/activar-empresa/:token" element={<ActivateEmpresa />} />
-                </Route> */}
+                </Route>
 
-                <Route path="/" element={<PublicLayout />}>
+                {/* <Route path="/" element={<PublicLayout />}>
                     <Route path="/*" element={<ContentArea />} />
                 </Route>
 
@@ -62,7 +62,7 @@ export default function App() {
                     <Route path="/recepcion/*" element={<RecepcionLayout />}>
                         <Route index element={<ContentArea />}></Route>
                     </Route>
-                </Route>
+                </Route> */}
             </Routes>
         </Router>
     );

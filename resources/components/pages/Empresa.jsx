@@ -15,26 +15,24 @@ function Empresa() {
                 {/* filtros para nombre, */}
             </div>
             <h2 className="text-2xl font-bold mb-4">Lista de Empleados</h2>
-            <div className="">
+            <div className="overflow-y-auto max-h-96 shadow-md rounded-lg">
                 <table className="min-w-full bg-white shadow-md rounded-lg ">
                     <thead className="bg-gray-800 text-white">
                         <tr>
-                            <th className="py-3 px-6 text-left">Id</th>
                             <th className="py-3 px-6 text-left">Nombre</th>
                             <th className="py-3 px-6 text-left">Telefono</th>
                             <th className="py-3 px-6 text-left">RFC</th>
-                            <th className="py-3 px-6 text-left">Cedula</th>
+                            <th className="py-3 px-6 text-left max-md:hidden">Cedula</th>
                             
                         </tr>
                     </thead>
                     <tbody>
                         {companies.map((company) => (
-                            <tr key={company.id} className="border-b hover:bg-gray-100">
-                                <td className="py-3 px-6">{company.id}</td>
+                            <tr key={company.id} className="border-b hover:bg-gray-100">    
                                 <td className="py-3 px-6">{company.name}</td>
                                 <td className="py-3 px-6">{company.tel}</td>
                                 <td className="py-3 px-6">{company.rfc}</td>
-                                <td className="py-3 px-6">{company.cedula}</td>
+                                <td className="py-3 px-6 max-md:hidden">{company.cedula}</td>
                                 
                             </tr>
                         ))}

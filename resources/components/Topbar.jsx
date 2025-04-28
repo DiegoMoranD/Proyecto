@@ -2,11 +2,12 @@ import React from "react";
 import BurgerMenu from "./svg/BurgerMenu";
 import X from "./svg/X";
 
-export default function TopBar() {
+export default function TopBar({ toggleSidebar }) {
+    
     return (
         <header className="bg-white h-24 border-gray-900/25 border-b max-h-24 min-h-24 px-4 flex items-center justify-between sm:justify-end">
             <div className="flex items-center sm:hidden">
-                <button>
+                <button onClick={toggleSidebar} className="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
                     <BurgerMenu> </BurgerMenu>
                 </button>
             </div>
