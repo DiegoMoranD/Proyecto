@@ -127,7 +127,7 @@ function Register() {
             const empresaResponse = await Config.getEmpresaStore({
                 nombre: empresa.nombre,
                 correo: empresa.correo,
-                telefono: parseInt(empresa.telefono, 10), // Convertir a número entero
+                telefono: empresa.telefono, // Convertir a número entero
                 cedula: empresa.cedula,
                 suscripcion_id: empresa.suscripcion_id,
                 rfc: "default_rfc", // Valor por defecto
@@ -154,7 +154,7 @@ function Register() {
                 tipo_usuario_id: 2, // Cambiado a "tipo_usuario_id" para coincidir con la base de datos
                 email: usuarioData.email,
                 password: usuarioData.password,
-                telefono: parseInt(usuarioData.telefono, 10), // Convertir a número entero
+                telefono: usuarioData.telefono, // Convertir a número entero
                 empresa_id: usuarioData.empresa_id,
                 remember_token: "default_token", // Valor por defecto
             });
@@ -259,7 +259,7 @@ function Register() {
                     </div>
                     <div className="relative">
                         <input
-                            type="text"
+                            type="tel"
                             name="telefono"
                             value={empresa.telefono}
                             onChange={handleEmpresaChange}
@@ -345,7 +345,7 @@ function Register() {
                     </div>
                     <div className="relative">
                         <input
-                            type="text"
+                            type="tel"
                             name="telefono"
                             value={usuario.telefono}
                             onChange={handleUsuarioChange}

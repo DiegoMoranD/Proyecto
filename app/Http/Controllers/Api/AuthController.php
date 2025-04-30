@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use function Laravel\Prompts\error;
+use App\Utils\PHPLogToFile;
 
 class AuthController extends Controller
 {
@@ -28,88 +29,61 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
-        function logToFile($message, $context = [])
-        {
-            // Ruta del archivo de logs
-            $logFile = storage_path('logs/critical-events.log');
-    
-            // Formatear el mensaje con la fecha y hora
-            $timestamp = date('Y-m-d H:i:s');
-            $formattedMessage = "[$timestamp] CRITICAL: $message";
-    
-            // Agregar contexto si está disponible
-            if (!empty($context)) {
-                $formattedMessage .= ' | Context: ' . json_encode($context);
-            }
-    
-            // Escribir en el archivo
-            $fileHandle = fopen($logFile, 'a'); // 'a' para agregar al final del archivo
-            if ($fileHandle) {
-                fwrite($fileHandle, $formattedMessage . PHP_EOL);
-                fclose($fileHandle);
-            } else {
-                // Manejar errores al abrir el archivo
-                error_log("No se pudo abrir el archivo de logs: $logFile");
-            }
-        }
-
-        $response = ["success" => false];
-
-        // Validar los datos de entrada
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'paterno' => 'required',
-            'materno' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'telefono' => 'required',
-            'username' => 'required',
-            'tipo_usuario_id' => 'required',
-            'empresa_id' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            $response = ["error" => $validator->errors()];
-            return response()->json($response, 422);
-        }
-
-        // Verificar si el correo ya existe
-        $emailExists = User::where('email', $request->email)->exists();
-        if ($emailExists) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cuenta ya registrada'
-            ], 409); // Código de estado 409: Conflicto
-        }
-
-        // Crear el usuario
-        $input = $request->all();
-        $input["password"] = bcrypt($input['password']);
-
-        $user = User::create($input);
-        $user->assignRole('medico');
-
-        $response["success"] = true;
-
-        return response()->json($response, 201); // Código de estado 201: Creado
-
         try {
-            if ($emailExists) {
-                logToFile("El correo ya existe ", ['email' => $request->email]);
-                return response() -> json(['message' => 'El correo ya existe'], 409);
+            $response = ["success" => false];
+
+            // Validar los datos de entrada
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'paterno' => 'required',
+                'materno' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'telefono' => 'required|integer',
+                'username' => 'required',
+                'tipo_usuario_id' => 'required',
+                'empresa_id' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                $response = ["error" => $validator->errors()];
+                return response()->json($response, 422);
             }
 
-            
+            // Verificar si el correo ya existe
+            $emailExists = User::where('email', $request->email)->exists();
+            if ($emailExists) {
+                PHPLogToFile::logToFile('Correo ya registrado', [
+                    'email' => $request->email,
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cuenta ya registrada'
+                ], 409); // Código de estado 409: Conflicto
+            }
 
-            logToFile(('El usuario ya ha sido registrado'));
-        } catch (\Exception $th) {
-            logToFile('Error al validar token', [
-                'token' => $token,
+            // Crear el usuario
+            $input = $request->all();
+            $input["password"] = bcrypt($input['password']);
+
+            $user = User::create($input);
+            $user->assignRole('medico');
+
+            $response["success"] = true;
+            PHPLogToFile::logToFile('Usuario registrado correctamente', [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $request->email,
+            ]);
+
+            return response()->json($response, 201); // Código de estado 201: Creado
+        } catch (\Exception $e) {
+            PHPLogToFile::logToFile('Error al validar token', [
+                'token' => $request->email,
                 'error' => $e->getMessage(),
                 'stack' => $e->getTraceAsString(),
             ]);
         }
-
     }
 
     public function login(Request $request)
