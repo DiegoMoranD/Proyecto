@@ -27,6 +27,32 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+
+        function logToFile($message, $context = [])
+        {
+            // Ruta del archivo de logs
+            $logFile = storage_path('logs/critical-events.log');
+    
+            // Formatear el mensaje con la fecha y hora
+            $timestamp = date('Y-m-d H:i:s');
+            $formattedMessage = "[$timestamp] CRITICAL: $message";
+    
+            // Agregar contexto si está disponible
+            if (!empty($context)) {
+                $formattedMessage .= ' | Context: ' . json_encode($context);
+            }
+    
+            // Escribir en el archivo
+            $fileHandle = fopen($logFile, 'a'); // 'a' para agregar al final del archivo
+            if ($fileHandle) {
+                fwrite($fileHandle, $formattedMessage . PHP_EOL);
+                fclose($fileHandle);
+            } else {
+                // Manejar errores al abrir el archivo
+                error_log("No se pudo abrir el archivo de logs: $logFile");
+            }
+        }
+
         $response = ["success" => false];
 
         // Validar los datos de entrada
@@ -66,6 +92,24 @@ class AuthController extends Controller
         $response["success"] = true;
 
         return response()->json($response, 201); // Código de estado 201: Creado
+
+        try {
+            if ($emailExists) {
+                logToFile("El correo ya existe ", ['email' => $request->email]);
+                return response() -> json(['message' => 'El correo ya existe'], 409);
+            }
+
+            
+
+            logToFile(('El usuario ya ha sido registrado'));
+        } catch (\Exception $th) {
+            logToFile('Error al validar token', [
+                'token' => $token,
+                'error' => $e->getMessage(),
+                'stack' => $e->getTraceAsString(),
+            ]);
+        }
+
     }
 
     public function login(Request $request)

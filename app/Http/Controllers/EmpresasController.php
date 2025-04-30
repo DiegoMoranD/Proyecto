@@ -6,6 +6,7 @@ use Psy\Util\Str;
 use App\Models\Empresa;
 use App\Utils\PHPMailerHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EmpresasController extends Controller
 {
@@ -100,21 +101,71 @@ class EmpresasController extends Controller
         ], 200);
     }
 
+
+   
+
+
     public function activarEmpresa($token)
     {
-        // Buscar la empresa por el token
-        $empresa = Empresa::where('tocken_acceso', $token)->first();
-
-        if (!$empresa) {
-            return response()->json(['message' => 'Token inválido o empresa no encontrada'], 404);
+        function logToFile($message, $context = [])
+        {
+            // Ruta del archivo de logs
+            $logFile = storage_path('logs/critical-events.log');
+    
+            // Formatear el mensaje con la fecha y hora
+            $timestamp = date('Y-m-d H:i:s');
+            $formattedMessage = "[$timestamp] CRITICAL: $message";
+    
+            // Agregar contexto si está disponible
+            if (!empty($context)) {
+                $formattedMessage .= ' | Context: ' . json_encode($context);
+            }
+    
+            // Escribir en el archivo
+            $fileHandle = fopen($logFile, 'a'); // 'a' para agregar al final del archivo
+            if ($fileHandle) {
+                fwrite($fileHandle, $formattedMessage . PHP_EOL);
+                fclose($fileHandle);
+            } else {
+                // Manejar errores al abrir el archivo
+                error_log("No se pudo abrir el archivo de logs: $logFile");
+            }
         }
 
-        // Cambiar el estado de cuenta_valida a 0
-        $empresa->cuenta_valida = 0;
-        // actualizar el tocken de acceso a null evitando un Integrity constraint violation
-        $empresa->tocken_acceso = null;
-        $empresa->save();
+        try {
+            logToFile('Iniciando validación del token', ['token' => $token]);
 
-        return response()->json(['message' => 'Cuenta activada exitosamente'], 200);
+            // Validar si el token está vacío
+            if (empty($token)) {
+                logToFile('Token inválido: vacío', ['token' => $token]);
+                return response()->json(['message' => 'Token inválido'], 400);
+            }
+
+            // Buscar la empresa por el token
+            $empresa = Empresa::where('tocken_acceso', $token)->first();
+
+            if (!$empresa) {
+                logToFile('Token inválido: no encontrado', ['token' => $token]);
+                return response()->json(['message' => 'Token inválido o empresa no encontrada'], 404);
+            }
+
+            // Cambiar el estado de cuenta_valida a 0
+            $empresa->cuenta_valida = 0;
+            $empresa->tocken_acceso = null;
+            $empresa->save();
+
+            logToFile('Cuenta activada exitosamente', ['empresa_id' => $empresa->id]);
+
+            return response()->json(['message' => 'Cuenta activada exitosamente'], 200);
+        } catch (\Exception $e) {
+            // Registrar el error en el archivo de logs
+            logToFile('Error al validar token', [
+                'token' => $token,
+                'error' => $e->getMessage(),
+                'stack' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json(['error' => 'Token inválido o empresa no encontrada'], 404);
+        }
     }
 }
