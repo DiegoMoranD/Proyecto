@@ -36,7 +36,7 @@ export default function App() {
                     <Route path="/activar-empresa/:token" element={<ActivateEmpresa />} />
                 </Route>
 
-                {/* <Route path="/" element={<PublicLayout />}>
+                <Route path="/" element={<PublicLayout />}>
                     <Route path="/*" element={<ContentArea />} />
                 </Route>
 
@@ -62,7 +62,7 @@ export default function App() {
                     <Route path="/recepcion/*" element={<RecepcionLayout />}>
                         <Route index element={<ContentArea />}></Route>
                     </Route>
-                </Route> */}
+                </Route>
             </Routes>
         </Router>
     );

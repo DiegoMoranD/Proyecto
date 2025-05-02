@@ -14,5 +14,11 @@
 <body class="">
     <div id="app"></div>
 </body>
+<noscript>
+    <div style="background-color: #ffcccc; padding: 20px; text-align: center;">
+        <strong>Este sitio web requiere JavaScript para funcionar correctamente.</strong>
+        Por favor, habilita JavaScript en la configuración de tu navegador.
+    </div>
+</noscript>
 
 </html>

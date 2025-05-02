@@ -32,7 +32,7 @@ function Recuperar() {
                     </h1>
                     <form onSubmit={submitRecuperar}>
                         {/* Campo de Email */}
-                        <div className="relative my-8">
+                        {/* <div className="relative my-8">
                             <input
                                 type="email"
                                 value={email}
@@ -52,11 +52,16 @@ function Recuperar() {
                                 <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                             )}
                         </div>
-
+                            */}
                         {/* Mensaje de éxito */}
                         {message && (
                             <p className="text-green-500 text-center mb-4">{message}</p>
-                        )}
+                        )} 
+
+                        <div className=''>
+                            <button className='bg-red-500 text-white rounded p-4 m-2 font-bold cursor-pointer hover:bg-[#ff3f3f] transition duration-500'>Olvide mi token</button>
+                            <button className='bg-red-500 text-white rounded p-4 m-2 font-bold cursor-pointer hover:bg-[#ff3f3f] transition duration-500'>Olvide mi contraseña</button>
+                        </div>
 
                         {/* Botón de recuperación */}
                         <button

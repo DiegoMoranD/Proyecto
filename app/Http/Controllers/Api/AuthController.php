@@ -53,13 +53,14 @@ class AuthController extends Controller
             // Verificar si el correo ya existe
             $emailExists = User::where('email', $request->email)->exists();
             if ($emailExists) {
-                PHPLogToFile::logToFile('Correo ya registrado', [
+                
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Cuenta ya registrada'
+                // ], 409); // Código de estado 409: Conflicto
+                return PHPLogToFile::logToFile('Correo ya registrado', [
                     'email' => $request->email,
                 ]);
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Cuenta ya registrada'
-                ], 409); // Código de estado 409: Conflicto
             }
 
             // Crear el usuario
@@ -70,7 +71,7 @@ class AuthController extends Controller
             $user->assignRole('medico');
 
             $response["success"] = true;
-            PHPLogToFile::logToFile('Usuario registrado correctamente', [
+            PHPLogToFile::logToFileInfo('Usuario registrado correctamente', [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $request->email,

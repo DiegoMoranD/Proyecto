@@ -42,6 +42,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/suscripcion', [SuscripcionesController::class, 'store']);
 
     Route::post('/auth/empresa', [EmpresasController::class, 'store']);
+    Route::get('/auth/empresa', [EmpresasController::class, 'index']);
     // Route::post('/auth/empresa/{id}', [EmpresasController::class, 'show']);
 
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);

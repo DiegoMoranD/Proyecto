@@ -69,7 +69,7 @@ class EmpresasController extends Controller
         <a href='{$validationUrl}'>Activar Cuenta</a>
         <p>Si no solicitaste este registro, ignora este mensaje.</p>
     ";
-            PHPLogToFile::logToFile('Correo de validacion enviado', ['correo' => $empresas->correo]);
+            PHPLogToFile::logToFileInfo('Correo de validacion enviado', ['correo' => $empresas->correo]);
 
             $emailStatus = PHPMailerHelper::sendEmail($empresas->correo, $subject, $body);
 
@@ -84,7 +84,7 @@ class EmpresasController extends Controller
             ], 201);
         } catch (\Exception $e) {
             // Registrar el error en el archivo de logs
-            PHPLogToFile::logToFile('Error al validar empresa', [
+            PHPLogToFile::logToFile('Error al registrar la emopresa', [
                 'token' => $token,
                 'error' => $e->getMessage(),
                 'stack' => $e->getTraceAsString(),
@@ -122,7 +122,7 @@ class EmpresasController extends Controller
     public function activarEmpresa($token)
     {
         try {
-            PHPLogToFile::logToFile('Iniciando validación del token', ['token' => $token]);
+            PHPLogToFile::logToFileInfo('Iniciando validación del token', ['token' => $token]);
 
             // Validar si el token está vacío
             if (empty($token)) {
@@ -143,7 +143,7 @@ class EmpresasController extends Controller
             $empresa->tocken_acceso = null;
             $empresa->save();
 
-            PHPLogToFile::logToFile('Cuenta activada exitosamente', ['empresa_id' => $empresa->id]);
+            PHPLogToFile::logToFileInfo('Cuenta activada exitosamente', ['empresa_id' => $empresa->id]);
 
             return response()->json(['message' => 'Cuenta activada exitosamente'], 200);
         } catch (\Exception $e) {

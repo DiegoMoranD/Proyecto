@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Suscripcion from './Suscripcion';
 import { Search } from 'lucide-react';
+import Config from '../layouts/PageAuth/Config';
 
 function Empresa() {
-    const companies = [
-        { id: 1, name: "TecuabiSoft", tel: "1234567890", rfc: "fdjke4r23", cedula: "asfsd32re3", suscripcion: "Activa", fechaRegistro: "2021-01-01", vencimiento: "2022-01-01", fechaCompra: "2021-01-01" },
-        { id: 2, name: "TecuabiSoft", tel: "1234567890", rfc: "fdjke4r23", cedula: "asfsd32re3", suscripcion: "Activa", fechaRegistro: "2021-01-01", vencimiento: "2022-01-01", fechaCompra: "2021-01-01" },
-        { id: 3, name: "TecuabiSoft", tel: "1234567890", rfc: "fdjke4r23", cedula: "asfsd32re3", suscripcion: "Activa", fechaRegistro: "2021-01-01", vencimiento: "2022-01-01", fechaCompra: "2021-01-01" },
-    ];
+    const [empresas, setEmpresas] = useState([]);
+
+    useEffect(() => {
+        getAlltEmpresa()
+    }, [])
+
+    const getAlltEmpresa = async () => {
+        const response = await Config.getAlltEmpresa()
+        setEmpresas(response.data)
+    }
 
     return (
         <div className="container mx-auto p-6">
@@ -23,19 +29,26 @@ function Empresa() {
                             <th className="py-3 px-6 text-left">Telefono</th>
                             <th className="py-3 px-6 text-left">RFC</th>
                             <th className="py-3 px-6 text-left max-md:hidden">Cedula</th>
-                            
                         </tr>
                     </thead>
                     <tbody>
-                        {companies.map((company) => (
-                            <tr key={company.id} className="border-b hover:bg-gray-100">    
-                                <td className="py-3 px-6">{company.name}</td>
-                                <td className="py-3 px-6">{company.tel}</td>
-                                <td className="py-3 px-6">{company.rfc}</td>
-                                <td className="py-3 px-6 max-md:hidden">{company.cedula}</td>
-                                
+                        {!empresas ? (
+                            <tr className='border-b hover:bg-gray-100'>
+                                <td className='py-3 px-6'><p>Cargando...</p></td>
                             </tr>
-                        ))}
+                        ) : (
+                            empresas
+                                .map((empresa) => (
+                                    <tr key={empresa.id} className="border-b hover:bg-gray-100">
+                                        <td className="py-3 px-6">
+                                            {empresa.nombre}
+                                        </td>
+                                        <td className="py-3 px-6">{empresa.telefono}</td>
+                                        <td className="py-3 px-6">{empresa.rfc}</td>
+                                        <td className="py-3 px-6">{empresa.cedula}</td>
+                                    </tr>
+                                ))
+                        )}
                     </tbody>
                 </table>
             </div>

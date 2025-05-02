@@ -12,7 +12,7 @@ export default {
 
   // configuracion de empresa
   getEmpresaStore: (data) => axios.post(`${base_api_url}/auth/empresa`, data),
-  geAlltEmpresa: (data) => axios.get(`${base_api_url}/auth/empresa`, data),
+  getAlltEmpresa: (data) => axios.get(`${base_api_url}/auth/empresa`, data),
 
   // configuracion de usuarios
   getUsuarioStore: (data) => axios.post(`${base_api_url}/auth/register`, data),
