@@ -13,11 +13,11 @@ export default {
   // configuracion de empresa
   getEmpresaStore: (data) => axios.post(`${base_api_url}/auth/empresa`, data),
   getAlltEmpresa: (data) => axios.get(`${base_api_url}/auth/empresa`, data),
+  getEmpresaByToken: (token,data) => axios.get(`${base_api_url}/auth/empresa/${token}`, data),
 
   // configuracion de usuarios
   getUsuarioStore: (data) => axios.post(`${base_api_url}/auth/register`, data),
   getCheckEmail: (data) => axios.post(`${base_api_url}/auth/check-email`, data),
-  getEmpresaByToken: (token,data) => axios.get(`${base_api_url}/auth/empresa/${token}`, data),
-  activateEmpresa: (token) => axios.post(`${base_api_url}/auth/activar-empresa/${token}`),
-
+  getRecover: (data) => axios.get(`${base_api_url}/auth/recuperar`, data),
+  activateEmpresa: (token) => axios.post(`${base_api_url}/auth/activar-empresa/${token}`)
 }

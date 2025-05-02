@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import Config from '../../layouts/PageAuth/Config';
 
 function Recuperar() {
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [token, setToken] = useState('');
+    const [password, setPassword] = useState('');
+
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [errors, setErrors] = useState({});
 
-    const isFormValid = email.trim() !== ''; // Verifica si el campo de email está lleno
+    const isFormValid = selectedOption && ((selectedOption === 'token' && token) || (selectedOption === 'password' && password));
 
     const validateFields = () => {
         const newErrors = {};
@@ -14,13 +19,25 @@ function Recuperar() {
         return Object.keys(newErrors).length === 0; // Devuelve true si no hay errores
     };
 
-    const submitRecuperar = (e) => {
+    const submitRecuperar = async (e) => {
         e.preventDefault();
 
         if (!validateFields()) return; // Detiene el envío si hay errores
 
-        // Simula el envío de la solicitud de recuperación
-        setMessage('Se ha enviado un enlace de recuperación a tu correo electrónico.');
+        try {
+            const response = await Config.getCheckEmail({email});
+
+            if (response.data.success) {
+                setMessage('Se ha enviado un enlace de recuperación a tu correo electrónico.');
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                setErrors({ email: 'Este correo no esta registrado' });
+            } else {
+                setErrors({ email: 'Ocuirrio un error al verififcar el correo'})
+            }
+        }
+
     };
 
     return (
@@ -56,22 +73,80 @@ function Recuperar() {
                         {/* Mensaje de éxito */}
                         {message && (
                             <p className="text-green-500 text-center mb-4">{message}</p>
-                        )} 
+                        )}
 
-                        <div className=''>
-                            <button className='bg-red-500 text-white rounded p-4 m-2 font-bold cursor-pointer hover:bg-[#ff3f3f] transition duration-500'>Olvide mi token</button>
-                            <button className='bg-red-500 text-white rounded p-4 m-2 font-bold cursor-pointer hover:bg-[#ff3f3f] transition duration-500'>Olvide mi contraseña</button>
+                        <div className="text-center mb-6">
+                            <button
+                                type="button"
+                                className={`bg-red-500 text-white rounded p-4 m-2 font-bold cursor-pointer hover:bg-red-600 transition duration-500 ${selectedOption === 'token' ? 'ring-2 ring-black' : ''
+                                    }`}
+                                onClick={() => setSelectedOption('token')}
+                            >
+                                Olvidé mi token
+                            </button>
+                            <button
+                                type="button"
+                                className={`bg-red-500 text-white rounded p-4 m-2 font-bold cursor-pointer hover:bg-red-600 transition duration-500 ${selectedOption === 'password' ? 'ring-2 ring-black, bg-orange-500' : ''
+                                    }`}
+                                onClick={() => setSelectedOption('password')}
+                            >
+                                Olvidé mi contraseña
+                            </button>
                         </div>
+
+                        {/* Input para Token */}
+                        {selectedOption === 'token' && (
+                            <div className="relative my-8">
+                                <input
+                                    type="token"
+                                    value={token}
+                                    onChange={(e) => setToken(e.target.value)}
+                                    className={`block w-[100%] py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.token ? 'border-red-500' : 'border-gray-300'
+                                        } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
+                                    placeholder=""
+                                />
+                                <label
+                                    htmlFor=""
+                                    className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                >
+                                    Correo para Reenvio
+                                </label>
+                                {errors.token && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.token}</p>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Input para recuperar la Contraseña */}
+                        {selectedOption === 'password' && (
+                            <div className="relative my-8">
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className={`block w-[100%] py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                                        } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
+                                    placeholder=""
+                                />
+                                <label
+                                    htmlFor=""
+                                    className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                >
+                                    Correo registrado
+                                </label>
+                                {errors.email && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                                )}
+                            </div>
+                        )}
 
                         {/* Botón de recuperación */}
                         <button
                             type="submit"
-                            disabled={!isFormValid} // Deshabilita el botón si el campo está vacío
-                            className={`font-medium text-black w-full mb-6 text-[18px] my-6 rounded-full ${
-                                isFormValid
-                                    ? 'bg-slate-300 hover:bg-[#e11a31] hover:text-white cursor-pointer'
-                                    : 'bg-gray-300 cursor-not-allowed'
-                            } py-2 transition-colors duration-300`}
+                            className={`font-medium text-black w-full mb-6 text-[18px] my-6 rounded-full ${isFormValid
+                                ? 'bg-slate-300 hover:bg-[#e11a31] hover:text-white cursor-pointer'
+                                : 'bg-gray-300 cursor-not-allowed'
+                                } py-2 transition-colors duration-300`}
                         >
                             Recuperar cuenta
                         </button>

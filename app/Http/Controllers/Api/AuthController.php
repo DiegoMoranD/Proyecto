@@ -53,7 +53,7 @@ class AuthController extends Controller
             // Verificar si el correo ya existe
             $emailExists = User::where('email', $request->email)->exists();
             if ($emailExists) {
-                
+
                 // return response()->json([
                 //     'success' => false,
                 //     'message' => 'Cuenta ya registrada'
@@ -137,6 +137,8 @@ class AuthController extends Controller
         return response()->json($response, 200);
     }
 
+
+
     public function logout()
     {
 
@@ -149,17 +151,63 @@ class AuthController extends Controller
         return response()->json($response, 200);
     }
 
+
+
     public function checkEmail(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
         $emailExists = User::where('email', $request->email)->exists();
 
-        return response()->json(['exists' => $emailExists]);
+        if (!$emailExists) {
+            return response()->json([
+                PHPLogToFile::logToFile('Se ha presentado un error de recuperacion: ',[
+                    'email' => $request->email
+                ]),
+                'success' => false,
+                'message' => 'Esto no esta registrado'
+            ], 404);
+        }
+
+        // return response()->json(['exists' => $emailExists]);
+        return response()->json([
+            PHPLogToFile::logToFileInfo('Se ha enviado un correo de recuperacion a: ',[
+                'email' => $request->email
+            ]),
+            'success' => true,
+            'message' => 'Este correo existe'
+        ], 200);
     }
 
-    // public function subirEmpresa(Request $request)
-    // {
-    //     $data = new Empresas($request->all());
-    //     $data -> save();
-    //     return response()->json($data,200);
-    // }
+
+
+    public function RecuperarCuenta(Request $request)
+    {
+        $response = ["success" => false];
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            $response = ["error" => $validator->errors()];
+            return response()->json($response, 422);
+        }
+
+        // Verificar si el correo ya existe
+        $emailExists = User::where('email', $request->email)->exists();
+        if (!$emailExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Correo no registrado'
+            ], 404); // Código de estado 404: No encontrado
+        }
+
+        // Aquí puedes agregar la lógica para enviar un correo de recuperación de cuenta
+
+        $response["success"] = true;
+        return response()->json($response, 200);
+    }
 }
