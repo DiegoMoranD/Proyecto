@@ -155,31 +155,35 @@ class AuthController extends Controller
 
     public function checkEmail(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-        ]);
-
         $emailExists = User::where('email', $request->email)->exists();
 
-        if (!$emailExists) {
-            return response()->json([
-                PHPLogToFile::logToFile('Se ha presentado un error de recuperacion: ',[
-                    'email' => $request->email
-                ]),
-                'success' => false,
-                'message' => 'Esto no esta registrado'
-            ], 404);
-        }
-
-        // return response()->json(['exists' => $emailExists]);
-        return response()->json([
-            PHPLogToFile::logToFileInfo('Se ha enviado un correo de recuperacion a: ',[
-                'email' => $request->email
-            ]),
-            'success' => true,
-            'message' => 'Este correo existe'
-        ], 200);
+        return response()->json(['exists' => $emailExists]);
     }
+
+
+
+    // public function checkEmailRecover(Request $request)
+    // {
+    //     // Validar que el correo esté presente en la solicitud
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //     ]);
+
+    //     // Verificar si el correo existe en la tabla usuarios
+    //     $emailExists = User::where('email', $request->email)->exists();
+
+    //     if (!$emailExists) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Este correo no está registrado',
+    //         ], 404); // Código de estado 404: No encontrado
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'El correo está registrado',
+    //     ], 200); // Código de estado 200: OK
+    // }
 
 
 

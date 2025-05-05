@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function () {
     // Route::get('/auth/{slug}',[AuthController::class, 'register']);
     Route::post('/auth/register', [AuthController::class, 'register']);
     Route::post('/auth/check-email', [AuthController::class, 'checkEmail']);
+    Route::post('/auth/recuperar', [AuthController::class, 'RecuperarCuenta']);
     //
 
     Route::get('/auth/empresa/{token}', [EmpresasController::class, 'getEmpresaByToken']);

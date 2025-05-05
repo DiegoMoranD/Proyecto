@@ -205,6 +205,7 @@ function Register() {
         }
     };
 
+
     return (
         <div className="bg-[#626365] text-black h-screen flex justify-center items-center">
             <Modal
@@ -329,10 +330,10 @@ function Register() {
                             Fortaleza:{" "}
                             <span
                                 className={`font-bold ${checkPasswordStrength(usuario.password) === "weak"
-                                        ? "text-red-500"
-                                        : checkPasswordStrength(usuario.password) === "good"
-                                            ? "text-yellow-500"
-                                            : "text-green-500"
+                                    ? "text-red-500"
+                                    : checkPasswordStrength(usuario.password) === "good"
+                                        ? "text-yellow-500"
+                                        : "text-green-500"
                                     }`}
                             >
                                 {checkPasswordStrength(usuario.password) === "weak"
