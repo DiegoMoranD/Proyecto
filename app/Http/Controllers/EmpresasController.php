@@ -17,6 +17,8 @@ class EmpresasController extends Controller
         $empresas = Empresa::all();
         return response()->json($empresas);
     }
+
+
     // funcion para obtener una empresa por id
     public function show($id)
     {
@@ -26,6 +28,8 @@ class EmpresasController extends Controller
         }
         return response()->json($empresa);
     }
+
+
 
     public function store(Request $request)
     {
@@ -41,6 +45,7 @@ class EmpresasController extends Controller
                 'suscripcion_id' => 'required|integer',
                 'fecha_registro' => 'date',
                 'fecha_vencimiento' => 'date',
+                'tocken_acceso_expiracion' => 'date',
                 'fecha_compra' => 'date'
             ]);
 
@@ -94,6 +99,8 @@ class EmpresasController extends Controller
         }
     }
 
+
+
     public function getEmpresaByToken($token)
     {
         // Buscar la empresa por el token
@@ -114,8 +121,6 @@ class EmpresasController extends Controller
             ]
         ], 200);
     }
-
-
 
 
 
@@ -156,5 +161,79 @@ class EmpresasController extends Controller
 
             return response()->json(['error' => 'Token inválido o empresa no encontrada'], 404);
         }
+    }
+
+    public function generarTokenRecuperacion(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        // Buscar la empresa por correo
+        $empresa = Empresa::where('correo', $request->email)->first();
+
+        if (!$empresa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Correo no registrado',
+            ], 404);
+        }
+
+        // Generar el token
+        $token = $this->generateRecoveryToken();
+        $empresa->tocken_acceso = $token;
+        $empresa->tocken_acceso_expiracion = now()->addHour(); // Expira en 1 hora
+        $empresa->save();
+
+        // Enviar el correo
+        $recoveryUrl = "https://xDominio/recuperar?token={$token}";
+        $subject = "Recuperación de cuenta - TecuaniSoft";
+        $body = "
+            <h1>Recuperación de cuenta</h1>
+            <p>Hemos recibido una solicitud para recuperar tu cuenta. Por favor, haz clic en el siguiente enlace para continuar:</p>
+            <a href='{$recoveryUrl}'>Recuperar cuenta</a>
+            <p>Este enlace expirará en 1 hora.</p>
+        ";
+
+        $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
+
+        if ($emailStatus !== true) {
+            return response()->json(['message' => $emailStatus], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Se ha enviado un enlace de recuperación a tu correo electrónico.',
+        ], 200);
+    }
+
+    private function generateRecoveryToken()
+    {
+        $randomString = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), 0, 5);
+        return 'RECU|' . $randomString;
+    }
+
+    public function validarTokenRecuperacion($token)
+    {
+        $empresa = Empresa::where('tocken_acceso', $token)->first();
+
+        if (!$empresa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token inválido',
+            ], 404);
+        }
+
+        if (now()->greaterThan($empresa->tocken_acceso_expiracion)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El token ha expirado',
+            ], 400);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Token válido',
+        ], 200);
     }
 }

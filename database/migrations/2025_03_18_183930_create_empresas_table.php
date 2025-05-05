@@ -25,6 +25,7 @@ return new class extends Migration
             $table->date('fecha_registro');
             $table->date('fecha_vencimiento');
             $table->datetime('fecha_compra');
+            $table->timestamp('tocken_acceso_expiracion')->nullable();
             $table->timestamps();
         });
     }

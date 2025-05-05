@@ -25,7 +25,7 @@ function Recuperar() {
         if (!validateFields()) return; // Detiene el envío si hay errores
 
         try {
-            const response = await Config.getRecover({email});
+            const response = await Config.getGenerateRecoveryToken({email});
 
             if (response.data.success) {
                 setMessage('Se ha enviado un enlace de recuperación a tu correo electrónico.');
