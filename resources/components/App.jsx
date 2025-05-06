@@ -23,6 +23,7 @@ import Register from "./pages/forms/Register";
 import Recuperar from "./pages/forms/Recuperar";
 import SuscripcionForm from "./pages/forms/SuscripcionForm";
 import ActivateEmpresa from "./pages/forms/ActivateEmpresa";
+import NewPassword from "./pages/forms/NewPassword";
 
 export default function App() {
     return (
@@ -34,6 +35,7 @@ export default function App() {
                     <Route path="/recuperar" element={<Recuperar />} />
                     <Route path="/suscripcion" element={<SuscripcionForm />} />
                     <Route path="/activar-empresa/:token" element={<ActivateEmpresa />} />
+                    <Route path="/new-password" element={<NewPassword />} />
                 </Route>
 
                 <Route path="/" element={<PublicLayout />}>

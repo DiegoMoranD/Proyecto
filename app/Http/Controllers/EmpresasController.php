@@ -209,7 +209,7 @@ class EmpresasController extends Controller
 
     private function generateRecoveryToken()
     {
-        $randomString = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), 0, 5);
+        $randomString = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), 0, 4);
         return 'RECU|' . $randomString;
     }
 
