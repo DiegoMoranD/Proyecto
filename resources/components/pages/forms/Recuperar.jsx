@@ -25,7 +25,7 @@ function Recuperar() {
         if (!validateFields()) return; // Detiene el envío si hay errores
 
         try {
-            const response = await Config.getGenerateRecoveryToken({email});
+            const response = await Config.getGenerateRecoveryToken({ email });
 
             if (response.data.success) {
                 setMessage('Se ha enviado un enlace de recuperación a tu correo electrónico.');
@@ -34,7 +34,7 @@ function Recuperar() {
             if (error.response && error.response.status === 404) {
                 setErrors({ email: 'Este correo no esta registrado' });
             } else {
-                setErrors({ email: 'Ocuirrio un error al verififcar el correo'})
+                setErrors({ email: 'Ocurrio un error al verififcar el correo' })
             }
         }
 
@@ -143,10 +143,7 @@ function Recuperar() {
                         {/* Botón de recuperación */}
                         <button
                             type="submit"
-                            className={`font-medium text-black w-full mb-6 text-[18px] my-6 rounded-full ${isFormValid
-                                ? 'bg-slate-300 hover:bg-[#e11a31] hover:text-white cursor-pointer'
-                                : 'bg-gray-300 cursor-not-allowed'
-                                } py-2 transition-colors duration-300`}
+                            className={`font-medium text-black w-full mb-6 text-[18px] my-6 rounded-full bg-slate-300 hover:bg-[#e11a31] hover:text-white cursor-pointer py-2 transition-colors duration-300`}
                         >
                             Recuperar cuenta
                         </button>

@@ -77,9 +77,6 @@ function Login() {
 
     return (
         <>
-
-
-
             <div className="bg-[#dbdbdb] text-black h-screen flex justify-center items-center w-full">
                 <div className="w-full max-w-md px-4 sm:px-6 lg:px-8">
                     <div className="bg-[#fff] border border-[#e11a31] rounded-2xl p-6 sm:p-12 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">

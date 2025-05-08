@@ -35,7 +35,7 @@ export default function App() {
                     <Route path="/recuperar" element={<Recuperar />} />
                     <Route path="/suscripcion" element={<SuscripcionForm />} />
                     <Route path="/activar-empresa/:token" element={<ActivateEmpresa />} />
-                    <Route path="/new-password" element={<NewPassword />} />
+                    <Route path="/new-password/:token" element={<NewPassword />} />
                 </Route>
 
                 <Route path="/" element={<PublicLayout />}>

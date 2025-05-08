@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Psy\Util\Str;
 use App\Models\Empresa;
+use App\Models\User;
 use App\Utils\PHPMailerHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Utils\PHPLogToFile;
+use PhpParser\Node\Stmt\TryCatch;
 
 class EmpresasController extends Controller
 {
@@ -17,6 +19,7 @@ class EmpresasController extends Controller
         $empresas = Empresa::all();
         return response()->json($empresas);
     }
+    // todo ________________________________________________________________________________________________________________
 
 
     // funcion para obtener una empresa por id
@@ -29,6 +32,7 @@ class EmpresasController extends Controller
         return response()->json($empresa);
     }
 
+    // todo ________________________________________________________________________________________________________________
 
 
     public function store(Request $request)
@@ -99,6 +103,7 @@ class EmpresasController extends Controller
         }
     }
 
+    // todo ________________________________________________________________________________________________________________
 
 
     public function getEmpresaByToken($token)
@@ -122,6 +127,7 @@ class EmpresasController extends Controller
         ], 200);
     }
 
+    // todo ________________________________________________________________________________________________________________
 
 
     public function activarEmpresa($token)
@@ -158,60 +164,75 @@ class EmpresasController extends Controller
                 'error' => $e->getMessage(),
                 'stack' => $e->getTraceAsString(),
             ]);
-
+            PHPLogToFile::logToFile('Token inválido o empresa no encontrada');
             return response()->json(['error' => 'Token inválido o empresa no encontrada'], 404);
         }
     }
+    // todo ________________________________________________________________________________________________________________
 
     public function generarTokenRecuperacion(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-        ]);
+        try {
+            $request->validate([
+                'email' => 'required|email',
+            ]);
 
-        // Buscar la empresa por correo
-        $empresa = Empresa::where('correo', $request->email)->first();
+            // Buscar la empresa por correo
+            $empresa = Empresa::where('correo', $request->email)->first();
 
-        if (!$empresa) {
+            if (!$empresa) {
+                return response()->json([
+                    PHPLogToFile::logToFile('Correo no registrado', ['correo' => $empresa->correo]),
+                    'success' => false,
+                    'message' => 'Correo no registrado',
+                ], 404);
+            }
+
+            // Generar el token
+            $token = $this->generateRecoveryToken();
+            $empresa->tocken_acceso = $token;
+            $empresa->tocken_acceso_expiracion = now()->addHour(); // Expira en 1 hora
+            $empresa->save();
+
+            // Enviar el correo
+            $recoveryUrl = "http://127.0.0.1:8000/new-password/{$token}";
+            $subject = "Recuperación de cuenta - TecuaniSoft";
+            $body = "
+                <h1>Recuperación de cuenta</h1>
+                <p>Hemos recibido una solicitud para recuperar tu cuenta. Por favor, haz clic en el siguiente enlace para continuar:</p>
+                <a href='{$recoveryUrl}'>Recuperar cuenta</a>
+                <p>Este enlace expirará en 1 hora.</p>
+            ";
+
+            $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
+
+            if ($emailStatus !== true) {
+                return response()->json([
+                    PHPLogToFile::logToFile('Gmail de recuperacion enviado', ['correo' => $empresa->correo]),
+                    'message' => $emailStatus
+                ], 404);
+            }
+
+
             return response()->json([
-                'success' => false,
-                'message' => 'Correo no registrado',
-            ], 404);
+                PHPLogToFile::logToFileInfo('Gmail de recuperacion enviado', ['correo' => $empresa->correo]),
+                'success' => true,
+                'message' => 'Se ha enviado un enlace de recuperación a tu correo electrónico.',
+            ], 200);
+        } catch (\Throwable $th) {
+            PHPLogToFile::logToFile('El correo no registrado', ['correo' => $empresa->correo]);
+            return response()->json(['error' => 'Correo no registrado'], 404);
         }
-
-        // Generar el token
-        $token = $this->generateRecoveryToken();
-        $empresa->tocken_acceso = $token;
-        $empresa->tocken_acceso_expiracion = now()->addHour(); // Expira en 1 hora
-        $empresa->save();
-
-        // Enviar el correo
-        $recoveryUrl = "https://xDominio/recuperar?token={$token}";
-        $subject = "Recuperación de cuenta - TecuaniSoft";
-        $body = "
-            <h1>Recuperación de cuenta</h1>
-            <p>Hemos recibido una solicitud para recuperar tu cuenta. Por favor, haz clic en el siguiente enlace para continuar:</p>
-            <a href='{$recoveryUrl}'>Recuperar cuenta</a>
-            <p>Este enlace expirará en 1 hora.</p>
-        ";
-
-        $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
-
-        if ($emailStatus !== true) {
-            return response()->json(['message' => $emailStatus], 500);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Se ha enviado un enlace de recuperación a tu correo electrónico.',
-        ], 200);
     }
+
+    // todo ________________________________________________________________________________________________________________
 
     private function generateRecoveryToken()
     {
         $randomString = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), 0, 4);
         return 'RECU|' . $randomString;
     }
+    // todo ________________________________________________________________________________________________________________
 
     public function validarTokenRecuperacion($token)
     {
@@ -220,7 +241,7 @@ class EmpresasController extends Controller
         if (!$empresa) {
             return response()->json([
                 'success' => false,
-                'message' => 'Token inválido',
+                // 'message' => 'Token inválido',
             ], 404);
         }
 
@@ -234,6 +255,59 @@ class EmpresasController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Token válido',
+            'empresa' => [
+                'correo' => $empresa->correo,
+            ],
+        ], 200);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Buscar la empresa por el token
+        $empresa = Empresa::where('tocken_acceso', $request->token)->first();
+
+        if (!$empresa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Enlace no válido o expirado',
+            ], 400);
+        }
+
+        // Verificar si el token ha expirado
+        if (now()->greaterThan($empresa->tocken_acceso_expiracion)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El token ha expirado',
+            ], 400);
+        }
+
+        // Buscar al usuario asociado a la empresa
+        $usuario = User::where('empresa_id', $empresa->id)->first();
+
+        if (!$usuario) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontró un usuario asociado a esta empresa',
+            ], 404);
+        }
+
+        // Actualizar la contraseña del usuario
+        $usuario->password = bcrypt($request->password);
+        $usuario->save();
+
+        // Invalidar el token
+        $empresa->tocken_acceso = null;
+        $empresa->tocken_acceso_expiracion = null;
+        $empresa->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Contraseña actualizada exitosamente',
         ], 200);
     }
 }

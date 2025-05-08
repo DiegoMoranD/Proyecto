@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('correo');
-            $table->integer('telefono');
-            $table->string('rfc');
-            $table->string('tocken_acceso');
+            $table->string('telefono');
+            $table->string('rfc')->nullable();
+            $table->string('tocken_acceso')->nullable();
             $table->integer('cuenta_valida');
             $table->string('cedula');
             $table->unsignedBigInteger('suscripcion_id');

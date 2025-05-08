@@ -28,6 +28,10 @@ Route::get('/{any}', function () {
     return view('welcome');
 });
 
+Route::get('/new-password/{any}', function () {
+    return view('welcome');
+});
+
 Route::get('/activar-empresa/{any}', function () {
     return view('welcome');
 });

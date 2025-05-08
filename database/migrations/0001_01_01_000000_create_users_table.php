@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('paterno');
             $table->string('materno');
             $table->string('email');
-            $table->integer('telefono');
+            $table->string('telefono');
             $table->string('username');
             $table->string('password');
             $table->unsignedBigInteger('tipo_usuario_id'); 
