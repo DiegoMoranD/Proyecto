@@ -30,6 +30,10 @@ function NewPassword() {
         setPasswordStr(percentage)
     }
 
+    const windowSuccess = () => {
+        
+    }
+
     useEffect(() => {
         const fetchEmpresa = async () => {
             try {
@@ -61,6 +65,10 @@ function NewPassword() {
             });
             if (response.data.success) {
                 setMessage("Contraseña actulizada correctamente.")
+                alert("Contraseña actualizada volviendo al login")
+                setTimeout(() => {
+                    window.location.href = "/login"
+                }, 2000)
             }
             setMessage(response.data.message);
         } catch (error) {
@@ -118,8 +126,8 @@ function NewPassword() {
                                 <div className="w-full h-2 bg-gray-300 rounded">
                                     <div
                                         className={`h-full rounded transition-all duration-300 ${passwordStr < 50 ? 'bg-red-500' :
-                                                passwordStr < 75 ? 'bg-yellow-500' :
-                                                    'bg-green-500'
+                                            passwordStr < 75 ? 'bg-yellow-500' :
+                                                'bg-green-500'
                                             }`}
                                         style={{ width: `${passwordStr}%` }}
                                     ></div>

@@ -172,57 +172,52 @@ class EmpresasController extends Controller
 
     public function generarTokenRecuperacion(Request $request)
     {
-        try {
-            $request->validate([
-                'email' => 'required|email',
-            ]);
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
-            // Buscar la empresa por correo
-            $empresa = Empresa::where('correo', $request->email)->first();
+        // Buscar la empresa por correo
+        $empresa = Empresa::where('correo', $request->email)->first();
 
-            if (!$empresa) {
-                return response()->json([
-                    PHPLogToFile::logToFile('Correo no registrado', ['correo' => $empresa->correo]),
-                    'success' => false,
-                    'message' => 'Correo no registrado',
-                ], 404);
-            }
-
-            // Generar el token
-            $token = $this->generateRecoveryToken();
-            $empresa->tocken_acceso = $token;
-            $empresa->tocken_acceso_expiracion = now()->addHour(); // Expira en 1 hora
-            $empresa->save();
-
-            // Enviar el correo
-            $recoveryUrl = "http://127.0.0.1:8000/new-password/{$token}";
-            $subject = "Recuperación de cuenta - TecuaniSoft";
-            $body = "
-                <h1>Recuperación de cuenta</h1>
-                <p>Hemos recibido una solicitud para recuperar tu cuenta. Por favor, haz clic en el siguiente enlace para continuar:</p>
-                <a href='{$recoveryUrl}'>Recuperar cuenta</a>
-                <p>Este enlace expirará en 1 hora.</p>
-            ";
-
-            $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
-
-            if ($emailStatus !== true) {
-                return response()->json([
-                    PHPLogToFile::logToFile('Gmail de recuperacion enviado', ['correo' => $empresa->correo]),
-                    'message' => $emailStatus
-                ], 404);
-            }
-
-
+        if (!$empresa) {
             return response()->json([
-                PHPLogToFile::logToFileInfo('Gmail de recuperacion enviado', ['correo' => $empresa->correo]),
-                'success' => true,
-                'message' => 'Se ha enviado un enlace de recuperación a tu correo electrónico.',
-            ], 200);
-        } catch (\Throwable $th) {
-            PHPLogToFile::logToFile('El correo no registrado', ['correo' => $empresa->correo]);
-            return response()->json(['error' => 'Correo no registrado'], 404);
+                PHPLogToFile::logToFile('Correo no registrado', ['correo' => $empresa->correo]),
+                'success' => false,
+                'message' => 'Correo no registrado',
+            ], 404);
         }
+
+        // Generar el token
+        $token = $this->generateRecoveryToken();
+        $empresa->tocken_acceso = $token;
+        $empresa->tocken_acceso_expiracion = now()->addHour(); // Expira en 1 hora
+        $empresa->save();
+
+        // Enviar el correo
+        $recoveryUrl = "http://127.0.0.1:8000/new-password/{$token}";
+        $subject = "Recuperación de cuenta - TecuaniSoft";
+        $body = "
+            <h1>Recuperación de cuenta</h1>
+            <p>Hemos recibido una solicitud para recuperar tu cuenta. Por favor, haz clic en el siguiente enlace para continuar:</p>
+            <a href='{$recoveryUrl}'>Recuperar cuenta</a>
+            <p>Este enlace expirará en 1 hora.</p>
+        ";
+
+        $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
+
+        if ($emailStatus !== true) {
+            return response()->json([
+                PHPLogToFile::logToFile('Gmail de recuperacion enviado', ['correo' => $empresa->correo]),
+                'message' => $emailStatus
+            ], 404);
+        }
+
+
+        return response()->json([
+            PHPLogToFile::logToFileInfo('Gmail de recuperacion enviado', ['correo' => $empresa->correo]),
+            'success' => true,
+            'message' => 'Se ha enviado un enlace de recuperación a tu correo electrónico.',
+        ], 200);
     }
 
     // todo ________________________________________________________________________________________________________________
@@ -304,6 +299,16 @@ class EmpresasController extends Controller
         $empresa->tocken_acceso = null;
         $empresa->tocken_acceso_expiracion = null;
         $empresa->save();
+
+        // $recoveryUrl = "http://127.0.0.1:8000/login";
+        // $subject = "Recuperación de cuenta realizada - TecuaniSoft";
+        // $body = "
+        //         <h1>Recuperación de cuenta exitosa</h1>
+        //         <p>Tu nueva contraseña ha sido actualizada correctamente, ya puedes probar yu nueva contraseña mediante este enlace:</p>
+        //         <a href='{$recoveryUrl}'>Probar nueva contraseña</a>
+        //     ";
+
+        // $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
 
         return response()->json([
             'success' => true,
