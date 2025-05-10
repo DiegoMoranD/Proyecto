@@ -105,6 +105,52 @@ class EmpresasController extends Controller
 
     // todo ________________________________________________________________________________________________________________
 
+    public function refreshToken(Request $request)
+    {
+        // Validar que el correo esté presente y sea válido
+        $request->validate([
+            'correo' => 'required|email',
+        ]);
+        // buscar el correo de la empresa
+        $empresa = Empresa::where('correo', $request->correo)->first();
+
+        if (!$empresa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Correo no registrado',
+            ], 404);
+        }
+
+        // generar un nuevo token
+        $token = $this->substr(bin2hex(random_bytes(5)), 0, 9);
+        $empresa->token_acceso = $token;
+        $empresa->save();
+
+        // enviar el token al correo de la empresa
+        $recoveryUrl = "http://127.0.0.1:8000/activar-empresa/{$token}";
+        $subject = "Reenvio de token - TecuaniSoft";
+        $body = "
+            <h1>Generacion de nuevo token</h1>
+            <p>Hemos recibido una solicitud para generarte un nuevo token. Por favor, haz clic en el siguiente enlace para continuar:</p>
+            <a href='{$recoveryUrl}'>Activar token</a>
+        ";
+
+        $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
+
+        if (!$emailStatus) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al enviar el correo',
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Se ha enviado un nuevo token al correo de la empresa',
+        ], 200);
+    }
+
+    // todo ________________________________________________________________________________________________________________
 
     public function getEmpresaByToken($token)
     {
@@ -300,15 +346,15 @@ class EmpresasController extends Controller
         $empresa->tocken_acceso_expiracion = null;
         $empresa->save();
 
-        // $recoveryUrl = "http://127.0.0.1:8000/login";
-        // $subject = "Recuperación de cuenta realizada - TecuaniSoft";
-        // $body = "
-        //         <h1>Recuperación de cuenta exitosa</h1>
-        //         <p>Tu nueva contraseña ha sido actualizada correctamente, ya puedes probar yu nueva contraseña mediante este enlace:</p>
-        //         <a href='{$recoveryUrl}'>Probar nueva contraseña</a>
-        //     ";
+        $recoveryUrl = "http://127.0.0.1:8000/login";
+        $subject = "Recuperación de cuenta realizada - TecuaniSoft";
+        $body = "
+                <h1>Recuperación de cuenta exitosa</h1>
+                <p>Tu nueva contraseña ha sido actualizada correctamente, ya puedes probar yu nueva contraseña mediante este enlace:</p>
+                <a href='{$recoveryUrl}'>Probar nueva contraseña</a>
+            ";
 
-        // $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
+        $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
 
         return response()->json([
             'success' => true,

@@ -36,6 +36,7 @@ Route::prefix('v1')->group(function () {
 
     // todo <---------- Auth Routes para empresas ---------->
     Route::post('/auth/generar-token-recuperacion', [EmpresasController::class, 'generarTokenRecuperacion']);
+    Route::post('/auth/generar-nuevo-token', [EmpresasController::class, 'refreshToken']);
     Route::get('/auth/validar-token-recuperacion/{token}', [EmpresasController::class, 'validarTokenRecuperacion']);
     Route::post('/auth/actualizar-password', [EmpresasController::class, 'updatePassword']);
     Route::get('/auth/empresa/{token}', [EmpresasController::class, 'getEmpresaByToken']);

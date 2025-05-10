@@ -17,7 +17,7 @@ class PHPMailerHelper
             $mail->Host = env('MAIL_HOST', 'smtp.gmail.com'); // Servidor SMTP
             $mail->SMTPAuth = true;
             $mail->Username = env('MAIL_USERNAME', 'morandiazdiegoarmando@gmail.com'); // Correo del remitente
-            $mail->Password = env('MAIL_PASSWORD', 'azqsibwjbbjgpzdp'); // Contraseña del correo
+            $mail->Password = env('MAIL_PASSWORD', 'tufwlvsichtlpsqg'); // Contraseña del correo
             $mail->SMTPSecure = env('MAIL_ENCRYPTION', 'tls'); // Encriptación
             $mail->Port = env('MAIL_PORT', 587); // Puerto SMTP
 

@@ -20,10 +20,11 @@ import RecepcionLayout from "./layouts/RecepcionLayout";
 import PublicLayout from "./layouts/PublicLayout";
 import Login from "./pages/forms/Login";
 import Register from "./pages/forms/Register";
-import Recuperar from "./pages/forms/Recuperar";
+import RecuperarToken from "./pages/forms/RecuperarToken";
 import SuscripcionForm from "./pages/forms/SuscripcionForm";
 import ActivateEmpresa from "./pages/forms/ActivateEmpresa";
 import NewPassword from "./pages/forms/NewPassword";
+import UpdatePassword from "./pages/forms/UpdatePassword";
 
 export default function App() {
     return (
@@ -32,10 +33,11 @@ export default function App() {
                 <Route>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/recuperar" element={<Recuperar />} />
+                    <Route path="/recuperar-token" element={<RecuperarToken />} />
                     <Route path="/suscripcion" element={<SuscripcionForm />} />
                     <Route path="/activar-empresa/:token" element={<ActivateEmpresa />} />
                     <Route path="/new-password/:token" element={<NewPassword />} />
+                    <Route path="/recuperar-cuenta" element={<UpdatePassword />} />
                 </Route>
 
                 <Route path="/" element={<PublicLayout />}>

@@ -138,9 +138,9 @@ function Login() {
                                         onChange={() => setShowPassword(!showPassword)} />
                                     <label htmlFor="showPassword">Mostrar contraseña</label>
                                 </div>
-                                <a href="/recuperar" className="text-blue-500 hover:text-cyan-400 cursor-pointer mt-2 sm:mt-0">
-                                    Olvidaste tu contraseña
-                                </a>
+                                <p className='text-sm sm:text-base text-end'>
+                                    ¿Olvidaste tu <a href="/recuperar-cuenta" className='text-blue-500 hover:text-cyan-400 cursor-pointer mt-2 sm:mt-0 text-end transition duration-500'>contraseña</a> o expiro el <a href="/recuperar-token" className='text-blue-500 hover:text-cyan-400 cursor-pointer mt-2 sm:mt-0 text-end transition duration-500'>token</a>?
+                                </p>
                             </div>
                             <button
                                 onClick={submitLogin}
@@ -161,12 +161,6 @@ function Login() {
                                         href="/register"
                                     >
                                         Crea una cuenta
-                                    </a>
-                                    <a
-                                        className="text-blue-500 hover:text-cyan-400 cursor-pointer"
-                                        href="/sus"
-                                    >
-                                        sus
                                     </a>
                                 </span>
                             </div>

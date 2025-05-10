@@ -30,9 +30,6 @@ function NewPassword() {
         setPasswordStr(percentage)
     }
 
-    const windowSuccess = () => {
-        
-    }
 
     useEffect(() => {
         const fetchEmpresa = async () => {
