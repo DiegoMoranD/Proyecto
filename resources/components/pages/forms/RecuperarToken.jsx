@@ -10,29 +10,30 @@ function RecuperarToken() {
 
     const validateFieldToken = () => {
         const newErrors = {};
-        if (!token) newErrors.token = 'El correo es requerido';
+        if (!email) newErrors.email = 'El correo es requerido';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0; // Devuelve true si no hay errores
     };
 
     const submitRecuperarToken = async (e) => {
-        e.preventDefault();
-    
-        if (!validateFieldToken()) return; // Detiene el envío si hay errores
-    
-        try {
-            const response = await Config.getGenerateNewToken({ correo: email });
-    
-            if (response.data.success) {
-                setMessage('Se ha enviado un nuevo token a tu correo electrónico.');
-            }
-        } catch (error) {
-            if (error.response && error.response.status === 404) {
-                setErrors({ email: 'Este correo no está registrado' });
-            } else {
-                setErrors({ email: 'Ocurrió un error al procesar la solicitud' });
-            }
-        }
+        
+                e.preventDefault();
+        
+                if (!validateFieldToken()) return; // Detiene el envío si hay errores
+        
+                try {
+                    const response = await Config.getGenerateNewToken({ email });
+        
+                    if (response.data.success) {
+                        setMessage('Se ha enviado un enlace de recuperación a tu correo electrónico.');
+                    }
+                } catch (error) {
+                    if (error.response && error.response.status === 404) {
+                        setErrors({ email: 'Este correo no esta registrado' });
+                    } else {
+                        setErrors({ email: 'Ocurrio un error al verififcar el correo' })
+                    }
+                } 
     };
 
     return (
@@ -45,11 +46,12 @@ function RecuperarToken() {
                     <form action="" onSubmit={submitRecuperarToken}>
                         <h1 className='text-center mb-2 text-[18px] font-[500]'>Reenviar nuevo token</h1>
 
+
                         <div className="relative my-4">
                             <input
                                 type="email"
-                                value={token}
-                                onChange={(e) => setToken(e.target.value)}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className={`block w-[100%] py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.email ? 'border-red-500' : 'border-gray-300'
                                     } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
                                 placeholder=""
@@ -60,8 +62,8 @@ function RecuperarToken() {
                             >
                                 Correo para Reenvio
                             </label>
-                            {errors.token && (
-                                <p className="text-red-500 text-sm mt-1">{errors.token}</p>
+                            {errors.email && (
+                                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                             )}
                             <button
                                 type="submit"

@@ -107,23 +107,24 @@ class EmpresasController extends Controller
 
     public function refreshToken(Request $request)
     {
-        // Validar que el correo esté presente y sea válido
         $request->validate([
-            'correo' => 'required|email',
+            'email' => 'required|email',
         ]);
-        // buscar el correo de la empresa
-        $empresa = Empresa::where('correo', $request->correo)->first();
+
+        // Buscar la empresa por correo
+        $empresa = Empresa::where('correo', $request->email)->first();
 
         if (!$empresa) {
             return response()->json([
+                PHPLogToFile::logToFile('Correo no registrado', ['correo' => $empresa->correo]),
                 'success' => false,
                 'message' => 'Correo no registrado',
             ], 404);
         }
 
         // generar un nuevo token
-        $token = $this->substr(bin2hex(random_bytes(5)), 0, 9);
-        $empresa->token_acceso = $token;
+        $token = substr(bin2hex(random_bytes(5)), 0, 9);
+        $empresa->tocken_acceso = $token;
         $empresa->save();
 
         // enviar el token al correo de la empresa

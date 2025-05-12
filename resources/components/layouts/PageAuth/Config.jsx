@@ -15,7 +15,7 @@ export default {
   getAlltEmpresa: (data) => axios.get(`${base_api_url}/auth/empresa`, data),
   getEmpresaByToken: (token, data) => axios.get(`${base_api_url}/auth/empresa/${token}`, data),
   getGenerateRecoveryToken: (data) => axios.post(`${base_api_url}/auth/generar-token-recuperacion`, data),
-  getGenerateNewToken: (data) => axios.post(`${base_api_url}/auth/generar-nuevo-token`, data),
+  getGenerateNewToken: (data) => axios.post(`${base_api_url}/auth/recuperar-token`, data),
   validateRecoveryToken: (token) => axios.get(`${base_api_url}/auth/validar-token-recuperacion/${token}`),
   updatePassword: (data) => axios.post(`${base_api_url}/auth/actualizar-password`, data),
 
