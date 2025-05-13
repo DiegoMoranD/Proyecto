@@ -41,6 +41,7 @@ class AuthController extends Controller
                 'password' => 'required',
                 'telefono' => 'required|integer',
                 'username' => 'required',
+                'intentos' => 'required',
                 'tipo_usuario_id' => 'required',
                 'empresa_id' => 'required'
             ]);

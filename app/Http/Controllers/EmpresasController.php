@@ -225,6 +225,7 @@ class EmpresasController extends Controller
 
         // Buscar la empresa por correo
         $empresa = Empresa::where('correo', $request->email)->first();
+        $usuario = User::where('empresa_id', $empresa->id)->first();
 
         if (!$empresa) {
             return response()->json([
@@ -236,10 +237,10 @@ class EmpresasController extends Controller
 
         // Generar el token
         $token = $this->generateRecoveryToken();
-        $empresa->tocken_acceso = $token;
+        $usuario->remember_token = $token;
         $empresa->tocken_acceso_expiracion = now()->addHour(); // Expira en 1 hora
         $empresa->save();
-
+        $usuario->save();
         // Enviar el correo
         $recoveryUrl = "http://127.0.0.1:8000/new-password/{$token}";
         $subject = "Recuperación de cuenta - TecuaniSoft";

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('email');
             $table->string('telefono');
             $table->string('username');
-            $table->string('password');
+            $table->string('password');            
+            $table->integer('intentos')->default(0);
+            $table->timestamp('last_attempt_at')->nullable();
             $table->unsignedBigInteger('tipo_usuario_id'); 
             $table->foreign('tipo_usuario_id')->references('id')->on('tipo_usuarios')->onDelete('cascade');
             $table->unsignedBigInteger('empresa_id');
