@@ -19,6 +19,27 @@ function Empresa() {
         <div className="container mx-auto p-6">
             <div className="flex justify-between items-center bg-red-400 my-12 p-8">
                 {/* filtros para nombre, */}
+                <div>
+                    <select
+                        name=""
+                        id=""
+                        className="h-8 rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                    >
+                        <option value="">Ordernar nombre por:</option>
+                        <option value="Aventura">De la A-Z</option>
+                        <option value="Aventura">De la Z-A</option>
+                    </select>
+                </div>
+
+                <div className="mr-10">
+                    <input
+                        type="search"
+                        name=""
+                        placeholder="Buscar Paciente"
+                        id=""
+                        className="rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                    />
+                </div>
             </div>
             <h2 className="text-2xl font-bold mb-4">Lista de Empleados</h2>
             <div className="overflow-y-auto max-h-96 shadow-md rounded-lg">

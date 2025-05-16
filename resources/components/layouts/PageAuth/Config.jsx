@@ -23,5 +23,9 @@ export default {
   getUsuarioStore: (data) => axios.post(`${base_api_url}/auth/register`, data),
   getCheckEmail: (data) => axios.post(`${base_api_url}/auth/check-email`, data),
   getRecover: (data) => axios.post(`${base_api_url}/auth/recuperar`, data),
-  activateEmpresa: (token) => axios.post(`${base_api_url}/auth/activar-empresa/${token}`)
+  activateEmpresa: (token) => axios.post(`${base_api_url}/auth/activar-empresa/${token}`),
+
+  // * configuracion de pacientes
+    getAllPaciente: (data) => axios.get(`${base_api_url}/auth/paciente`, data),
+
 }

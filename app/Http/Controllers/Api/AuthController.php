@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use function Laravel\Prompts\error;
 use App\Utils\PHPLogToFile;
+use App\Utils\PHPMailerHelper;
+use Spatie\Permission\Traits\HasRoles;
 
 class AuthController extends Controller
 {
@@ -41,7 +43,7 @@ class AuthController extends Controller
                 'password' => 'required',
                 'telefono' => 'required|integer',
                 'username' => 'required',
-                'intentos' => 'required',
+                'intentos' => 'required|integer|between:0,3',
                 'tipo_usuario_id' => 'required',
                 'empresa_id' => 'required'
             ]);
@@ -99,10 +101,25 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             $response = ["error" => $validator->errors()];
-            return response()->json($response, 200);
+            return response()->json($response, 422);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            $response['message'] = 'Usuario no encontrado';
+            return response()->json($response, 404);
+        }
+
+        if ($user->intentos >= 3 && $user->last_attempt_at && now()->diffInMinutes($user->last_attempt_at) < 1) {
+            $response['message'] = 'Demasiados intentos fallidos, Intente de nuevo en 15 minutos';
+            return response()->json($response, 429);
         }
 
         if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user->intentos = 0;
+            $user->save();
+
             $user = auth()->user();
 
             // Verificar si el usuario tiene una empresa asociada
@@ -133,6 +150,25 @@ class AuthController extends Controller
             $response['success'] = true;
         } else {
             $response['message'] = "Credenciales incorrectas";
+            $user->intentos += 1;
+            $user->last_attempt_at = now();
+            $user->save();
+        }
+
+        if ($user->intentos >= 3) {
+
+            $recoveryUrl = "";
+            $subject = "Reenvio de token - TecuaniSoft";
+            $body = "
+            <h1>Inicio de sesion fallido</h1>
+            <p>Tu cuenta llego a los 3 intentos fallidos, tu cuenta estara bloqueda por 15 minutos</p>
+            <a href='{$recoveryUrl}'>Activar token</a>
+        ";
+
+            $emailStatus = PHPMailerHelper::sendEmail($user->email, $subject, $body);
+
+            $response['message'] = 'Demasiados intentos fallidos, Intente de nuevo en 15 minutos';
+            return response()->json($response, 429);
         }
 
         return response()->json($response, 200);
@@ -215,7 +251,4 @@ class AuthController extends Controller
         $response["success"] = true;
         return response()->json($response, 200);
     }
-
-
-    
 }

@@ -44,7 +44,6 @@ function Login() {
         if (!validateFields()) return;
 
         try {
-            await axios.get('/sanctum/csrf-cookie');
             const { data } = await Config.getLogin({ email, password });
 
             if (data.success) {
@@ -63,14 +62,22 @@ function Login() {
                     setMessage('Rol no reconocido');
                 }
             } else {
-                setMessage(data.message || 'Credenciales incorrectas');
+                setMessage(data.message);
             }
         } catch (error) {
-            if (error.response && error.response.status === 403) {
-                setMessage(error.response.data.message); // Mostrar mensaje del servidor
+            if (error.response) {
+                // Si hay errores de validación
+                if (error.response.status === 422 && error.response.data.error) {
+                    // Muestra el primer error de validación
+                    const firstError = Object.values(error.response.data.error)[0][0];
+                    setMessage(firstError);
+                } else if (error.response.data.message) {
+                    setMessage(error.response.data.message);
+                } else {
+                    setMessage('Error al iniciar sesión');
+                }
             } else {
-                console.error('Error al iniciar sesión:', error);
-                setMessage('Ocurrió un error inesperado.');
+                setMessage('Error de conexión con el servidor');
             }
         }
     };

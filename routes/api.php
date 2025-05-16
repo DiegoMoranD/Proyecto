@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Paciente\EmpresaPacienteController;
 use App\Http\Controllers\Api\Paciente\UsuarioPacienteController;
 use App\Http\Controllers\Api\Recepcion\PacienteRecepcionController;
 use App\Http\Controllers\EmpresasController;
+use App\Http\Controllers\PacientesController;
 use App\Http\Controllers\SuscripcionesController;
 use App\Http\Controllers\TiposUsuariosController;
 use App\Models\Tipo_usuario;
@@ -48,6 +49,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/auth/empresa', [EmpresasController::class, 'store']);
     Route::get('/auth/empresa', [EmpresasController::class, 'index']);
+    Route::get('/auth/paciente', [PacientesController::class, 'index']);
     // Route::get('/auth/empresa/{id}', [EmpresasController::class, 'show']);
 
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);
@@ -74,7 +76,7 @@ Route::prefix('v1')->group(function () {
 
 
         // ? <-------------------- Rol Paciente -------------------->
-        // Route::apiResource('/paciente/empresa', [EmpresaPacienteController::class, 'index']);
+        // Route::apiResource('/paciente/empresa', [PacientesController::class, 'index']);
         // Route::apiResource('/paciente/datos', [UsuarioPacienteController::class, 'index']);
         // Route::apiResource('/paciente/datos/update', [UsuarioPacienteController::class, 'update']);
 
