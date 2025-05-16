@@ -10,16 +10,22 @@ import UserSVG from './svg/UserSVG';
 import ContracSVG from './svg/ContracSVG';
 
 import Config from './layouts/PageAuth/Config';
+import AuthUser from './layouts/PageAuth/AuthUser';
 import XSVG from './svg/X';
+import { Import } from 'lucide-react';
 
 export default function SideBar({ isOpen, toggleSidebar }) {
+
+const { getToken, getLogout } = AuthUser();
 
     const logoutUser = async () => {
         try {
             const response = await Config.getLogout('/logout');
             console.log(response);
             getLogout();
-        } catch (error) { }
+        } catch (error) {
+
+        }
     };
 
     return (
