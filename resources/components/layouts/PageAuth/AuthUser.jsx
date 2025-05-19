@@ -37,6 +37,9 @@ function AuthUser() {
 
         // Rol Admin | Medico | Recepcion | Paciente
 
+        if(getRol()==="root"){
+            navigate('/root')
+        }
         if(getRol()==="admin"){
             navigate('/admin')
         }

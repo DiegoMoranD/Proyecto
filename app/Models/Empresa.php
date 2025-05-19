@@ -24,6 +24,7 @@ class Empresa extends Model
         'suscripcion_id',
         'fecha_registro',
         'fecha_vencimiento',
+        'tocken_acceso_expiracion',
         'fecha_compra'
     ];
 

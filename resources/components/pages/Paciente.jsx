@@ -10,7 +10,7 @@ function Paciente() {
 
     const getAllPaciente = async () => {
         const response = await Config.getAllPaciente()
-        setEmpresas(response.data)
+        setPacientes(response.data)
     }
 
     return (
@@ -114,11 +114,11 @@ function Paciente() {
                             pacientes
                                 .map((paciente) => (
                                     <tr key={paciente.id} className="border-b hover:bg-gray-100">
-                                        <td className="py-3 px-6">{paciente.name}</td>
-                                        <td className="py-3 px-6">{paciente.sangre}</td>
+                                        <td className="py-3 px-6">{paciente.nombre}</td>
+                                        <td className="py-3 px-6">{paciente.tipo_sangre}</td>
                                         <td className="py-3 px-6">{paciente.peso}</td>
                                         <td className="py-3 px-6">{paciente.imc}</td>
-                                        <td className="py-3 px-6">{paciente.empresaId}</td>
+                                        <td className="py-3 px-6">{paciente.empresa_id}</td>
                                     </tr>
                                 ))
                         )}

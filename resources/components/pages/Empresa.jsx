@@ -11,9 +11,9 @@ function Empresa() {
     }, [])
 
     const getAlltEmpresa = async () => {
-        const response = await Config.getAlltEmpresa()
-        setEmpresas(response.data)
-    }
+        const response = await Config.getAlltEmpresa();
+        setEmpresas(response.data);
+    };
 
     return (
         <div className="container mx-auto p-6">

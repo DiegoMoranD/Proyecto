@@ -8,6 +8,8 @@ import CreateForm from "./pages/CreateForm";
 import Suscripcion from "./pages/Suscripcion";
 import TipoUsuario from "./pages/TipoUsuario";
 import { Routes, Route } from "react-router-dom";
+import PacienteForm from './pages/forms/PacientesForm'
+import RecepcionForm from './pages/forms/RecepcionForm'
 
 function ContentArea() {
     return (
@@ -20,6 +22,8 @@ function ContentArea() {
                     <Route path="/suscripcion" element={<Suscripcion />} />
                     <Route path="/pacientes" element={<Paciente />} />
                     <Route path="/usuario" element={<Usuario />} />
+                    <Route path="/Paciente-form" element={<PacienteForm />} />
+                    <Route path="/Recepcion-form" element={<RecepcionForm />} />
                 </Routes>
             </div>
         </section>

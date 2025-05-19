@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class TiposUsuariosController extends Controller
 {
+    public function index()
+    {
+        $tipo_usuarios = Tipo_usuario::all();
+        return response()->json($tipo_usuarios);
+    }
+
+
     public function store(Request $request)
     {
         $request->validate([

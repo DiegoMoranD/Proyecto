@@ -151,7 +151,7 @@ function Register() {
                 paterno: usuarioData.paterno,
                 materno: usuarioData.materno,
                 username: "default_username", // Valor por defecto
-                tipo_usuario_id: 2, // Cambiado a "tipo_usuario_id" para coincidir con la base de datos
+                tipo_usuario_id: 3, // Cambiado a "tipo_usuario_id" para coincidir con la base de datos
                 intentos: 3, // Cambiado a "tipo_usuario_id" para coincidir con la base de datos
                 email: usuarioData.email,
                 password: usuarioData.password,

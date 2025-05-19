@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import AuthUser from './PageAuth/AuthUser'
-import SideBar from '../sideBar'
+import SideBar from '../SideBar'
 import TopBar from '../Topbar'  
 
 function RecepcionLayout() {
