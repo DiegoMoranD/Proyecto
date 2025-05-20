@@ -15,6 +15,7 @@ use App\Http\Controllers\EmpresasController;
 use App\Http\Controllers\PacientesController;
 use App\Http\Controllers\SuscripcionesController;
 use App\Http\Controllers\TiposUsuariosController;
+use App\Http\Controllers\UsuariosController;
 use App\Models\Tipo_usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/empresa', [EmpresasController::class, 'store']);
     Route::get('/auth/empresa', [EmpresasController::class, 'index']);
     Route::get('/auth/paciente', [PacientesController::class, 'index']);
+
+    Route::get('/auth/usuario', [UsuariosController::class, 'index']);
     // Route::get('/auth/empresa/{id}', [EmpresasController::class, 'show']);
 
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);

@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class UsuariosController extends Controller
 {
+    public function index() {
+        $usuarios = User::all();
+        return response()->json($usuarios);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

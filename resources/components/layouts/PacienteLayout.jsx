@@ -1,28 +1,48 @@
-import React, { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 import AuthUser from './PageAuth/AuthUser'
 import SideBar from '../SideBar'
 import TopBar from '../Topbar'
+import { Home } from 'lucide-react'
+import Empresa from '../pages/Empresa'
+import Usuario from '../pages/Usuario'
 
 function PacienteLayout() {
-    const { getRol } = AuthUser()
+    const { getRol } = AuthUser();
     const navigate = useNavigate()
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
+    const closeSidebar = () => {
+        setIsSidebarOpen(false);
+    };
 
     useEffect(() => {
-        if (getRol() != "paciente") {
-            navigate("/login")
+        if (getRol() !== 'paciente') {
+            navigate('/login'); // Redirige si el rol no es "admin"
         }
-    }, [])
+    }, []);
 
     return (
-        <main className="flex w-screen  h-screen bg-gray-200 fixed">
-            <SideBar />
-            <div className="flex-1 flex flex-col">
-                <TopBar />
-                <Outlet />
+        <main className="flex w-screen h-screen bg-gray-200">
+            <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+            <div className="flex-1 flex flex-col overflow-hidden">
+                <TopBar toggleSidebar={toggleSidebar} />
+                <section className="bg-gray-200 h-full">
+                    <div className='flex-1 p-4 overflow-auto'>
+                        <div className="bg-white p-4 m-4 rounded-2xl overflow-x-hidden lg:max-w-[95%] md:max-w-[95%] sm:max-w-full mx-auto max-sm:w-fixed max-lg:w-full">
+                            <Routes>
+                                <Route path="/home" element={<Home />} />
+                                <Route path="/empresa" element={<Empresa />} />
+                                <Route path="/usuario" element={<Usuario />} />
+                            </Routes>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
-    )
+    );
 }
 
 export default PacienteLayout

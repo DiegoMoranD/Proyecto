@@ -43,3 +43,15 @@ Route::get('/admin/{any}', function () {
 Route::get('/medico/{any}', function () {
     return view('welcome');
 });
+
+Route::get('/recepcion/{any}', function () {
+    return view('welcome');
+});
+
+Route::get('/paciente/{any}', function () {
+    return view('welcome');
+});
+
+Route::get('/root/{any}', function () {
+    return view('welcome');
+});

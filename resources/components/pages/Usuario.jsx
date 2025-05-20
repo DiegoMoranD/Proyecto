@@ -1,36 +1,74 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import Config from '../layouts/PageAuth/Config';
 
 function Usuario() {
-    const user = [
-        { id: 1, name: "Juan Pérez", apPaterno: "Pérez", apMaterno: "Pérez", telefono: "1234567890", username: "juan.perez", passUser: "dsf234" , tipoUser: "Administrador", empresaId: 1},
-        { id: 2, name: "Ana Gómez", apPaterno: "Gómez", apMaterno: "Gómez", telefono: "1234567890", username: "ana.gomez", passUser: "dsf234" , tipoUser: "Usuario", empresaId: 2},
-    ];
+    const [user, setUsers] = useState([]);
+
+    useEffect(() => {
+        getAlltUsuarios()
+    }, [])
+
+    const getAlltUsuarios = async () => {
+        const response = await Config.getAllUsuarios();
+        setUsers(response.data);
+    };
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex justify-between items-center bg-red-400 my-12 p-8">
-                Seccion de filtros
+            <div className="flex flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
+                <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
+                    <select
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option>Ordenar nombre por:</option>
+                        <option value="az">De la A-Z</option>
+                        <option value="za">De la Z-A</option>
+                    </select>
+
+                    <select
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option>Ordenar apellido por:</option>
+                        <option value="az">De la A-Z</option>
+                        <option value="za">De la Z-A</option>
+                    </select>
+                </div>
+
+                <div className="w-full sm:w-auto">
+                    <input
+                        type="search"
+                        placeholder="Buscar usuario"
+                        className="h-10 px-4 w-full sm:w-64 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
             </div>
+
+
+
             <h2 className="text-2xl font-bold mb-4">Lista de usuarios</h2>
-            <div className="">
-                <table className="min-w-full bg-white shadow-md rounded-lg ">
-                    <thead className="bg-gray-800 text-white">
+            <div className="overflow-auto rounded-xl border border-gray-200 shadow-sm">
+                <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-white">
+                    <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider">
                         <tr>
-                            <th className="py-3 px-6 text-left">Nombre</th>
-                            <th className="py-3 px-6 text-left">Apellido Paterno</th>
-                            <th className="py-3 px-6 text-left">Telefono</th>
-                            <th className="py-3 px-6 text-left">Empresa</th>
+                            <th className="px-6 py-4">Nombre</th>
+                            <th className="px-6 py-4">Apellido Paterno</th>
+                            <th className="px-6 py-4">Telefono</th>
+                            <th className="px-6 py-4 max-md:hidden">Empresa</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {user.map((employee) => (
-                            <tr key={employee.id} className="border-b hover:bg-gray-100">
-                                <td className="py-3 px-6">{employee.name}</td>
-                                <td className="py-3 px-6">{employee.apPaterno}</td>
-                                <td className="py-3 px-6">{employee.telefono}</td>
-                                <td className="py-3 px-6">{employee.empresaId}</td>
+                    <tbody className="divide-y divide-gray-200">
+                        {!user ? (
+                            <tr>
+                                <td className="px-6 py-4" colSpan="4">Cargando...</td> 
                             </tr>
-                        ))}
+                        ) : (user.map((usuario) => (
+                            <tr key={usuario.id} className="hover:bg-gray-50 transition-colors">
+                                <td className="px-6 py-4 font-medium text-gray-900">{usuario.name}</td>
+                                <td className="px-6 py-4">{usuario.paterno}</td>
+                                <td className="px-6 py-4">{usuario.materno}</td>
+                                <td className="px-6 py-4 max-md:hidden">{usuario.empresa_id}</td>
+                            </tr>
+                        )))}
                     </tbody>
                 </table>
             </div>

@@ -17,62 +17,55 @@ function Empresa() {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex justify-between items-center bg-red-400 my-12 p-8">
-                {/* filtros para nombre, */}
-                <div>
+            <div className="flex flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
+                <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
                     <select
-                        name=""
-                        id=""
-                        className="h-8 rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="">Ordernar nombre por:</option>
-                        <option value="Aventura">De la A-Z</option>
-                        <option value="Aventura">De la Z-A</option>
+                        <option>Ordenar empresa por:</option>
+                        <option value="az">De la A-Z</option>
+                        <option value="za">De la Z-A</option>
                     </select>
                 </div>
 
-                <div className="mr-10">
+                <div className="w-full sm:w-auto">
                     <input
                         type="search"
-                        name=""
-                        placeholder="Buscar Paciente"
-                        id=""
-                        className="rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                        placeholder="Buscar empresa"
+                        className="h-10 px-4 w-full sm:w-64 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
             </div>
-            <h2 className="text-2xl font-bold mb-4">Lista de Empleados</h2>
-            <div className="overflow-y-auto max-h-96 shadow-md rounded-lg">
-                <table className="min-w-full bg-white shadow-md rounded-lg ">
-                    <thead className="bg-gray-800 text-white">
+            <h2 className="text-2xl font-bold mb-4">Lista de Empresas</h2>
+            <div className="overflow-auto rounded-xl border border-gray-200 shadow-sm">
+                <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-white">
+                    <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider">
                         <tr>
-                            <th className="py-3 px-6 text-left">Nombre</th>
-                            <th className="py-3 px-6 text-left">Telefono</th>
-                            <th className="py-3 px-6 text-left">RFC</th>
-                            <th className="py-3 px-6 text-left max-md:hidden">Cedula</th>
+                            <th className="px-6 py-4">Nombre</th>
+                            <th className="px-6 py-4">Teléfono</th>
+                            <th className="px-6 py-4">RFC</th>
+                            <th className="px-6 py-4 max-md:hidden">Cédula</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-gray-200">
                         {!empresas ? (
-                            <tr className='border-b hover:bg-gray-100'>
-                                <td className='py-3 px-6'><p>Cargando...</p></td>
+                            <tr>
+                                <td className="px-6 py-4" colSpan="4">Cargando...</td>
                             </tr>
                         ) : (
-                            empresas
-                                .map((empresa) => (
-                                    <tr key={empresa.id} className="border-b hover:bg-gray-100">
-                                        <td className="py-3 px-6">
-                                            {empresa.nombre}
-                                        </td>
-                                        <td className="py-3 px-6">{empresa.telefono}</td>
-                                        <td className="py-3 px-6">{empresa.rfc}</td>
-                                        <td className="py-3 px-6">{empresa.cedula}</td>
-                                    </tr>
-                                ))
+                            empresas.map((empresa) => (
+                                <tr key={empresa.id} className="hover:bg-gray-50 transition-colors">
+                                    <td className="px-6 py-4 font-medium text-gray-900">{empresa.nombre}</td>
+                                    <td className="px-6 py-4">{empresa.telefono}</td>
+                                    <td className="px-6 py-4">{empresa.rfc}</td>
+                                    <td className="px-6 py-4 max-md:hidden">{empresa.cedula}</td>
+                                </tr>
+                            ))
                         )}
                     </tbody>
                 </table>
             </div>
+
         </div>
     );
 }

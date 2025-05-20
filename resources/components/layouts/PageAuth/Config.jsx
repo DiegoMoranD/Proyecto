@@ -20,6 +20,7 @@ export default {
   updatePassword: (data) => axios.post(`${base_api_url}/auth/actualizar-password`, data),
 
   // ! configuracion de usuarios
+  getAllUsuarios: (data) => axios.get(`${base_api_url}/auth/usuario`, data),
   getUsuarioStore: (data) => axios.post(`${base_api_url}/auth/register`, data),
   getCheckEmail: (data) => axios.post(`${base_api_url}/auth/check-email`, data),
   getRecover: (data) => axios.post(`${base_api_url}/auth/recuperar`, data),

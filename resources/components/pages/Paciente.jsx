@@ -15,25 +15,23 @@ function Paciente() {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex justify-between items-center bg-red-400 my-12 p-8">
+            <div className="flex flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
                 {/* filtros para nombre, */}
-                <div>
+                <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
                     <select
                         name=""
                         id=""
-                        className="h-8 rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Ordernar nombre por:</option>
                         <option value="Aventura">De la A-Z</option>
                         <option value="Aventura">De la Z-A</option>
                     </select>
-                </div>
 
-                <div>
                     <select
                         name=""
                         id=""
-                        className="h-8 rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Ordernar T.S. por:</option>
                         <option value="Aventura">A+</option>
@@ -45,37 +43,31 @@ function Paciente() {
                         <option value="Aventura">O+</option>
                         <option value="Aventura">O-</option>
                     </select>
-                </div>
 
-                <div>
                     <select
                         name=""
                         id=""
-                        className="h-8 rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Ordernar Peso por:</option>
                         <option value="Aventura">DeL mayor a menor</option>
                         <option value="Aventura">DeL menor a mayor</option>
                     </select>
-                </div>
 
-                <div>
                     <select
                         name=""
                         id=""
-                        className="h-8 rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Ordernar IMC por:</option>
                         <option value="Aventura">DeL mayor a menor</option>
                         <option value="Aventura">DeL menor a mayor</option>
                     </select>
-                </div>
 
-                <div>
                     <select
                         name=""
                         id=""
-                        className="h-8 rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Ordernar Empresa por:</option>
                         <option value="Aventura">De la A-Z</option>
@@ -83,42 +75,40 @@ function Paciente() {
                     </select>
                 </div>
 
-                <div className="mr-10">
+                <div className="w-full sm:w-auto">
                     <input
                         type="search"
-                        name=""
-                        placeholder="Buscar Paciente"
-                        id=""
-                        className="rounded bg-[#fff] border border-white border-opacity-35 text-black"
+                        placeholder="Buscar paciente"
+                        className="h-10 px-4 w-full sm:w-64 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
             </div>
             <h2 className="text-2xl font-bold mb-4">Lista de Empleados</h2>
-            <div className="">
-                <table className="min-w-full bg-white shadow-md rounded-lg ">
-                    <thead className="bg-gray-800 text-white">
+            <div className="overflow-auto rounded-xl border border-gray-200 shadow-sm">
+                <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-white">
+                    <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider">
                         <tr>
-                            <th className="py-3 px-6 text-left">Nombre</th>
-                            <th className="py-3 px-6 text-left">Tipo de Sangre</th>
-                            <th className="py-3 px-6 text-left">Peso</th>
-                            <th className="py-3 px-6 text-left">IMC</th>
-                            <th className="py-3 px-6 text-left">Empresa</th>
+                            <th className="px-6 py-4">Nombre</th>
+                            <th className="px-6 py-4">Tipo de Sangre</th>
+                            <th className="px-6 py-4">Peso</th>
+                            <th className="px-6 py-4">IMC</th>
+                            <th className="px-6 py-4 max-md:hidden">Empresa</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-gray-200">
                         {!pacientes ? (
                             <tr className='border-b hover:bg-gray-100'>
-                                <td className='py-3 px-6'><p>Cargando...</p></td>
+                                <td className='px-6 py-4'><p>Cargando...</p></td>
                             </tr>
                         ) : (
                             pacientes
                                 .map((paciente) => (
-                                    <tr key={paciente.id} className="border-b hover:bg-gray-100">
-                                        <td className="py-3 px-6">{paciente.nombre}</td>
-                                        <td className="py-3 px-6">{paciente.tipo_sangre}</td>
-                                        <td className="py-3 px-6">{paciente.peso}</td>
-                                        <td className="py-3 px-6">{paciente.imc}</td>
-                                        <td className="py-3 px-6">{paciente.empresa_id}</td>
+                                    <tr key={paciente.id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="px-6 py-4">{paciente.nombre}</td>
+                                        <td className="px-6 py-4">{paciente.tipo_sangre}</td>
+                                        <td className="px-6 py-4">{paciente.peso}</td>
+                                        <td className="px-6 py-4">{paciente.imc}</td>
+                                        <td className="px-6 py-4 max-md:hidden">{paciente.empresa_id}</td>
                                     </tr>
                                 ))
                         )}
