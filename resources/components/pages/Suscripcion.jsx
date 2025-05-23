@@ -7,27 +7,24 @@ function Suscripcion() {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex justify-between items-center bg-red-400 my-12 p-8">
-                Seccion de filtros
-            </div>
-            <h2 className="text-2xl font-bold mb-4">Lista de Suscripciones</h2>
-            <div className="">
-                <table className="min-w-full bg-white shadow-md rounded-lg ">
-                    <thead className="bg-gray-800 text-white">
+            <h2 className="text-2xl font-bold mb-5 border-b border-gray-600/25 pb-4">Lista de Suscripciones</h2>
+            <div className="overflow-auto rounded-xl border border-gray-200 shadow-sm">
+                <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-white">
+                    <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider">
                         <tr>
-                            <th className="py-3 px-6 text-left">Nombre</th>
-                            <th className="py-3 px-6 text-left">Precio</th>
-                            <th className="py-3 px-6 text-left">Descuento</th>
-                            <th className="py-3 px-6 text-left">Dias</th>
+                            <th className="px-6 py-4">Nombre</th>
+                            <th className="px-6 py-4">Precio</th>
+                            <th className="px-6 py-4">Descuento</th>
+                            <th className="px-6 py-4">Dias</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-gray-200">
                         {suscripciones.map((sub) => (
-                            <tr key={sub.id} className="border-b hover:bg-gray-100">
-                                <td className="py-3 px-6">{sub.name}</td>
-                                <td className="py-3 px-6">{sub.precio}</td>
-                                <td className="py-3 px-6">{sub.descuento}</td>
-                                <td className="py-3 px-6">{sub.dias}</td>
+                            <tr key={sub.id} className="hover:bg-gray-50 transition-colors">
+                                <td className="px-6 py-4">{sub.name}</td>
+                                <td className="px-6 py-4">{sub.precio}</td>
+                                <td className="px-6 py-4">{sub.descuento}</td>
+                                <td className="px-6 py-4">{sub.dias}</td>
                             </tr>
                         ))}
                     </tbody>

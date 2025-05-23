@@ -27,7 +27,7 @@ class PacienteMedicoController extends Controller
             'altura' => 'required|numeric',
             'imc' => 'required|numeric',
             'fecha_registro' => 'required|date',
-            'empresaID' => 'required|integer'
+            'empresa_id' => 'required|integer'
         ]);
 
         $paciente = new Paciente();
@@ -38,7 +38,7 @@ class PacienteMedicoController extends Controller
         $paciente->altura = $request->input('altura');
         $paciente->imc = $request->input('imc');
         $paciente->fecha_registro = $request->input('fecha_registro');
-        $paciente->empresaID = $request->input('empresaID');
+        $paciente->empresa_id = $request->input('empresa_id');
 
         // Guardar el paciente
         $paciente->save();
@@ -66,7 +66,7 @@ class PacienteMedicoController extends Controller
             'altura' => 'numeric',
             'imc' => 'numeric',
             'fecha_registro' => 'date',
-            'empresaID' => 'integer'
+            'empresa_id' => 'integer'
         ]);
 
         $paciente->update($request->all());

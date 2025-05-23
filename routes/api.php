@@ -53,9 +53,11 @@ Route::prefix('v1')->group(function () {
     Route::get('/auth/paciente', [PacientesController::class, 'index']);
 
     Route::get('/auth/usuario', [UsuariosController::class, 'index']);
+    Route::get('/auth/usuario-name/{id}', [UsuariosController::class, 'show']);
     // Route::get('/auth/empresa/{id}', [EmpresasController::class, 'show']);
 
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);
+    Route::get('/auth/tipo-usuario', [TiposUsuariosController::class, 'index']);
 
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -76,6 +78,8 @@ Route::prefix('v1')->group(function () {
         // Route::apiResource('/medico/paciente/show', [PacienteMedicoController::class, 'show']);
         // Route::apiResource('/medico/paciente/store', [PacienteMedicoController::class, 'store']);
         // Route::apiResource('/medico/paciente/update', [PacienteMedicoController::class, 'update']);
+        Route::post('/medico/registrar-paciente', [PacienteMedicoController::class, 'store']);
+
 
 
         // ? <-------------------- Rol Paciente -------------------->

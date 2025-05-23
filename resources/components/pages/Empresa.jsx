@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import Suscripcion from './Suscripcion';
-import { Search } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import Config from '../layouts/PageAuth/Config';
+import { Link } from 'react-router-dom';
 
 function Empresa() {
     const [empresas, setEmpresas] = useState([]);
@@ -14,6 +13,13 @@ function Empresa() {
         const response = await Config.getAlltEmpresa();
         setEmpresas(response.data);
     };
+
+    const getRol = () => {
+        const rol = sessionStorage.getItem('rol');
+        return rol ? JSON.parse(rol) : null;
+    }
+
+    const rol = getRol();
 
     return (
         <div className="container mx-auto p-6">
@@ -36,7 +42,12 @@ function Empresa() {
                     />
                 </div>
             </div>
-            <h2 className="text-2xl font-bold mb-4">Lista de Empresas</h2>
+            <h2 className="text-2xl font-bold mb-6 border-b border-gray-600/25 pb-4">Lista de Empresas</h2>
+            <div className='mb-5 flex justify-end'>
+                <Link to={`/${rol}/registrar-paciente`}>
+                    <a href={``} className='bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-500 font-semibold'>Crear Nuevo</a>
+                </Link>
+            </div>
             <div className="overflow-auto rounded-xl border border-gray-200 shadow-sm">
                 <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-white">
                     <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider">
@@ -45,6 +56,9 @@ function Empresa() {
                             <th className="px-6 py-4">Teléfono</th>
                             <th className="px-6 py-4">RFC</th>
                             <th className="px-6 py-4 max-md:hidden">Cédula</th>
+                            {rol === 'admin' && (
+                                <th className="px-6 py-4">-</th>
+                            )}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -59,6 +73,12 @@ function Empresa() {
                                     <td className="px-6 py-4">{empresa.telefono}</td>
                                     <td className="px-6 py-4">{empresa.rfc}</td>
                                     <td className="px-6 py-4 max-md:hidden">{empresa.cedula}</td>
+                                    {rol === 'admin' && (
+                                        <td className="py-4 justify-around flex ">
+                                            <a href="" className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</a>
+                                            <a href="" className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</a>
+                                        </td>
+                                    )}
                                 </tr>
                             ))
                         )}

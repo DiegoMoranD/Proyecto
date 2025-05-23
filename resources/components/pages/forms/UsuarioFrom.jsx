@@ -2,16 +2,16 @@ import React from "react";
 
 const UsuarioForm = () => {
   return (
-    <div className="min-w-[800px] h-fit mx-auto bg-white shadow-lg rounded-lg p-10 mt-10">
+    <div className="container mx-auto p-6">
       <h2 className="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2 border-gray-950/30">
         Registro de Usuario
       </h2>
 
       <form>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Nombres */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Nombres</label>
+            <label className="block text-gray-700 font-medium mb-3">Nombres</label>
             <input
               type="text"
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -21,7 +21,7 @@ const UsuarioForm = () => {
 
           {/* Apellido Paterno */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Apellido Paterno</label>
+            <label className="block text-gray-700 font-medium mb-3">Apellido Paterno</label>
             <input
               type="text"
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -31,7 +31,7 @@ const UsuarioForm = () => {
 
           {/* Apellido Materno */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Apellido Materno</label>
+            <label className="block text-gray-700 font-medium mb-3">Apellido Materno</label>
             <input
               type="text"
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -41,7 +41,7 @@ const UsuarioForm = () => {
 
           {/* Teléfono */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Teléfono</label>
+            <label className="block text-gray-700 font-medium mb-3">Teléfono</label>
             <input
               type="tel"
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -51,7 +51,7 @@ const UsuarioForm = () => {
 
           {/* Nombre de Usuario */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Nombre de Usuario</label>
+            <label className="block text-gray-700 font-medium mb-3">Nombre de Usuario</label>
             <input
               type="text"
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -61,7 +61,7 @@ const UsuarioForm = () => {
 
           {/* Contraseña */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Contraseña</label>
+            <label className="block text-gray-700 font-medium mb-3">Contraseña</label>
             <input
               type="password"
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -71,7 +71,7 @@ const UsuarioForm = () => {
 
           {/* Tipo de Usuario ID */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Tipo de Usuario</label>
+            <label className="block text-gray-700 font-medium mb-3">Tipo de Usuario</label>
             <select className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
               <option value="">Seleccionar</option>
               <option value="1">Administrador</option>
@@ -82,7 +82,7 @@ const UsuarioForm = () => {
 
           {/* Empresa ID */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Empresa ID</label>
+            <label className="block text-gray-700 font-medium mb-3">Empresa ID</label>
             <select className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
               <option value="">Seleccionar</option>
               <option value="EMP-001">EMP-001</option>
@@ -93,10 +93,10 @@ const UsuarioForm = () => {
         </div>
 
         {/* Botón de Enviar */}
-        <div className="mt-6 text-center">
+        <div className="mt-12 text-center">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-blue-600 transition"
+            className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition"
           >
             Guardar Usuario
           </button>

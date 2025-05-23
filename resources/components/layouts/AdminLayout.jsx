@@ -9,6 +9,8 @@ import TipoUsuario from '../pages/TipoUsuario';
 import Suscripcion from '../pages/Suscripcion';
 import Paciente from '../pages/Paciente';
 import Usuario from '../pages/Usuario';
+import PacientesForm from '../pages/forms/PacientesForm';
+import UsuarioForm from '../pages/forms/UsuarioFrom';
 
 function AdminLayout() {
     const { getRol } = AuthUser();
@@ -32,22 +34,26 @@ function AdminLayout() {
             <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
             <div className="flex-1 flex flex-col overflow-hidden">
                 <TopBar toggleSidebar={toggleSidebar} />
-                <section className="bg-gray-200 h-full">
-                    <div className='flex-1 p-4 overflow-auto'>
+                {/* El contenedor que debe ocupar el espacio restante y permitir scroll */}
+                <section className="flex-1 overflow-y-auto bg-gray-200">
+                    <div className="p-4">
                         <div className="bg-white p-4 m-4 rounded-2xl overflow-x-hidden lg:max-w-[95%] md:max-w-[95%] sm:max-w-full mx-auto max-sm:w-fixed max-lg:w-full">
                             <Routes>
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/empresa" element={<Empresa />} />
-                                <Route path="/tipousuario" element={<TipoUsuario />} />
+                                <Route path="/tipo-usuario" element={<TipoUsuario />} />
                                 <Route path="/suscripcion" element={<Suscripcion />} />
                                 <Route path="/pacientes" element={<Paciente />} />
                                 <Route path="/usuario" element={<Usuario />} />
+                                <Route path="/registrar-paciente" element={<PacientesForm />} />
+                                <Route path="/usuario-form" element={<UsuarioForm />} />
                             </Routes>
                         </div>
                     </div>
                 </section>
             </div>
         </main>
+
     );
 }
 

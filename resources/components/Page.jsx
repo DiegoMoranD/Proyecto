@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import SideBar from './sideBar';
+import SideBar from './SideBar';
 import TopBar from './Topbar';
 import ContentArea from './ContentArea';
 
@@ -15,6 +15,7 @@ import PublicLayout from './layouts/PublicLayout';
 export default function App() {
 
     return (
+        <></>
         // <Router>
 
         //     <Routes path="/login" element={<PublicLayout/>}>

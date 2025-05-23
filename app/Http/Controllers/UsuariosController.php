@@ -13,6 +13,11 @@ class UsuariosController extends Controller
         return response()->json($usuarios);
     }
 
+    public function show($id){
+        $usuarios = User::find($id);
+        return response()->json($usuarios);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

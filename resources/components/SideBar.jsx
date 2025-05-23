@@ -8,6 +8,7 @@ import EmplooyesSVG from './svg/EmplooyesSVG';
 import CompanySVG from './svg/CompanySVG';
 import UserSVG from './svg/UserSVG';
 import ContracSVG from './svg/ContracSVG';
+import AddPacienteSVG from './svg/addPacienteSVG';
 
 import Config from './layouts/PageAuth/Config';
 import AuthUser from './layouts/PageAuth/AuthUser';
@@ -60,20 +61,11 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                         <ul>
                             <>
                                 {rol === 'admin' && (
-                                    <li>
-                                        <Link to={`/${rol}/home`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
-                                            <HomeSVG />
-                                            <p className="pl-4">Inicio</p>
-                                        </Link>
-                                    </li>
-                                )}
-
-                                {(rol === 'admin' || rol === 'paciente') && (
                                     <>
                                         <li>
-                                            <Link to={`/${rol}/empresa`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
-                                                <CompanySVG />
-                                                <p className="pl-4">Empresa</p>
+                                            <Link to={`/${rol}/home`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
+                                                <HomeSVG />
+                                                <p className="pl-4">Inicio</p>
                                             </Link>
                                         </li>
                                         <li>
@@ -85,10 +77,32 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                     </>
                                 )}
 
+                                {(rol === 'admin' || rol === 'paciente') && (
+                                    <>
+                                        <li>
+                                            <Link to={`/${rol}/empresa`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
+                                                <CompanySVG />
+                                                <p className="pl-4">Empresa</p>
+                                            </Link>
+                                        </li>                                        
+                                    </>
+                                )}
+
+                                {(rol === 'paciente') && (
+                                    <>
+                                        <li>
+                                            <Link to={`/${rol}/usuario-data`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
+                                                <UserSVG />
+                                                <p className="pl-4">Mis datos</p>
+                                            </Link>
+                                        </li>
+                                    </>
+                                )}
+
                                 {rol === 'admin' && (
                                     <>
                                         <li>
-                                            <Link to={`/${rol}/tipousuario`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
+                                            <Link to={`/${rol}/tipo-usuario`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <EmplooyesSVG />
                                                 <p className="pl-4">Tipo de usuario</p>
                                             </Link>
@@ -105,12 +119,15 @@ export default function SideBar({ isOpen, toggleSidebar }) {
 
 
                             {(rol === 'medico' || rol === 'recepcion' || rol === 'admin') && (
-                                <li className="">
-                                    <Link to={`/${rol}/pacientes`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
-                                        <ActivitySVG />
-                                        <p className="pl-4 ">Paciente</p>
-                                    </Link>
-                                </li>
+
+                                <>
+                                    <li className="">
+                                        <Link to={`/${rol}/pacientes`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
+                                            <ActivitySVG />
+                                            <p className="pl-4 ">Paciente</p>
+                                        </Link>
+                                    </li>
+                                </>
                             )}
 
                         </ul>

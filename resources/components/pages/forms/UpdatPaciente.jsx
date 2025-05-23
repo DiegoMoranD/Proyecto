@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
 
-const PacientesForm = () => {
+const UpdatePaciente = () => {
   const [paciente, setPaciente] = useState({
     nombre: "",
     fecha_nacimiento: "",
@@ -229,4 +229,4 @@ const PacientesForm = () => {
   );
 };
 
-export default PacientesForm;
+export default UpdatePaciente;
