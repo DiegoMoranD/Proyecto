@@ -32,4 +32,5 @@ export default {
 
   // todo configuracion medico
   storePaciente: (data) => axios.post(`${base_api_url}/medico/registrar-paciente`, data),
+  updatePaciente: (data) => axios.post(`${base_api_url}/medico/update-paciente`, data),
 }

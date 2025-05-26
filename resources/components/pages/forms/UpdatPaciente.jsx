@@ -82,7 +82,7 @@ const UpdatePaciente = () => {
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-2xl font-bold mb-6 border-b pb-4 border-gray-600/25">
-        Registro de Paciente
+        Actualizar datos del Paciente
       </h2>
 
       <form onSubmit={submitPaciente}>

@@ -79,6 +79,7 @@ Route::prefix('v1')->group(function () {
         // Route::apiResource('/medico/paciente/store', [PacienteMedicoController::class, 'store']);
         // Route::apiResource('/medico/paciente/update', [PacienteMedicoController::class, 'update']);
         Route::post('/medico/registrar-paciente', [PacienteMedicoController::class, 'store']);
+        Route::post('/medico/update-paciente', [PacienteMedicoController::class, 'update']);
 
 
 
