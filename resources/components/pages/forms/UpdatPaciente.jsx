@@ -1,80 +1,79 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
 
-const UpdatePaciente = () => {
-  const [paciente, setPaciente] = useState({
-    nombre: "",
-    fecha_nacimiento: "",
-    tipo_sangre: "",
-    peso: "",
-    altura: "",
-    imc: "",
-    fecha_registro: "",
-    empresa_id: "",
-  })
+function UpdatePaciente() {
+  const { id } = useParams();
 
-  const [empresas, setEmpresaName] = useState([]);
+  // Un estado por campo
+  const [nombre, setNombre] = useState("");
+  const [fecha_nacimiento, setFechaNacimiento] = useState("");
+  const [tipo_sangre, setTipoSangre] = useState("");
+  const [peso, setPeso] = useState("");
+  const [altura, setAltura] = useState("");
+  const [imc, setImc] = useState("");
+  const [fecha_registro, setFechaRegistro] = useState("");
+  const [empresa_id, setEmpresaId] = useState("");
+  const [empresas, setEmpresas] = useState([]);
 
+  // Cargar datos del paciente y empresas al montar
   useEffect(() => {
-    const fetchEmpresa = async () => {
+    const fetchPaciente = async () => {
       try {
-        const response = await Config.getAlltEmpresa();
-        setEmpresaName(response.data);
+        const response = await Config.getPacienteById(id);
+        const data = response.data;
+        setNombre(data.nombre || "");
+        setFechaNacimiento(data.fecha_nacimiento || "");
+        setTipoSangre(data.tipo_sangre || "");
+        setPeso(data.peso || "");
+        setAltura(data.altura || "");
+        setImc(data.imc || "");
+        setFechaRegistro(data.fecha_registro || "");
+        setEmpresaId(data.empresa_id || "");
       } catch (error) {
-        console.error("Error encontrado", error);
+        console.error("Error al obtener paciente", error);
       }
     };
-    fetchEmpresa();
 
+    const fetchEmpresas = async () => {
+      try {
+        const response = await Config.getAlltEmpresa();
+        setEmpresas(response.data);
+      } catch (error) {
+        console.error("Error al obtener empresas", error);
+      }
+    };
 
-    const peso = parseFloat(paciente.peso);
-    const altura = parseFloat(paciente.altura);
-    if (!isNaN(peso) && !isNaN(altura) && altura > 0) {
-      const imcCalculado = (peso / (altura * altura)).toFixed(2);
-      setPaciente((prevPaciente) => ({
-        ...prevPaciente,
-        imc: imcCalculado,
-      }));
+    fetchPaciente();
+    fetchEmpresas();
+  }, [id]);
+
+  // Calcular IMC en tiempo real
+  useEffect(() => {
+    const pesoNum = parseFloat(peso);
+    const alturaNum = parseFloat(altura);
+    if (!isNaN(pesoNum) && !isNaN(alturaNum) && alturaNum > 0) {
+      setImc((pesoNum / (alturaNum * alturaNum)).toFixed(2));
     } else {
-      setPaciente((prevPaciente) => ({
-        ...prevPaciente,
-        imc: "",
-      }));
+      setImc("");
     }
-  }, [paciente.peso, paciente.altura]);
+  }, [peso, altura]);
 
-
-
-  const handlePacienteChange = (e) => {
-    setPaciente({ ...paciente, [e.target.name]: e.target.value });
-  };
-
-  const submitPaciente = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Calcula el IMC antes de enviar
-    const peso = parseFloat(paciente.peso);
-    const altura = parseFloat(paciente.altura);
-    const imc = altura > 0 ? (peso / (altura * altura)).toFixed(2) : 0;
-
     try {
-      await Config.storePaciente({
-        ...paciente,
+      await Config.updatePaciente(id, {
+        nombre,
+        fecha_nacimiento,
+        tipo_sangre,
+        peso,
+        altura,
         imc,
+        fecha_registro,
+        empresa_id,
       });
-      alert("Paciente registrado exitosamente");
-      setPaciente({
-        nombre: "",
-        fecha_nacimiento: "",
-        tipo_sangre: "",
-        peso: "",
-        altura: "",
-        imc: "",
-        fecha_registro: "",
-        empresa_id: "",
-      });
+      alert("Paciente actualizado exitosamente");
     } catch (error) {
-      alert("Error al registrar paciente");
+      alert("Error al actualizar paciente");
       console.error(error);
     }
   };
@@ -84,47 +83,34 @@ const UpdatePaciente = () => {
       <h2 className="text-2xl font-bold mb-6 border-b pb-4 border-gray-600/25">
         Actualizar datos del Paciente
       </h2>
-
-      <form onSubmit={submitPaciente}>
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Nombre del Paciente */}
           <div>
             <label className="block text-gray-700 font-medium mb-3">Nombre</label>
             <input
               type="text"
-              name="nombre"
-              value={paciente.nombre}
-              onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={nombre}
+              onChange={e => setNombre(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
               placeholder="Ej: Juan Pérez"
             />
           </div>
-
-          {/* Fecha de Nacimiento */}
           <div>
-            <label className="block text-gray-700 font-medium mb-3">
-              Fecha de Nacimiento
-            </label>
+            <label className="block text-gray-700 font-medium mb-3">Fecha de Nacimiento</label>
             <input
               type="date"
-              name="fecha_nacimiento"
-              value={paciente.fecha_nacimiento}
-              onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={fecha_nacimiento}
+              onChange={e => setFechaNacimiento(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
             />
-
           </div>
-
-          {/* Tipo de Sangre */}
           <div>
-            <label className="block text-gray-700 font-medium mb-3">
-              Tipo de Sangre
-            </label>
+            <label className="block text-gray-700 font-medium mb-3">Tipo de Sangre</label>
             <select
-              value={paciente.tipo_sangre}
-              name="tipo_sangre"
-              onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+              value={tipo_sangre}
+              onChange={e => setTipoSangre(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+            >
               <option value="">Seleccionar</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
@@ -136,74 +122,53 @@ const UpdatePaciente = () => {
               <option value="O-">O-</option>
             </select>
           </div>
-
-          {/* Peso */}
           <div>
             <label className="block text-gray-700 font-medium mb-3">Peso (kg)</label>
             <input
               type="number"
               step="0.1"
-              name="peso"
-              value={paciente.peso}
-              onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={peso}
+              onChange={e => setPeso(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
               placeholder="Ej: 70.5"
             />
           </div>
-
-          {/* Altura */}
           <div>
             <label className="block text-gray-700 font-medium mb-3">Altura (m)</label>
             <input
               type="number"
               step="0.01"
-              name="altura"
-              value={paciente.altura}
-              onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={altura}
+              onChange={e => setAltura(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
               placeholder="Ej: 1.75"
             />
           </div>
-
-          {/* IMC */}
           <div>
             <label className="block text-gray-700 font-medium mb-3">IMC</label>
             <input
               type="number"
-              name="imc"
-              value={paciente.imc}
+              value={imc}
               readOnly
-              onChange={handlePacienteChange}
-              step="0.1"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="El IMC Sera calculado"
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+              placeholder="El IMC será calculado"
             />
           </div>
-
-          {/* Fecha de Registro */}
           <div>
-            <label className="block text-gray-700 font-medium mb-3">
-              Fecha de Registro
-            </label>
+            <label className="block text-gray-700 font-medium mb-3">Fecha de Registro</label>
             <input
               type="date"
-              name="fecha_registro"
-              value={paciente.fecha_registro}
-              onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={fecha_registro}
+              onChange={e => setFechaRegistro(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
             />
           </div>
-
-
-
-          {/* Empresa ID */}
           <div>
             <label className="block text-gray-700 font-medium mb-3">Empresa ID</label>
             <select
-              value={paciente.empresa_id}
-              name="empresa_id"
-              onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={empresa_id}
+              onChange={e => setEmpresaId(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
             >
               <option value="">Selecciona una empresa</option>
               {empresas.map((empresa) => (
@@ -214,19 +179,17 @@ const UpdatePaciente = () => {
             </select>
           </div>
         </div>
-
-        {/* Botón de Enviar */}
         <div className="mt-12 text-center">
           <button
             type="submit"
             className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition"
           >
-            Guardar Paciente
+            Actualizar Paciente
           </button>
         </div>
       </form>
     </div>
   );
-};
+}
 
 export default UpdatePaciente;

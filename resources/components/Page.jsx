@@ -8,7 +8,7 @@ import CreateEmpresa from './pages/forms/CreateEmpresa';
 import PacientesForm from './pages/forms/PacientesForm';
 import SuscripcionForm from './pages/forms/SuscripcionForm';
 import TipoUsuarioForm from './pages/forms/TipoUsuarioForm';
-import UsuarioForm from './pages/forms/UsuarioFrom';
+import UpdateUsuario from './pages/forms/UsuarioFrom';
 import Login from './pages/forms/Login';
 import PublicLayout from './layouts/PublicLayout';
 

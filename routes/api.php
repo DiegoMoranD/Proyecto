@@ -1,16 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\EmpresaAdminController;
-use App\Http\Controllers\Api\Admin\PacienteAdminController;
-use App\Http\Controllers\Api\Admin\SuscripcionAdminController;
-use App\Http\Controllers\Api\Admin\TipoUsuarioAdminController;
-use App\Http\Controllers\Api\Admin\UsuarioAdminController;
+use App\Http\Controllers\Api\Admin\AdminController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\FrontController;
 use App\Http\Controllers\Api\Medico\PacienteMedicoController;
-use App\Http\Controllers\Api\Paciente\EmpresaPacienteController;
-use App\Http\Controllers\Api\Paciente\UsuarioPacienteController;
-use App\Http\Controllers\Api\Recepcion\PacienteRecepcionController;
 use App\Http\Controllers\EmpresasController;
 use App\Http\Controllers\PacientesController;
 use App\Http\Controllers\SuscripcionesController;
@@ -66,34 +58,24 @@ Route::prefix('v1')->group(function () {
 
 
         // todo <-------------------- Rol Root y Admin -------------------->
-        Route::apiResource('/admin/empresas', EmpresaAdminController::class);
-        Route::apiResource('/admin/usuarios', UsuarioAdminController::class);
-        Route::apiResource('/admin/paciente', PacienteAdminController::class);
-        Route::apiResource('/admin/suscripcion', SuscripcionAdminController::class);
-        Route::apiResource('/admin/tipousuario', TipoUsuarioAdminController::class);
-
+        Route::post('/admin/registrar-usuario', [AdminController::class, 'register']);
+        Route::put('/admin/update-empresa/{id}', [AdminController::class, 'updateEmpresa']);
+        Route::get('/admin/update-empresa/{id}', [AdminController::class, 'showEmpresa']);
+        Route::put('/admin/update-usuario/{id}', [AdminController::class, 'updateUser']);
+        Route::get('/admin/update-usuario/{id}', [AdminController::class, 'showUser']);
 
         // * <-------------------- Rol Medico -------------------->
-        // Route::apiResource('/medico/paciente/table', [PacienteMedicoController::class, 'index']);
-        // Route::apiResource('/medico/paciente/show', [PacienteMedicoController::class, 'show']);
-        // Route::apiResource('/medico/paciente/store', [PacienteMedicoController::class, 'store']);
-        // Route::apiResource('/medico/paciente/update', [PacienteMedicoController::class, 'update']);
         Route::post('/medico/registrar-paciente', [PacienteMedicoController::class, 'store']);
-        Route::post('/medico/update-paciente', [PacienteMedicoController::class, 'update']);
-
+        Route::put('/medico/update-paciente/{id}', [PacienteMedicoController::class, 'update']);
+        Route::get('/medico/update-paciente/{id}', [PacienteMedicoController::class, 'show']);
 
 
         // ? <-------------------- Rol Paciente -------------------->
-        // Route::apiResource('/paciente/empresa', [PacientesController::class, 'index']);
-        // Route::apiResource('/paciente/datos', [UsuarioPacienteController::class, 'index']);
-        // Route::apiResource('/paciente/datos/update', [UsuarioPacienteController::class, 'update']);
 
 
         // todo <-------------------- Rol Recepcion -------------------->
-        // Route::apiResource('/recepcion/table', [PacienteRecepcionController::class, 'index']);
-        // Route::apiResource('/recepcion/show', [PacienteRecepcionController::class, 'show']);
-        // Route::apiResource('/recepcion/store', [PacienteRecepcionController::class, 'store']);
-        // Route::apiResource('/recepcion/update', [PacienteRecepcionController::class, 'update']);
+        
+
     });
 });
 

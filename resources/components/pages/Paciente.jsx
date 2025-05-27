@@ -94,7 +94,7 @@ function Paciente() {
             <h2 className="text-2xl font-bold mb-5 border-b border-gray-600/25 pb-4">Lista de Pacientes</h2>
             <div className='mb-5 flex justify-end'>
                 <Link to={`/${rol}/registrar-paciente`}>
-                    <a href={``} className='bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-500 font-semibold'>Crear Nuevo</a>
+                    <p className='bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-500 font-semibold'>Crear Nuevo</p>
                 </Link>
             </div>
             <div className="overflow-auto rounded-xl border border-gray-200 shadow-sm">
@@ -126,9 +126,11 @@ function Paciente() {
                                         <td className="px-6 py-4">{paciente.imc}</td>
                                         <td className="px-6 py-4 max-md:hidden">{paciente.empresa_id}</td>
                                         {(rol === 'medico' || rol === 'admin' || rol === 'recepcion') && (
-                                            <td className="py-4 justify-around flex ">
-                                                <a href="" className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</a>
-                                                <a href="" className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</a>
+                                            <td className="py-4 justify-around flex">
+                                                <Link to={`/${rol}/update-paciente/${paciente.id}`}>
+                                                    <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
+                                                </Link>
+                                                <p className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</p>
                                             </td>
                                         )}
                                     </tr>

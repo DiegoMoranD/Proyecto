@@ -44,7 +44,7 @@ function Empresa() {
             </div>
             <h2 className="text-2xl font-bold mb-6 border-b border-gray-600/25 pb-4">Lista de Empresas</h2>
             <div className='mb-5 flex justify-end'>
-                <Link to={`/${rol}/registrar-paciente`}>
+                <Link to={`/${rol}/update-empresa`}>
                     <a href={``} className='bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-500 font-semibold'>Crear Nuevo</a>
                 </Link>
             </div>

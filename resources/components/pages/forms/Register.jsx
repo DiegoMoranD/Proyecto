@@ -11,6 +11,23 @@ function Register() {
     const [errors, setErrors] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const evaluateStrPassword = (password) => {
+        let strength = 0;
+        if (password.length >= 8) strength += 1;
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+        let percentage = (strength / 3) * 100;
+        let label = "Débil"
+
+        if (percentage >= 75) label = "Fuerte";
+        else if (percentage >= 50) label = "Media";
+
+        setStrLabel(label)
+        setPasswordStr(percentage)
+    }
+
     const validateFields = () => {
         const newErrors = {};
 
@@ -320,29 +337,26 @@ function Register() {
                             name="password"
                             value={usuario.password}
                             onChange={(e) => {
-                                setUsuario({ ...usuario, password: e.target.value });
+                                setUsuario({ ...usuario, password: e.target.value })
+                                evaluateStrPassword(e.target.value)
                             }}
                             className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.password ? "border-red-500" : "border-gray-300"
                                 } appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                             placeholder="Contraseña"
                         />
                         {errors.password && <span className="text-red-500 text-sm mt-1">{errors.password}</span>}
-                        <div className="mt-2 text-sm">
-                            Fortaleza:{" "}
-                            <span
-                                className={`font-bold ${checkPasswordStrength(usuario.password) === "weak"
-                                    ? "text-red-500"
-                                    : checkPasswordStrength(usuario.password) === "good"
-                                        ? "text-yellow-500"
-                                        : "text-green-500"
-                                    }`}
-                            >
-                                {checkPasswordStrength(usuario.password) === "weak"
-                                    ? "Débil"
-                                    : checkPasswordStrength(usuario.password) === "good"
-                                        ? "Buena"
-                                        : "Fuerte"}
-                            </span>
+                        
+                        <div className="mt-2 mb-4">
+                            <div className="w-full h-2 bg-gray-300 rounded">
+                                <div
+                                    className={`h-full rounded transition-all duration-300 ${passwordStr < 50 ? 'bg-red-500' :
+                                        passwordStr < 75 ? 'bg-yellow-500' :
+                                            'bg-green-500'
+                                        }`}
+                                    style={{ width: `${passwordStr}%` }}
+                                ></div>
+                            </div>
+                            <p className="text-sm mt-1 text-gray-600">{strLabel}</p>
                         </div>
                     </div>
                     <div className="relative">

@@ -26,11 +26,15 @@ export default {
   activateEmpresa: (token) => axios.post(`${base_api_url}/auth/activar-empresa/${token}`),
   getAllTipoUsuario: (data) => axios.get(`${base_api_url}/auth/tipo-usuario`, data),
   getNameUser: (id) => axios.get(`${base_api_url}/auth/usuario-name/${id}`),
+  // ! Empresa
+  updateUsuarioByAdmin: (id, data) => axios.put(`${base_api_url}/admin/update-usuario/${id}`, data),
+  getUsuarioByAdmin: (id) => axios.get(`${base_api_url}/admin/update-usuario/${id}`),
 
   // todo configuracion de pacientes
   getAllPaciente: (data) => axios.get(`${base_api_url}/auth/paciente`, data),
 
   // todo configuracion medico
   storePaciente: (data) => axios.post(`${base_api_url}/medico/registrar-paciente`, data),
-  updatePaciente: (data) => axios.post(`${base_api_url}/medico/update-paciente`, data),
+  updatePaciente: (id, data) => axios.put(`${base_api_url}/medico/update-paciente/${id}`, data),
+  getPacienteById: (id) => axios.get(`${base_api_url}/medico/update-paciente/${id}`),
 }

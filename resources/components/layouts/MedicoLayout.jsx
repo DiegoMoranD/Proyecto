@@ -37,7 +37,7 @@ function MedicoLayout() {
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/pacientes" element={<Paciente />} />
                                 <Route path="/registrar-paciente" element={<PacientesForm />} />
-                                <Route path="/update-paciente" element={<UpdatePaciente />} />
+                                <Route path="/update-paciente/:id" element={<UpdatePaciente />} />
                             </Routes>
                         </div>
                     </div>

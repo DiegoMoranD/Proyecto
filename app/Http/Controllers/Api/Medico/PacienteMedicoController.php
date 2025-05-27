@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Medico;
 
 use App\Http\Controllers\Controller;
 use App\Models\Paciente;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Utils\PHPLogToFile;
 
 class PacienteMedicoController extends Controller
 {
@@ -14,6 +16,15 @@ class PacienteMedicoController extends Controller
         // mosntrar a todos los pacientes
         $pacientes = Paciente::all();
         return response()->json($pacientes);
+    }
+
+    public function show($id)
+    {
+        $paciente = Paciente::find($id);
+        if (!$paciente) {
+            return response()->json(['message' => 'Paciente no encontrad(a/o)'], 404);
+        }
+        return response()->json($paciente);
     }
 
     // store paciente
@@ -42,8 +53,16 @@ class PacienteMedicoController extends Controller
 
         // Guardar el paciente
         $paciente->save();
+        $usuario = auth()->user();
 
         return response()->json([
+            PHPLogToFile::logToFileInfo(
+                'Nuevo paciente registrado',
+                [
+                    'Paciente' => $request->nombre,
+                    'Registrado por' => $usuario->email
+                ]
+            ),
             'message' => 'Paciente registrado exitosamente',
             'id' => $paciente->id // Devolver el ID del paciente creado
         ]);
@@ -53,6 +72,7 @@ class PacienteMedicoController extends Controller
     public function update(Request $request, $id)
     {
         $paciente = Paciente::find($id);
+        $medico = User::find($id);
 
         if (!$paciente) {
             return response()->json(['message' => 'Paciente no encontrado'], 404);
@@ -70,7 +90,14 @@ class PacienteMedicoController extends Controller
         ]);
 
         $paciente->update($request->all());
+        $usuario = auth()->user();
 
-        return response()->json(['message' => 'Paciente actualizado exitosamente']);
+        return response()->json([
+            'message' => 'Paciente actualizado exitosamente',
+            PHPLogToFile::logToFileInfo('Datos del paciente actualizados', [
+                'Paciente' => $request->nombre,
+                'Registrado por' => $usuario->email
+            ])
+        ]);
     }
 }

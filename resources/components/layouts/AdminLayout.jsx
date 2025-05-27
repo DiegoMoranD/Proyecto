@@ -9,8 +9,10 @@ import TipoUsuario from '../pages/TipoUsuario';
 import Suscripcion from '../pages/Suscripcion';
 import Paciente from '../pages/Paciente';
 import Usuario from '../pages/Usuario';
+import UpdateUsuario from '../pages/forms/UpdateUsuario';
+import UpdatePaciente from '../pages/forms/UpdatPaciente';
 import PacientesForm from '../pages/forms/PacientesForm';
-import UsuarioForm from '../pages/forms/UsuarioFrom';
+import UpdateEmpresa from '../pages/forms/UpdateEmpresa';
 
 function AdminLayout() {
     const { getRol } = AuthUser();
@@ -41,12 +43,14 @@ function AdminLayout() {
                             <Routes>
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/empresa" element={<Empresa />} />
+                                <Route path="/update-empresa" element={<UpdateEmpresa />} />
                                 <Route path="/tipo-usuario" element={<TipoUsuario />} />
                                 <Route path="/suscripcion" element={<Suscripcion />} />
-                                <Route path="/pacientes" element={<Paciente />} />
                                 <Route path="/usuario" element={<Usuario />} />
+                                <Route path="/update-usuario/:id" element={<UpdateUsuario />} />
+                                <Route path="/pacientes" element={<Paciente />} />
+                                <Route path="/update-paciente/:id" element={<UpdatePaciente />} />
                                 <Route path="/registrar-paciente" element={<PacientesForm />} />
-                                <Route path="/usuario-form" element={<UsuarioForm />} />
                             </Routes>
                         </div>
                     </div>

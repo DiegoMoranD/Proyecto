@@ -148,6 +148,7 @@ class AuthController extends Controller
             $response['user'] = $user;
             $response['message'] = "Logueado correctamente";
             $response['success'] = true;
+            PHPLogToFile::logToFileInfo('Usuario ha iniciado sesion', ['usuario' => $request->email]);
         } else {
             $response['message'] = "Credenciales incorrectas";
             $user->intentos += 1;
@@ -178,13 +179,13 @@ class AuthController extends Controller
 
     public function logout()
     {
-
         $response = ["success" => false];
         auth()->user()->tokens()->delete(); //error aqui method tokens
         $response = [
             "success" => true,
             "message" => "Secion Cerrada"
         ];
+        // PHPLogToFile::logToFileInfo('Usuario ha cerrado sesion', ['usuario' => $request->email]);
         return response()->json($response, 200);
     }
 

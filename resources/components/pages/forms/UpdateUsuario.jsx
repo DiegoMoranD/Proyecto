@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Config from "../../layouts/PageAuth/Config";
+import { useParams } from "react-router-dom";
 
-const UsuarioForm = () => {
+const UpdateUsuario = () => {
+  const { id } = useParams();
+
+  // Un estado por campo
+  const [nombre, setNombre] = useState("");
+  const [paterno, setPaterno] = useState("");
+  const [materno, setMaterno] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [username, setUsername] = useState("");
+  const [empresa_id, setEmpresaId] = useState("");
+  
+  const [empresas, setEmpresas] = useState([]);
+
+  
+
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2 border-gray-950/30">
@@ -59,35 +75,20 @@ const UsuarioForm = () => {
             />
           </div>
 
-          {/* Contraseña */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Contraseña</label>
-            <input
-              type="password"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="********"
-            />
-          </div>
-
-          {/* Tipo de Usuario ID */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Tipo de Usuario</label>
-            <select className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-              <option value="">Seleccionar</option>
-              <option value="1">Administrador</option>
-              <option value="2">Médico</option>
-              <option value="3">Recepcionista</option>
-            </select>
-          </div>
-
           {/* Empresa ID */}
           <div>
             <label className="block text-gray-700 font-medium mb-3">Empresa ID</label>
-            <select className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-              <option value="">Seleccionar</option>
-              <option value="EMP-001">EMP-001</option>
-              <option value="EMP-002">EMP-002</option>
-              <option value="EMP-003">EMP-003</option>
+            <select
+              value={empresa_id}
+              onChange={e => setEmpresaId(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+            >
+              <option value="">Selecciona una empresa</option>
+              {empresas.map((empresa) => (
+                <option key={empresa.id} value={empresa.id}>
+                  {empresa.nombre}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -106,4 +107,4 @@ const UsuarioForm = () => {
   );
 };
 
-export default UsuarioForm;
+export default UpdateUsuario;
