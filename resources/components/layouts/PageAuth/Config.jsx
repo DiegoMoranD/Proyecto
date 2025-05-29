@@ -29,7 +29,10 @@ export default {
   // ! Empresa
   updateUsuarioByAdmin: (id, data) => axios.put(`${base_api_url}/admin/update-usuario/${id}`, data),
   getUsuarioByAdmin: (id) => axios.get(`${base_api_url}/admin/update-usuario/${id}`),
-
+  updateEmpresaByAdmin: (id, data) => axios.put(`${base_api_url}/admin/update-empresa/${id}`, data),
+  getEmpresaByAdmin: (id) => axios.get(`${base_api_url}/admin/update-empresa/${id}`),
+  deletePacieteByAdmin: (id) => axios.delete(`${base_api_url}/admin/delete-paciente/${id}`),
+  
   // todo configuracion de pacientes
   getAllPaciente: (data) => axios.get(`${base_api_url}/auth/paciente`, data),
 

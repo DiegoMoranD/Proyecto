@@ -1,38 +1,87 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import Config from "../../layouts/PageAuth/Config";
+import { useParams } from "react-router-dom";
 
 function EmpresaForms() {
+    const { id } = useParams();
+
+    // Un estado por campo
+    const [nombre, setNombre] = useState("");
+    const [rfc, setRFC] = useState("");
+    const [cedula, setCedula] = useState("");
+    const [telefono, setTelefono] = useState("");
+
+    useEffect(() => {
+        const fetchEmpresa = async () => {
+            try {
+                const response = await Config.getEmpresaByAdmin(id);
+                const data = response.data;
+                setNombre(data.nombre || "");
+                setRFC(data.rfc || "");
+                setCedula(data.cedula || "");
+                setTelefono(data.telefono || "");
+            } catch (error) {
+                console.error("Error al obtener la empresa", error);
+            }
+        };
+
+        fetchEmpresa();
+    }, [id]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await Config.updateEmpresaByAdmin(id, {
+                nombre,
+                rfc,
+                cedula,
+                telefono,
+            });
+            alert("Empresa actualizada exitosamente");
+        } catch (error) {
+            alert("Error al actualizar la empresa");
+            console.error(error);
+        }
+    };
+
     return (
         <div className="container mx-auto p-6">
             <h2 className="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2 border-gray-950/30">
                 Registro de Usuario
             </h2>
 
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                         <label className="block text-gray-700 font-medium mb-3">Nombre</label>
                         <input
                             type="text"
+                            value={nombre}
+                            onChange={e => setNombre(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Ej: Juan Carlos"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-gray-700 font-medium mb-3">Correo</label>
+                        <label className="block text-gray-700 font-medium mb-3">RFC</label>
                         <input
                             type="text"
+                            value={rfc}
+                            onChange={e => setRFC(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: Pérez"
+                            placeholder="Ej: DAR1424"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-gray-700 font-medium mb-3">Apellido Materno</label>
+                        <label className="block text-gray-700 font-medium mb-3">Cedula</label>
                         <input
                             type="text"
+                            value={cedula}
+                            onChange={e => setCedula(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: López"
+                            placeholder="Ej: 514556GS"
                         />
                     </div>
 
@@ -40,6 +89,8 @@ function EmpresaForms() {
                         <label className="block text-gray-700 font-medium mb-3">Teléfono</label>
                         <input
                             type="tel"
+                            value={telefono}
+                            onChange={e => setTelefono(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Ej: 555-123-4567"
                         />

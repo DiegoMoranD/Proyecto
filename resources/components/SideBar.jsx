@@ -60,7 +60,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                     <div className="p-4 rounded">
                         <ul>
                             <>
-                                {rol === 'admin' && (
+                                {(rol === 'admin' || rol === 'root') && (
                                     <>
                                         <li>
                                             <Link to={`/${rol}/home`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
@@ -77,7 +77,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                     </>
                                 )}
 
-                                {(rol === 'admin' || rol === 'paciente') && (
+                                {(rol === 'admin' || rol === 'root' || rol === 'paciente') && (
                                     <>
                                         <li>
                                             <Link to={`/${rol}/empresa`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
@@ -99,7 +99,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                     </>
                                 )}
 
-                                {rol === 'admin' && (
+                                {(rol === 'admin' || rol === 'root') && (
                                     <>
                                         <li>
                                             <Link to={`/${rol}/tipo-usuario`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
@@ -118,7 +118,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                             </>
 
 
-                            {(rol === 'medico' || rol === 'recepcion' || rol === 'admin') && (
+                            {(rol === 'medico' || rol === 'recepcion' || rol === 'admin' || rol === 'root') && (
 
                                 <>
                                     <li className="">

@@ -56,6 +56,24 @@ Route::get('/admin/update-usuario/{any}', function () {
     return view('welcome');
 });
 
+Route::get('/admin/update-empresa/{any}', function () {
+    return view('welcome');
+});
+
+Route::get('/root/update-paciente/{any}', function () {
+    return view('welcome');
+});
+
+Route::get('/root/update-usuario/{any}', function () {
+    return view('welcome');
+});
+
+Route::get('/root/update-empresa/{any}', function () {
+    return view('welcome');
+});
+
+
+
 Route::get('/recepcion/{any}', function () {
     return view('welcome');
 });

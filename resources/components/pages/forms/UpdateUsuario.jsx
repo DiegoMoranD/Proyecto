@@ -6,16 +6,61 @@ const UpdateUsuario = () => {
   const { id } = useParams();
 
   // Un estado por campo
-  const [nombre, setNombre] = useState("");
+  const [name, setName] = useState("");
   const [paterno, setPaterno] = useState("");
   const [materno, setMaterno] = useState("");
   const [telefono, setTelefono] = useState("");
   const [username, setUsername] = useState("");
   const [empresa_id, setEmpresaId] = useState("");
-  
+
   const [empresas, setEmpresas] = useState([]);
 
-  
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      try {
+        const response = await Config.getUsuarioByAdmin(id);
+        const data = response.data;
+        setName(data.name || "");
+        setPaterno(data.paterno || "");
+        setMaterno(data.materno || "");
+        setTelefono(data.telefono || "");
+        setUsername(data.username || "");
+        setEmpresaId(data.empresa_id || "");
+      } catch (error) {
+        console.error("Error al obtener al usuario", error);
+      }
+    };
+
+    const fetchEmpresas = async () => {
+      try {
+        const response = await Config.getAlltEmpresa();
+        setEmpresas(response.data);
+      } catch (error) {
+        console.error("Error al obtener empresas", error);
+      }
+    };
+
+    fetchUsuario();
+    fetchEmpresas();
+  }, [id]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await Config.updateUsuarioByAdmin(id, {
+        name,
+        paterno,
+        materno,
+        telefono,
+        username,
+        empresa_id,
+      });
+      alert("Usuaro actualizado exitosamente");
+    } catch (error) {
+      alert("Error al actualizar paciente");
+      console.error(error);
+    }
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -23,13 +68,15 @@ const UpdateUsuario = () => {
         Registro de Usuario
       </h2>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Nombres */}
           <div>
             <label className="block text-gray-700 font-medium mb-3">Nombres</label>
             <input
               type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Ej: Juan Carlos"
             />
@@ -40,6 +87,8 @@ const UpdateUsuario = () => {
             <label className="block text-gray-700 font-medium mb-3">Apellido Paterno</label>
             <input
               type="text"
+              value={paterno}
+              onChange={e => setPaterno(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Ej: Pérez"
             />
@@ -50,6 +99,8 @@ const UpdateUsuario = () => {
             <label className="block text-gray-700 font-medium mb-3">Apellido Materno</label>
             <input
               type="text"
+              value={materno}
+              onChange={e => setMaterno(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Ej: López"
             />
@@ -60,6 +111,8 @@ const UpdateUsuario = () => {
             <label className="block text-gray-700 font-medium mb-3">Teléfono</label>
             <input
               type="tel"
+              value={telefono}
+              onChange={e => setTelefono(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Ej: 555-123-4567"
             />
@@ -70,6 +123,8 @@ const UpdateUsuario = () => {
             <label className="block text-gray-700 font-medium mb-3">Nombre de Usuario</label>
             <input
               type="text"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Ej: juanperez"
             />

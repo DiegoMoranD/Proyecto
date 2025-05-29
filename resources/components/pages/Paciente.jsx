@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 
 function Paciente() {
     const [pacientes, setPacientes] = useState([]);
+    const [filteredPacientes, setFilteredPacientes] = useState([]);
+    const [search, setSearch] = useState("");
+    const [orderNombre, setOrderNombre] = useState("");
+    const [orderTS, setOrderTS] = useState("");
+    const [orderPeso, setOrderPeso] = useState("");
+    const [orderIMC, setOrderIMC] = useState("");
+    const [orderEmpresa, setOrderEmpresa] = useState("");
 
     useEffect(() => {
         getAllPaciente()
@@ -12,6 +19,7 @@ function Paciente() {
     const getAllPaciente = async () => {
         const response = await Config.getAllPaciente()
         setPacientes(response.data)
+        setFilteredPacientes(response.data)
     }
 
     const getRol = () => {
@@ -21,65 +29,120 @@ function Paciente() {
 
     const rol = getRol();
 
+    const deletePaciente = async (id) => {
+        const isDelete = window.confirm("¿Desea Borrar Juego?");
+        if (isDelete) {
+            await Config.deletePacieteByAdmin(id);
+            getAllPaciente();
+        }
+    }
+
+    // Filtrar y ordenar pacientes
+    useEffect(() => {
+        let data = [...pacientes];
+
+        // Buscar por nombre
+        if (search) {
+            data = data.filter(p =>
+                p.nombre.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+
+        // Filtrar por tipo de sangre
+        if (orderTS) {
+            data = data.filter(p => p.tipo_sangre === orderTS);
+        }
+
+        // Ordenar por nombre
+        if (orderNombre === "az") {
+            data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        } else if (orderNombre === "za") {
+            data.sort((a, b) => b.nombre.localeCompare(a.nombre));
+        }
+
+        // Ordenar por peso
+        if (orderPeso === "mayor") {
+            data.sort((a, b) => b.peso - a.peso);
+        } else if (orderPeso === "menor") {
+            data.sort((a, b) => a.peso - b.peso);
+        }
+
+        // Ordenar por IMC
+        if (orderIMC === "mayor") {
+            data.sort((a, b) => b.imc - a.imc);
+        } else if (orderIMC === "menor") {
+            data.sort((a, b) => a.imc - b.imc);
+        }
+
+        // Ordenar por empresa (alfabético)
+        if (orderEmpresa === "az") {
+            data.sort((a, b) => String(a.empresa_id).localeCompare(String(b.empresa_id)));
+        } else if (orderEmpresa === "za") {
+            data.sort((a, b) => String(b.empresa_id).localeCompare(String(a.empresa_id)));
+        }
+
+        setFilteredPacientes(data);
+    }, [search, orderNombre, orderTS, orderPeso, orderIMC, orderEmpresa, pacientes]);
+
     return (
         <div className="container mx-auto p-6">
             <div className="flex flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
                 {/* filtros para nombre, */}
                 <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
                     <select
-                        name=""
-                        id=""
                         className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={orderNombre}
+                        onChange={e => setOrderNombre(e.target.value)}
                     >
                         <option value="">Ordernar nombre por:</option>
-                        <option value="Aventura">De la A-Z</option>
-                        <option value="Aventura">De la Z-A</option>
+                        <option value="az">De la A-Z</option>
+                        <option value="za">De la Z-A</option>
                     </select>
 
                     <select
-                        name=""
-                        id=""
                         className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={orderTS}
+                        onChange={e => setOrderTS(e.target.value)}
                     >
-                        <option value="">Ordernar T.S. por:</option>
-                        <option value="Aventura">A+</option>
-                        <option value="Aventura">A-</option>
-                        <option value="Aventura">B+</option>
-                        <option value="Aventura">B-</option>
-                        <option value="Aventura">AB+</option>
-                        <option value="Aventura">AB-</option>
-                        <option value="Aventura">O+</option>
-                        <option value="Aventura">O-</option>
+                        <option value="">Filtrar T.S. por:</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
                     </select>
 
                     <select
-                        name=""
-                        id=""
                         className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={orderPeso}
+                        onChange={e => setOrderPeso(e.target.value)}
                     >
                         <option value="">Ordernar Peso por:</option>
-                        <option value="Aventura">DeL mayor a menor</option>
-                        <option value="Aventura">DeL menor a mayor</option>
+                        <option value="mayor">Del mayor a menor</option>
+                        <option value="menor">Del menor a mayor</option>
                     </select>
 
                     <select
-                        name=""
-                        id=""
                         className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={orderIMC}
+                        onChange={e => setOrderIMC(e.target.value)}
                     >
                         <option value="">Ordernar IMC por:</option>
-                        <option value="Aventura">DeL mayor a menor</option>
-                        <option value="Aventura">DeL menor a mayor</option>
+                        <option value="mayor">Del mayor a menor</option>
+                        <option value="menor">Del menor a mayor</option>
                     </select>
 
                     <select
-                        name=""
-                        id=""
                         className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={orderEmpresa}
+                        onChange={e => setOrderEmpresa(e.target.value)}
                     >
                         <option value="">Ordernar Empresa por:</option>
-                        <option value="Aventura">De la A-Z</option>
-                        <option value="Aventura">De la Z-A</option>
+                        <option value="az">De la A-Z</option>
+                        <option value="za">De la Z-A</option>
                     </select>
                 </div>
 
@@ -87,6 +150,8 @@ function Paciente() {
                     <input
                         type="search"
                         placeholder="Buscar paciente"
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
                         className="h-10 px-4 w-full sm:w-64 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
@@ -112,12 +177,12 @@ function Paciente() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {!pacientes ? (
+                        {filteredPacientes.length === 0 ? (
                             <tr className='border-b hover:bg-gray-100'>
-                                <td className='px-6 py-4'><p>Cargando...</p></td>
+                                <td className='px-6 py-4' colSpan={6}><p>No hay pacientes</p></td>
                             </tr>
                         ) : (
-                            pacientes
+                            filteredPacientes
                                 .map((paciente) => (
                                     <tr key={paciente.id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4">{paciente.nombre}</td>
@@ -125,12 +190,12 @@ function Paciente() {
                                         <td className="px-6 py-4">{paciente.peso}</td>
                                         <td className="px-6 py-4">{paciente.imc}</td>
                                         <td className="px-6 py-4 max-md:hidden">{paciente.empresa_id}</td>
-                                        {(rol === 'medico' || rol === 'admin' || rol === 'recepcion') && (
+                                        {(rol === 'medico' || rol === 'admin' || rol === 'recepcion' || rol === 'root') && (
                                             <td className="py-4 justify-around flex">
                                                 <Link to={`/${rol}/update-paciente/${paciente.id}`}>
                                                     <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
                                                 </Link>
-                                                <p className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</p>
+                                                <button onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>
                                             </td>
                                         )}
                                     </tr>
@@ -143,4 +208,4 @@ function Paciente() {
     );
 }
 
-export default Paciente
+export default Paciente;

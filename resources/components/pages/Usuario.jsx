@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 
 function Usuario() {
     const [user, setUsers] = useState([]);
+    const [filteredUser, setFilteredUser] = useState([]);
+    const [search, setSearch] = useState("");
+    const [orderNombre, setOrderNombre] = useState("");
+    const [orderApellido, setOrderApellido] = useState("");
 
     useEffect(() => {
         getAlltUsuarios()
@@ -12,6 +16,7 @@ function Usuario() {
     const getAlltUsuarios = async () => {
         const response = await Config.getAllUsuarios();
         setUsers(response.data);
+        setFilteredUser(response.data)
     };
 
     const getRol = () => {
@@ -21,11 +26,40 @@ function Usuario() {
 
     const rol = getRol();
 
+    useEffect(() => {
+        let data = [...user];
+
+        // Buscar por nombre
+        if (search) {
+            data = data.filter(p =>
+                p.name.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+
+
+        // Ordenar por nombre
+        if (orderNombre === "az") {
+            data.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (orderNombre === "za") {
+            data.sort((a, b) => b.name.localeCompare(a.name));
+        }
+
+        if (orderApellido === "az") {
+            data.sort((a, b) => a.paterno.localeCompare(b.paterno));
+        } else if (orderApellido === "za") {
+            data.sort((a, b) => b.paterno.localeCompare(a.paterno));
+        }
+
+        setFilteredUser(data);
+    }, [search, orderNombre, orderApellido, user]);
+
     return (
         <div className="container mx-auto p-6">
             <div className="flex flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
                 <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
                     <select
+                        value={orderNombre}
+                        onChange={e => setOrderNombre(e.target.value)}
                         className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option>Ordenar nombre por:</option>
@@ -34,6 +68,9 @@ function Usuario() {
                     </select>
 
                     <select
+                        value={orderApellido}
+                        onChange={e => setOrderApellido(e.target.value)}
+
                         className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option>Ordenar apellido por:</option>
@@ -45,6 +82,8 @@ function Usuario() {
                 <div className="w-full sm:w-auto">
                     <input
                         type="search"
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
                         placeholder="Buscar usuario"
                         className="h-10 px-4 w-full sm:w-64 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -63,23 +102,23 @@ function Usuario() {
                             <th className="px-6 py-4">Apellido Paterno</th>
                             <th className="px-6 py-4">Telefono</th>
                             <th className="px-6 py-4 max-md:hidden">Empresa</th>
-                            {rol === 'admin' && (
+                            {(rol === 'admin' || rol === 'root') && (
                                 <th className="px-6 py-4">-</th>
                             )}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {!user ? (
+                        {!filteredUser ? (
                             <tr>
                                 <td className="px-6 py-4" colSpan="4">Cargando...</td>
                             </tr>
-                        ) : (user.map((usuario) => (
+                        ) : (filteredUser.map((usuario) => (
                             <tr key={usuario.id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-6 py-4 font-medium text-gray-900">{usuario.name}</td>
                                 <td className="px-6 py-4">{usuario.paterno}</td>
                                 <td className="px-6 py-4">{usuario.materno}</td>
                                 <td className="px-6 py-4 max-md:hidden">{usuario.empresa_id}</td>
-                                {rol === 'admin' && (
+                                {(rol === 'admin' || rol === 'root') && (
                                     <td className="py-4 justify-around flex ">
                                         <Link to={`/${rol}/update-usuario/${usuario.id}`}><p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p></Link>
                                         <a href="" className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</a>

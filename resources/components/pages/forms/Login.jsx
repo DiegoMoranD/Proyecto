@@ -18,7 +18,9 @@ function Login() {
     useEffect(() => {
         if (getToken()) {
             const rol = sessionStorage.getItem('rol') ? JSON.parse(sessionStorage.getItem('rol')) : null;
-            if (rol === 'admin') {
+            if (rol === 'root') {
+                navigate('/root/home');
+            } else if (rol === 'admin') {
                 navigate('/admin/home');
             } else if (rol === 'medico') {
                 navigate('/medico/home');
@@ -50,7 +52,9 @@ function Login() {
                 const userRol = data.user.roles[0].name;
                 setToken(data.user, data.token, userRol);
 
-                if (userRol === 'admin') {
+                if (rol === 'root') {
+                    navigate('/root/home');
+                } else if (userRol === 'admin') {
                     navigate('/admin/home');
                 } else if (userRol === 'medico') {
                     navigate('/medico/home');

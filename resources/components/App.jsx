@@ -17,6 +17,8 @@ import PacienteLayout from "./layouts/PacienteLayout";
 
 import RecepcionLayout from "./layouts/RecepcionLayout";
 
+import RootLayout from "./layouts/RootLayout";
+
 import PublicLayout from "./layouts/PublicLayout";
 import Login from "./pages/forms/Login";
 import Register from "./pages/forms/Register";
@@ -42,6 +44,12 @@ export default function App() {
 
                 <Route path="/" element={<PublicLayout />}>
                     <Route path="/*" element={<ContentArea />} />
+                </Route>
+
+                <Route element={<ProtectedRoutes />}>
+                    <Route path="/root/*" element={<RootLayout />}>
+                        <Route path="home" element={<ContentArea />} />
+                    </Route>
                 </Route>
 
                 <Route element={<ProtectedRoutes />}>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Empresa;
+use App\Models\Paciente;
 use App\Models\User;
 use App\Models\Usuario;
 use App\Utils\PHPLogToFile;
@@ -94,15 +95,79 @@ class AdminController extends Controller
         }
     }
 
-    public function updateUser(){
-        
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'Paciente no encontrado'], 404);
+        }
+
+        $request->validate([
+            'name' => 'string|max:255',
+            'paterno' => 'string|max:255',
+            'materno' => 'string|max:255',
+            'telefono' => 'string|max:255',
+            'username' => 'string|max:255',
+            'empresa_id' => 'integer'
+        ]);
+
+        $user->update($request->all());
+        $usuario = auth()->user();
+
+        return response()->json([
+            'message' => 'Usuario actualizado exitosamente',
+            PHPLogToFile::logToFileInfo('Datos del user actualizados', [
+                'Usuarios' => $request->name,
+                'Registrado por' => $usuario->email
+            ])
+        ]);
     }
 
-    public function updateEmpresa(){
-        
+    public function updateEmpresa(Request $request, $id)
+    {
+        $empresa = Empresa::find($id);
+
+        if (!$empresa) {
+            return response()->json(['message' => 'Paciente no encontrado'], 404);
+        }
+
+        $request->validate([
+            'nombre' => 'string|max:255',
+            'rfc' => 'string|max:255',
+            'cedula' => 'string|max:255',
+            'telefono' => 'string|max:255',
+        ]);
+
+        $empresa->update($request->all());
+        $usuario = auth()->user();
+
+        return response()->json([
+            'message' => 'Empresa actualizado exitosamente',
+            PHPLogToFile::logToFileInfo('Datos la empresa actualizados', [
+                'Empresa' => $request->nombre,
+                'Registrado por' => $usuario->email
+            ])
+        ]);
     }
 
-    public function destroyUser(){
-        
+    public function destroyUser($id) {}
+
+    public function destroyPaciente($id)
+{
+    $paciente = Paciente::find($id);
+
+    if (!$paciente) {
+        return response()->json(['message' => 'Paciente no encontrado'], 404);
     }
+
+    $paciente->delete();
+    $usuario = auth()->user();
+
+    PHPLogToFile::logToFileInfo('Paciente eliminado', [
+        'Paciente' => $paciente->id . ' ' . $paciente->nombre,
+        'Eliminado por' => $usuario->email
+    ]);
+    return response()->json(['Registro Borrado'], 200);
+}
 }

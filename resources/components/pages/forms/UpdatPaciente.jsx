@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
+import { useParams } from "react-router-dom";
 
 function UpdatePaciente() {
   const { id } = useParams();

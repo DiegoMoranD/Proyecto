@@ -185,7 +185,9 @@ class AuthController extends Controller
             "success" => true,
             "message" => "Secion Cerrada"
         ];
-        // PHPLogToFile::logToFileInfo('Usuario ha cerrado sesion', ['usuario' => $request->email]);
+
+        $usuario = auth()->user();
+        PHPLogToFile::logToFileInfo('Usuario ha cerrado sesion', ['usuario' => $usuario->email]);        
         return response()->json($response, 200);
     }
 

@@ -14,7 +14,7 @@ import UpdatePaciente from '../pages/forms/UpdatPaciente';
 import PacientesForm from '../pages/forms/PacientesForm';
 import UpdateEmpresa from '../pages/forms/UpdateEmpresa';
 
-function AdminLayout() {
+function RootLayout() {
     const { getRol } = AuthUser();
     const navigate = useNavigate()
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,8 +26,8 @@ function AdminLayout() {
     };
 
     useEffect(() => {
-        if (getRol() !== 'admin') {
-            navigate('/login'); // Redirige si el rol no es "admin"
+        if (getRol() !== 'root') {
+            navigate('/login'); // Redirige si el rol no es "root"
         }
     }, []);
 
@@ -61,4 +61,4 @@ function AdminLayout() {
     );
 }
 
-export default AdminLayout;
+export default RootLayout;

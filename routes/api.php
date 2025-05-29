@@ -63,6 +63,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/admin/update-empresa/{id}', [AdminController::class, 'showEmpresa']);
         Route::put('/admin/update-usuario/{id}', [AdminController::class, 'updateUser']);
         Route::get('/admin/update-usuario/{id}', [AdminController::class, 'showUser']);
+        Route::delete('/admin/delete-paciente/{id}', [AdminController::class, 'destroyPaciente']);
 
         // * <-------------------- Rol Medico -------------------->
         Route::post('/medico/registrar-paciente', [PacienteMedicoController::class, 'store']);
