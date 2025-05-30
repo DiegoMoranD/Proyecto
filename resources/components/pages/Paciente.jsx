@@ -12,28 +12,62 @@ function Paciente() {
     const [orderIMC, setOrderIMC] = useState("");
     const [orderEmpresa, setOrderEmpresa] = useState("");
 
-    useEffect(() => {
-        getAllPaciente()
-    }, [])
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5; // Cambia este valor según cuántos pacientes quieras por página
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentPacientes = filteredPacientes.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredPacientes.length / itemsPerPage);
 
-    const getAllPaciente = async () => {
-        const response = await Config.getAllPaciente()
-        setPacientes(response.data)
-        setFilteredPacientes(response.data)
-    }
 
     const getRol = () => {
         const rol = sessionStorage.getItem('rol');
         return rol ? JSON.parse(rol) : null;
     }
 
-    const rol = getRol();
+    const getUser = () => {
+        const user = sessionStorage.getItem('user');
+        return user ? JSON.parse(user) : null;
+    }
 
-    const deletePaciente = async (id) => {
-        const isDelete = window.confirm("¿Desea Borrar Juego?");
-        if (isDelete) {
-            await Config.deletePacieteByAdmin(id);
-            getAllPaciente();
+    const rol = getRol();
+    const user = getUser();
+
+
+
+    if (rol === 'admin' || rol === 'root') {
+        useEffect(() => {
+            getAllPacientesByAdmin()
+        }, [])
+
+        const getAllPacientesByAdmin = async () => {
+            const response = await Config.getAllPacientesByAdmin()
+            setPacientes(response.data)
+            setFilteredPacientes(response.data)
+        }
+        const deletePaciente = async (id) => {
+            const isDelete = window.confirm("¿Desea Borrar Juego?");
+            if (isDelete) {
+                await Config.deletePacieteByAdmin(id);
+                getAllPacientesByAdmin();
+            }
+        }
+    } else {
+        useEffect(() => {
+            getAllPaciente()
+        }, [])
+
+        const getAllPaciente = async () => {
+            const response = await Config.getAllPaciente()
+            setPacientes(response.data)
+            setFilteredPacientes(response.data)
+        }
+        const deletePaciente = async (id) => {
+            const isDelete = window.confirm("¿Desea Borrar Juego?");
+            if (isDelete) {
+                await Config.deletePacieteByAdmin(id);
+                getAllPaciente();
+            }
         }
     }
 
@@ -82,6 +116,7 @@ function Paciente() {
         }
 
         setFilteredPacientes(data);
+        setCurrentPage(1);
     }, [search, orderNombre, orderTS, orderPeso, orderIMC, orderEmpresa, pacientes]);
 
     return (
@@ -164,7 +199,7 @@ function Paciente() {
             </div>
             <div className="overflow-auto rounded-xl border border-gray-200 shadow-sm">
                 <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-white">
-                    <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider">
+                    <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider ">
                         <tr>
                             <th className="px-6 py-4">Nombre</th>
                             <th className="px-6 py-4">Tipo de Sangre</th>
@@ -176,13 +211,13 @@ function Paciente() {
                             )}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        {filteredPacientes.length === 0 ? (
+                    <tbody className="divide-y divide-gray-200 ">
+                        {currentPacientes.length === 0 ? (
                             <tr className='border-b hover:bg-gray-100'>
                                 <td className='px-6 py-4' colSpan={6}><p>No hay pacientes</p></td>
                             </tr>
                         ) : (
-                            filteredPacientes
+                            currentPacientes
                                 .map((paciente) => (
                                     <tr key={paciente.id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4">{paciente.nombre}</td>
@@ -203,6 +238,32 @@ function Paciente() {
                         )}
                     </tbody>
                 </table>
+
+            </div>
+            <div className="flex justify-center mt-6 gap-2">
+                <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                    Anterior
+                </button>
+                {[...Array(totalPages)].map((_, idx) => (
+                    <button
+                        key={idx + 1}
+                        onClick={() => setCurrentPage(idx + 1)}
+                        className={`px-3 py-1 rounded ${currentPage === idx + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                    >
+                        {idx + 1}
+                    </button>
+                ))}
+                <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                    Siguiente
+                </button>
             </div>
         </div>
     );

@@ -22,9 +22,6 @@ function TipoUsuario() {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex justify-between items-center bg-red-400 my-12 p-8">
-                Seccion de filtros
-            </div>
             <h2 className="text-2xl font-bold mb-6 border-b border-gray-600/25 pb-4">Lista de Tipo Usuario</h2>
             <div className="overflow-auto rounded-xl border border-gray-200 shadow-sm">
                 <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-white">

@@ -36,7 +36,7 @@ function Home() {
                 </div>
             </div>
 
-            <div className='flex justify-around m-4'>
+            {/* <div className='flex justify-around m-4'>
                 <div className='m-4 w-1/3 border border-gray-900/25 p-6 rounded-lg shadow-md flex justify-center items-center'>
                     <img src={Process} alt="dd" className='w-24' />
                 </div>
@@ -58,7 +58,7 @@ function Home() {
                 <div className='m-4 w-1/3 border border-gray-900/25 p-6 rounded-lg shadow-md flex justify-center items-center'>
                     <img src={Process} alt="dd" className='w-24' />
                 </div>
-            </div>
+            </div> */}
 
         </div>
     );

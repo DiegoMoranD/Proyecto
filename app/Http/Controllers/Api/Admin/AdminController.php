@@ -21,6 +21,13 @@ class AdminController extends Controller
         return response()->json($usuarios);
     }
 
+    public function indexPacientes(Request $request)
+    {
+        // mosntrar a todos los pacientes
+        $pacientes = Paciente::all();
+        return response()->json($pacientes);
+    }
+
     public function showUser($id)
     {
         $user = User::find($id);

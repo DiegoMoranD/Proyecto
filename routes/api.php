@@ -58,6 +58,7 @@ Route::prefix('v1')->group(function () {
 
 
         // todo <-------------------- Rol Root y Admin -------------------->
+        Route::get('/admin/pacientes', [AdminController::class, 'indexPacientes']);
         Route::post('/admin/registrar-usuario', [AdminController::class, 'register']);
         Route::put('/admin/update-empresa/{id}', [AdminController::class, 'updateEmpresa']);
         Route::get('/admin/update-empresa/{id}', [AdminController::class, 'showEmpresa']);

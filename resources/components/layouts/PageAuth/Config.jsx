@@ -40,4 +40,7 @@ export default {
   storePaciente: (data) => axios.post(`${base_api_url}/medico/registrar-paciente`, data),
   updatePaciente: (id, data) => axios.put(`${base_api_url}/medico/update-paciente/${id}`, data),
   getPacienteById: (id) => axios.get(`${base_api_url}/medico/update-paciente/${id}`),
+
+  // todo configuracion root
+  getAllPacientesByAdmin: (data) => axios.get(`${base_api_url}/admin/pacientes`, data),
 }

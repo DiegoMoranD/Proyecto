@@ -9,8 +9,12 @@ class PacientesController extends Controller
 {
     //
 
-    public function index() {
-        $pacientes = Paciente::all();
+    public function index()
+    {
+        $usuario = auth()->user();
+        $empresa_id = $usuario->empresa_id; // Asegúrate de que el usuario tenga este campo
+
+        $pacientes = Paciente::where('empresa_id', $empresa_id)->get();
         return response()->json($pacientes);
     }
 
