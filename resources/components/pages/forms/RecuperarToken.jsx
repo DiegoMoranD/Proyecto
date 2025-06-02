@@ -16,24 +16,24 @@ function RecuperarToken() {
     };
 
     const submitRecuperarToken = async (e) => {
-        
-                e.preventDefault();
-        
-                if (!validateFieldToken()) return; // Detiene el envío si hay errores
-        
-                try {
-                    const response = await Config.getGenerateNewToken({ email });
-        
-                    if (response.data.success) {
-                        setMessage('Se ha enviado un enlace de recuperación a tu correo electrónico.');
-                    }
-                } catch (error) {
-                    if (error.response && error.response.status === 404) {
-                        setErrors({ email: 'Este correo no esta registrado' });
-                    } else {
-                        setErrors({ email: 'Ocurrio un error al verififcar el correo' })
-                    }
-                } 
+
+        e.preventDefault();
+
+        if (!validateFieldToken()) return; // Detiene el envío si hay errores
+
+        try {
+            const response = await Config.getGenerateNewToken({ email });
+
+            if (response.data.success) {
+                setMessage('Se ha enviado un enlace de recuperación a tu correo electrónico.');
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                setErrors({ email: 'Este correo no esta registrado' });
+            } else {
+                setErrors({ email: 'Ocurrio un error al verififcar el correo' })
+            }
+        }
     };
 
     return (
@@ -43,6 +43,13 @@ function RecuperarToken() {
                     <h1 className="text-4xl text-black font-bold text-center mb-6 py-4">
                         Recuperar token de acceso
                     </h1>
+
+                    {message && (
+                        <div className="mb-4 text-green-600 text-center font-semibold">
+                            {message}
+                        </div>
+                    )}
+
                     <form action="" onSubmit={submitRecuperarToken}>
                         <h1 className='text-center mb-2 text-[18px] font-[500]'>Reenviar nuevo token</h1>
 
@@ -71,17 +78,17 @@ function RecuperarToken() {
                             >
                                 Enviar nuevo token
                             </button>
-                            <div  className='mt-8 -mb-4 flex justify-center'>
-                            <span>
-                                ¿Tu Token sigue estando activo?{' '}
-                                <a
-                                    className="text-blue-500 hover:text-cyan-400 cursor-pointer"
-                                    href="/login"
-                                >
-                                    Inicia sesión
-                                </a>
-                            </span>
-                        </div>
+                            <div className='mt-8 -mb-4 flex justify-center'>
+                                <span>
+                                    ¿Tu Token sigue estando activo?{' '}
+                                    <a
+                                        className="text-blue-500 hover:text-cyan-400 cursor-pointer"
+                                        href="/login"
+                                    >
+                                        Inicia sesión
+                                    </a>
+                                </span>
+                            </div>
 
                         </div>
                     </form>

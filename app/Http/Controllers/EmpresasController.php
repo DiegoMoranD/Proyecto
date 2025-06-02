@@ -224,12 +224,12 @@ class EmpresasController extends Controller
         ]);
 
         // Buscar la empresa por correo
-        $empresa = Empresa::where('correo', $request->email)->first();
-        $usuario = User::where('empresa_id', $empresa->id)->first();
+        // $empresa = Empresa::where('correo', $request->email)->first();
+        $usuario = User::where('email', $request->email)->first();
 
-        if (!$empresa) {
+        if (!$usuario) {
             return response()->json([
-                PHPLogToFile::logToFile('Correo no registrado', ['correo' => $empresa->correo]),
+                PHPLogToFile::logToFile('Correo no registrado', ['correo' => $usuario->email]),
                 'success' => false,
                 'message' => 'Correo no registrado',
             ], 404);
@@ -238,8 +238,7 @@ class EmpresasController extends Controller
         // Generar el token
         $token = $this->generateRecoveryToken();
         $usuario->remember_token = $token;
-        $empresa->tocken_acceso_expiracion = now()->addHour(); // Expira en 1 hora
-        $empresa->save();
+        $usuario->tocken_acceso_expiracion = now()->addHour(); // Expira en 1 hora
         $usuario->save();
         // Enviar el correo
         $recoveryUrl = "http://127.0.0.1:8000/new-password/{$token}";
@@ -251,18 +250,18 @@ class EmpresasController extends Controller
             <p>Este enlace expirará en 1 hora.</p>
         ";
 
-        $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
+        $emailStatus = PHPMailerHelper::sendEmail($usuario->email, $subject, $body);
 
         if ($emailStatus !== true) {
             return response()->json([
-                PHPLogToFile::logToFile('Gmail de recuperacion enviado', ['correo' => $empresa->correo]),
+                PHPLogToFile::logToFile('Gmail de recuperacion enviado', ['correo' => $usuario->email]),
                 'message' => $emailStatus
             ], 404);
         }
 
 
         return response()->json([
-            PHPLogToFile::logToFileInfo('Gmail de recuperacion enviado', ['correo' => $empresa->correo]),
+            PHPLogToFile::logToFileInfo('Gmail de recuperacion enviado', ['correo' => $usuario->email]),
             'success' => true,
             'message' => 'Se ha enviado un enlace de recuperación a tu correo electrónico.',
         ], 200);
@@ -273,33 +272,34 @@ class EmpresasController extends Controller
     private function generateRecoveryToken()
     {
         $randomString = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), 0, 4);
-        return 'RECU|' . $randomString;
+        return 'RECUP' . $randomString;
     }
     // todo ________________________________________________________________________________________________________________
 
     public function validarTokenRecuperacion($token)
     {
-        $empresa = Empresa::where('tocken_acceso', $token)->first();
+        $usuario = User::where('remember_token', $token)->first();
 
-        if (!$empresa) {
+        if (!$usuario) {
             return response()->json([
                 'success' => false,
-                // 'message' => 'Token inválido',
+                'message' => 'Token inválido',
             ], 404);
         }
 
-        if (now()->greaterThan($empresa->tocken_acceso_expiracion)) {
+        // Verifica expiración si tienes el campo
+        if (now()->greaterThan($usuario->tocken_acceso_expiracion)) {
             return response()->json([
                 'success' => false,
-                'message' => 'El token ha expirado',
+                // 'message' => 'El token ha expirado',
             ], 400);
         }
 
         return response()->json([
             'success' => true,
             'message' => 'Token válido',
-            'empresa' => [
-                'correo' => $empresa->correo,
+            'usuario' => [
+                'email' => $usuario->email,
             ],
         ], 200);
     }
@@ -312,9 +312,9 @@ class EmpresasController extends Controller
         ]);
 
         // Buscar la empresa por el token
-        $empresa = Empresa::where('tocken_acceso', $request->token)->first();
+        $usuario = User::where('remember_token', $request->token)->first();
 
-        if (!$empresa) {
+        if (!$usuario) {
             return response()->json([
                 'success' => false,
                 'message' => 'Enlace no válido o expirado',
@@ -322,31 +322,18 @@ class EmpresasController extends Controller
         }
 
         // Verificar si el token ha expirado
-        if (now()->greaterThan($empresa->tocken_acceso_expiracion)) {
+        if (now()->greaterThan($usuario->tocken_acceso_expiracion)) {
             return response()->json([
                 'success' => false,
                 'message' => 'El token ha expirado',
             ], 400);
         }
 
-        // Buscar al usuario asociado a la empresa
-        $usuario = User::where('empresa_id', $empresa->id)->first();
-
-        if (!$usuario) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No se encontró un usuario asociado a esta empresa',
-            ], 404);
-        }
-
         // Actualizar la contraseña del usuario
         $usuario->password = bcrypt($request->password);
+        $usuario->remember_token = null;
+        $usuario->tocken_acceso_expiracion = null;
         $usuario->save();
-
-        // Invalidar el token
-        $empresa->tocken_acceso = null;
-        $empresa->tocken_acceso_expiracion = null;
-        $empresa->save();
 
         $recoveryUrl = "http://127.0.0.1:8000/login";
         $subject = "Recuperación de cuenta realizada - TecuaniSoft";
@@ -356,7 +343,7 @@ class EmpresasController extends Controller
                 <a href='{$recoveryUrl}'>Probar nueva contraseña</a>
             ";
 
-        $emailStatus = PHPMailerHelper::sendEmail($empresa->correo, $subject, $body);
+        $emailStatus = PHPMailerHelper::sendEmail($usuario->email, $subject, $body);
 
         return response()->json([
             'success' => true,

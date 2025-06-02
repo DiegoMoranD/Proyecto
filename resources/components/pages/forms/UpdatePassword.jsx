@@ -43,6 +43,12 @@ function UpdatePassword() {
                         Recuperar cuenta
                     </h1>
 
+                    {message && (
+                        <div className="mb-4 text-green-600 text-center font-semibold">
+                            {message}
+                        </div>
+                    )}
+
                     <form action="" onSubmit={submitRecuperar}>
                         <h1 className='mt-8 text-center mb-2 text-[18px] font-[500]'>Cambiar de contraseña</h1>
                         <div className="relative my-4">

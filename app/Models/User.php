@@ -27,6 +27,8 @@ class User extends Authenticatable
         'password',
         'telefono',
         'username',
+        'remember_token',
+        'tocken_acceso_expiracion',
         'tipo_usuario_id',
         'empresa_id',
     ];

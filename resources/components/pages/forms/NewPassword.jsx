@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 function NewPassword() {
     const { token } = useParams();
-    const [empresa, setEmpresa] = useState(null);
+    const [user, setUser] = useState(null);
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState({});
@@ -32,10 +32,10 @@ function NewPassword() {
 
 
     useEffect(() => {
-        const fetchEmpresa = async () => {
+        const fetchUser = async () => {
             try {
                 const response = await Config.validateRecoveryToken(token);
-                setEmpresa(response.data.empresa);
+                setUser(response.data.usuario);
                 setMessage(response.data.message);
             } catch (error) {
                 setMessage(
@@ -46,7 +46,7 @@ function NewPassword() {
             }
         };
 
-        fetchEmpresa();
+        fetchUser();
     }, [token]);
 
 
@@ -79,7 +79,7 @@ function NewPassword() {
         return <p>Cargando</p>
     }
 
-    if (!empresa) {
+    if (!user) {
         return (
             <div className='bg-[#dbdbdb] text-black h-screen flex justify-center items-center w-full'>
                 <div className='bg-white p-6 rounded-lg shadow-md w-full max-w-md'>
@@ -97,7 +97,7 @@ function NewPassword() {
                     Cambiar Contraseña
                 </h1>
                 <p className='text-center m-2 text-[16px] font-[500]'>
-                    Correo: {empresa.correo}
+                    Correo: {user.email}
                 </p>
                 <form onSubmit={handleSubmit}>
                     <div>
