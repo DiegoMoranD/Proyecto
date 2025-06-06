@@ -46,7 +46,7 @@ function Paciente() {
             setFilteredPacientes(response.data)
         }
         const deletePaciente = async (id) => {
-            const isDelete = window.confirm("¿Desea Borrar Juego?");
+            const isDelete = window.confirm("¿Desea Borrar El Paciente?");
             if (isDelete) {
                 await Config.deletePacieteByAdmin(id);
                 getAllPacientesByAdmin();

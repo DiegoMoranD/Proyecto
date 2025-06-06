@@ -53,10 +53,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/auth/tipo-usuario', [TiposUsuariosController::class, 'index']);
 
 
-    // ! Root
-    Route::post('/root/crear-empresa', [RootController::class, 'storeEmpresa']);
-    Route::post('/root/crear-usuario', [RootController::class, 'storeUsuario']);
-
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth Routes
         Route::post('/auth/logout', [AuthController::class, 'logout']);
@@ -71,7 +67,11 @@ Route::prefix('v1')->group(function () {
         Route::get('/admin/update-usuario/{id}', [AdminController::class, 'showUser']);
         Route::delete('/admin/delete-paciente/{id}', [AdminController::class, 'destroyPaciente']);
 
-
+        // ! Root
+        Route::post('/root/crear-empresa', [RootController::class, 'storeEmpresa']);
+        Route::post('/root/crear-usuario', [RootController::class, 'storeUsuario']);
+        Route::delete('/root/delete-empresa/{id}', [RootController::class, 'destroyEmpresa']);
+        Route::delete('/root/delete-usuario/{id}', [RootController::class, 'destroyUsuario']);
 
         // * <-------------------- Rol Medico -------------------->
         Route::post('/medico/registrar-paciente', [PacienteMedicoController::class, 'store']);

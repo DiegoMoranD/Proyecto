@@ -26,6 +26,14 @@ function Usuario() {
         setFilteredUser(response.data)
     };
 
+    const deleteUsuario = async (id) => {
+        const isDelete = window.confirm("¿Desea Borrar Al Usuario?");
+        if (isDelete) {
+            await Config.deleteUsuarioByRoot(id);
+            getAlltUsuarios();
+        }
+    }
+
     const getRol = () => {
         const rol = sessionStorage.getItem('rol');
         return rol ? JSON.parse(rol) : null;
@@ -134,7 +142,7 @@ function Usuario() {
                                 {(rol === 'admin' || rol === 'root') && (
                                     <td className="py-4 justify-around flex ">
                                         <Link to={`/${rol}/update-usuario/${usuario.id}`}><p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p></Link>
-                                        <a href="" className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</a>
+                                        <button onClick={() => deleteUsuario(usuario.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>
                                     </td>
                                 )}
                             </tr>

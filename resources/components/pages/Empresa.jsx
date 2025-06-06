@@ -25,6 +25,14 @@ function Empresa() {
         setFilteredEmpresa(response.data);
     };
 
+    const deleteEmpresa = async (id) => {
+        const isDelete = window.confirm("¿Desea Borrar La Empresa?");
+        if (isDelete) {
+            await Config.deleteEmpresaByRoot(id);
+            getAlltEmpresa();
+        }
+    }
+
     const getRol = () => {
         const rol = sessionStorage.getItem('rol');
         return rol ? JSON.parse(rol) : null;
@@ -117,7 +125,7 @@ function Empresa() {
                                             <Link to={`/${rol}/update-empresa/${empresa.id}`}>
                                                 <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
                                             </Link>
-                                            <a href="" className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</a>
+                                            <button onClick={() => deleteEmpresa(empresa.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>
                                         </td>
                                     )}
                                 </tr>

@@ -121,4 +121,40 @@ class RootController extends Controller
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
+
+    public function destroyEmpresa($id)
+    {
+        $empresa = Empresa::find($id);
+
+        if (!$empresa) {
+            return response()->json(['message' => 'Empresa no encontrado'], 404);
+        }
+
+        $empresa->delete();
+        $usuario = auth()->user();
+
+        PHPLogToFile::logToFileInfo('Empresa eliminada', [
+            'Empresa' => $empresa->id . ' ' . $empresa->nombre,
+            'Eliminado por' => $usuario->email
+        ]);
+        return response()->json(['Registro Borrado'], 200);
+    }
+
+    public function destroyUsuario($id)
+    {
+        $usuario = User::find($id);
+
+        if (!$usuario) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+        $usuario->delete();
+        $usuario = auth()->user();
+
+        PHPLogToFile::logToFileInfo('Usuario eliminado', [
+            'Usuario' => $usuario->id . ' ' . $usuario->nombre,
+            'Eliminado por' => $usuario->email
+        ]);
+        return response()->json(['Registro Borrado'], 200);
+    }
 }

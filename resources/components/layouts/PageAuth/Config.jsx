@@ -45,4 +45,6 @@ export default {
   getAllPacientesByAdmin: (data) => axios.get(`${base_api_url}/admin/pacientes`, data),
   storeEmpresaByRoot: (data) => axios.post(`${base_api_url}/root/crear-empresa`, data),
   storeUsuarioByRoot: (data) => axios.post(`${base_api_url}/root/crear-usuario`, data),
+  deleteEmpresaByRoot: (id) => axios.delete(`${base_api_url}/root/delete-empresa/${id}`),
+  deleteUsuarioByRoot: (id) => axios.delete(`${base_api_url}/root/delete-usuario/${id}`),
 }

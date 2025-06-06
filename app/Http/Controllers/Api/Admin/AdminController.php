@@ -161,20 +161,20 @@ class AdminController extends Controller
     public function destroyUser($id) {}
 
     public function destroyPaciente($id)
-{
-    $paciente = Paciente::find($id);
+    {
+        $paciente = Paciente::find($id);
 
-    if (!$paciente) {
-        return response()->json(['message' => 'Paciente no encontrado'], 404);
+        if (!$paciente) {
+            return response()->json(['message' => 'Paciente no encontrado'], 404);
+        }
+
+        $paciente->delete();
+        $usuario = auth()->user();
+
+        PHPLogToFile::logToFileInfo('Paciente eliminado', [
+            'Paciente' => $paciente->id . ' ' . $paciente->nombre,
+            'Eliminado por' => $usuario->email
+        ]);
+        return response()->json(['Registro Borrado'], 200);
     }
-
-    $paciente->delete();
-    $usuario = auth()->user();
-
-    PHPLogToFile::logToFileInfo('Paciente eliminado', [
-        'Paciente' => $paciente->id . ' ' . $paciente->nombre,
-        'Eliminado por' => $usuario->email
-    ]);
-    return response()->json(['Registro Borrado'], 200);
-}
 }
