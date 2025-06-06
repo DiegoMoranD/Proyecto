@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api\Root;
 
 use App\Http\Controllers\Controller;
 use App\Models\Empresa;
+use App\Models\Tipo_usuario;
 use App\Models\User;
 use App\Models\Usuario;
 use App\Utils\PHPLogToFile;
 use App\Utils\PHPMailerHelper;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class RootController extends Controller
 {
@@ -84,37 +86,39 @@ class RootController extends Controller
     {
         try {
             $request->validate([
-                'nombre' => 'string',
-                'correo' => 'string',
-                'telefono' => 'integer',
-                'rfc' => 'string',
-                'tocken_acceso' => 'string',
-                'cuenta_valida' => 'integer',
-                'cedula' => 'string',
-                'suscripcion_id' => 'required|integer',
-                'fecha_registro' => 'date',
-                'fecha_vencimiento' => 'date',
-                'fecha_compra' => 'date'
+                'name' => 'required|string',
+                'paterno' => 'required|string',
+                'materno' => 'required|string',
+                'username' => 'required|string|unique:users,username',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:8',
+                'tipo_usuario_id' => 'required|integer|exists:tipo_usuarios,id',
+                'telefono' => 'required|string',
+                'empresa_id' => 'required|integer|exists:empresas,id',
             ]);
 
             $usuario = new User();
-            $usuario->nombre = $request->input('nombre');
-            $usuario->correo = $request->input('correo');
+            $usuario->name = $request->input('name');
+            $usuario->paterno = $request->input('paterno');
+            $usuario->materno = $request->input('materno');
+            $usuario->username = $request->input('username');
+            $usuario->email = $request->input('email');
+            $usuario->password = bcrypt($request->input('password'));
+            $usuario->tipo_usuario_id = $request->input('tipo_usuario_id');
             $usuario->telefono = $request->input('telefono');
-            $usuario->rfc = $request->input('rfc');
-            $usuario->tocken_acceso = $request->input('tocken_acceso');
-            $usuario->cuenta_valida = $request->input('cuenta_valida');
-            $usuario->cedula = $request->input('cedula');
-            $usuario->suscripcion_id = $request->input('suscripcion_id');
-            $usuario->fecha_registro = $request->input('fecha_registro');
-            $usuario->fecha_vencimiento = $request->input('fecha_vencimiento');
-            $usuario->fecha_compra = $request->input('fecha_compra');
-
+            $usuario->empresa_id = $request->input('empresa_id');
             $usuario->save();
 
-            return response()->json(['message' => 'empresa registrada exitosamente'], 201);
-        } catch (\Throwable $th) {
-            //throw $th;
+            // Buscar el nombre del tipo de usuario
+            $tipoUsuario = Tipo_usuario::find($request->input('tipo_usuario_id'));
+            if ($tipoUsuario) {
+                // Asignar el rol con el mismo nombre
+                $usuario->assignRole($tipoUsuario->nombre_tipo);
+            }
+
+            return response()->json(['message' => 'Usuario registrado exitosamente'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 }

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
-import { useActionData } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function UsuarioForm() {
-
+    const navigate = useNavigate();
     const [usuario, setUsuario] = useState({
         name: "",
         paterno: "",
@@ -20,6 +20,12 @@ function UsuarioForm() {
     const [errors, setErrors] = useState({});
     const [passwordStr, setPasswordStr] = useState(0);
     const [strLabel, setStrLabel] = useState("Débil");
+    const getRol = () => {
+        const rol = sessionStorage.getItem('rol');
+        return rol ? JSON.parse(rol) : null;
+    }
+
+    const rol = getRol();
 
     const handleUsuarioChange = (e) => {
         setUsuario({ ...usuario, [e.target.name]: e.target.value });
@@ -68,23 +74,18 @@ function UsuarioForm() {
     const submitUsuario = async (e) => {
         e.preventDefault();
         try {
-            await Config.storeUsuarioByRoot({
+            const response = await Config.storeUsuarioByRoot({
                 ...usuario
             });
-            alert("Usuario registrado exitosamente");
-            setUsuario({
-                name: usuario.name,
-                paterno: usuario.paterno,
-                materno: usuario.materno,
-                username: usuario.username,
-                email: usuario.email,
-                password: usuario.password,
-                tipo_usuario_id: usuario.tipo_usuario_id,
-                telefono: usuario.telefono,
-                empresa_id: usuario.empresa_id,
-            });
+
+            // Si el registro fue exitoso (status 201 o success en la respuesta)
+            if (response.status === 201 || response.data.success) {
+                alert("Usuario registrado exitosamente");
+                // Redirige a la tabla de empresas
+                navigate(`/${rol}/usuario`);
+            }
         } catch (error) {
-            alert("Error al registrar paciente");
+            alert("Error al registrar al usuario");
             console.error(error);
         }
     };
@@ -259,7 +260,7 @@ function UsuarioForm() {
                     <button
                         type="submit"
                         className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition">
-                        Guardar Empresa
+                        Registrar Usuario
                     </button>
                 </div>
             </form>

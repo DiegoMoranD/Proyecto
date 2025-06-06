@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
+import { useNavigate } from "react-router-dom";
 
 function EmpresaForm() {
+
+  const getRol = () => {
+    const rol = sessionStorage.getItem('rol');
+    return rol ? JSON.parse(rol) : null;
+  }
+
+  const rol = getRol();
   const [suscripcion, setSuscripcion] = useState([]);
+  const navigate = useNavigate();
   const [empresa, setEmpresa] = useState({
     nombre: "",
     correo: "",
@@ -33,29 +42,23 @@ function EmpresaForm() {
   };
 
   const submitEmpresa = async (e) => {
-    e.preventDefault();
-    try {
-      await Config.storeEmpresaByRoot({
-        ...empresa
-      });
+  e.preventDefault();
+  try {
+    const response = await Config.storeEmpresaByRoot({
+      ...empresa
+    });
+
+    // Si el registro fue exitoso (status 201 o success en la respuesta)
+    if (response.status === 201 || response.data.success) {
       alert("Empresa registrada exitosamente");
-      setEmpresa({
-        nombre: empresa.nombre,
-        correo: empresa.correo,
-        telefono: empresa.telefono, // Convertir a número entero
-        cedula: empresa.cedula,
-        suscripcion_id: empresa.suscripcion_id,
-        rfc: empresa.rfc,
-        cuenta_valida: 1, 
-        fecha_registro: empresa.fecha_registro,
-        fecha_vencimiento: empresa.fecha_vencimiento, 
-        fecha_compra:  empresa.fecha_compra, 
-      });
-    } catch (error) {
-      alert("Error al registrar la empresa");
-      console.error(error);
+      // Redirige a la tabla de empresas
+      navigate(`/${rol}/empresa`);
     }
-  };
+  } catch (error) {
+    alert("Error al registrar la empresa");
+    console.error(error);
+  }
+};
 
   return (
     <div className="container mx-auto p-6">
@@ -206,7 +209,7 @@ function EmpresaForm() {
           <button
             type="submit"
             className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition">
-            Guardar Empresa
+            Registrar Empresa
           </button>
         </div>
       </form>
