@@ -42,9 +42,9 @@ export default function App() {
                     <Route path="/recuperar-cuenta" element={<UpdatePassword />} />
                 </Route>
 
-                <Route path="/" element={<PublicLayout />}>
+                {/* <Route path="/" element={<PublicLayout />}>
                     <Route path="/*" element={<ContentArea />} />
-                </Route>
+                </Route> */}
 
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/root/*" element={<RootLayout />}>

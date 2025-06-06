@@ -77,6 +77,17 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                     </>
                                 )}
 
+                                {(rol === 'medico' || rol === 'recepcion') && (
+                                    <>
+                                        <li>
+                                            <Link to={`/${rol}/home`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
+                                                <HomeSVG />
+                                                <p className="pl-4">Inicio</p>
+                                            </Link>
+                                        </li>
+                                    </>
+                                )}
+
                                 {(rol === 'admin' || rol === 'root' || rol === 'paciente') && (
                                     <>
                                         <li>
@@ -84,7 +95,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                                 <CompanySVG />
                                                 <p className="pl-4">Empresa</p>
                                             </Link>
-                                        </li>                                        
+                                        </li>
                                     </>
                                 )}
 
@@ -126,6 +137,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                             <ActivitySVG />
                                             <p className="pl-4 ">Paciente</p>
                                         </Link>
+
                                     </li>
                                 </>
                             )}

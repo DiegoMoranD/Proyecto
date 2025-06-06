@@ -13,6 +13,9 @@ import UpdateUsuario from '../pages/forms/UpdateUsuario';
 import UpdatePaciente from '../pages/forms/UpdatPaciente';
 import PacientesForm from '../pages/forms/PacientesForm';
 import UpdateEmpresa from '../pages/forms/UpdateEmpresa';
+import EmpresaForm from '../pages/forms/EmpresaForm';
+import UsuarioForm from '../pages/forms/UsuarioForm';
+import RecepcionForm from '../pages/forms/RecepcionForm';
 
 function RootLayout() {
     const { getRol } = AuthUser();
@@ -51,6 +54,9 @@ function RootLayout() {
                                 <Route path="/pacientes" element={<Paciente />} />
                                 <Route path="/update-paciente/:id" element={<UpdatePaciente />} />
                                 <Route path="/registrar-paciente" element={<PacientesForm />} />
+                                <Route path="/crear-empresa" element={<EmpresaForm />} />
+                                <Route path="/registrar-usuario" element={<UsuarioForm />} />
+                                <Route path="/registrar-recepcion" element={<RecepcionForm />} />
                             </Routes>
                         </div>
                     </div>

@@ -8,7 +8,7 @@ export default {
   getLogout: () => axios.post(`${base_api_url}/auth/logout`),
 
   // todo configuracion de suscripcion
-  getSuscripcionStore: (data) => axios.post(`${base_api_url}/auth/suscripcion`, data),
+  getAllSuscripcion: (data) => axios.get(`${base_api_url}/auth/suscripcion`, data),
 
   // todo configuracion de empresa
   getEmpresaStore: (data) => axios.post(`${base_api_url}/auth/empresa`, data),
@@ -41,6 +41,8 @@ export default {
   updatePaciente: (id, data) => axios.put(`${base_api_url}/medico/update-paciente/${id}`, data),
   getPacienteById: (id) => axios.get(`${base_api_url}/medico/update-paciente/${id}`),
 
-  // todo configuracion root
+  // ? configuracion root
   getAllPacientesByAdmin: (data) => axios.get(`${base_api_url}/admin/pacientes`, data),
+  storeEmpresaByRoot: (data) => axios.post(`${base_api_url}/root/crear-empresa`, data),
+  storeUsuarioByRoot: (data) => axios.post(`${base_api_url}/root/crear-usuario`, data),
 }

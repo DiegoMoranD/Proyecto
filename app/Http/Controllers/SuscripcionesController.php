@@ -6,7 +6,13 @@ use App\Models\Suscripcion;
 use Illuminate\Http\Request;
 
 class SuscripcionesController extends Controller
-{
+{   
+    public function index()
+    {
+        $suscripcion = Suscripcion::all();
+        return response()->json($suscripcion);
+    }
+
     public function suscripcion(Request $request){
         return response()->json($request, 200);
     }

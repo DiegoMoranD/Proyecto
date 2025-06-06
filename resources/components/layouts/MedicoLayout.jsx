@@ -3,10 +3,10 @@ import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 import AuthUser from './PageAuth/AuthUser'
 import SideBar from '../SideBar'
 import TopBar from '../Topbar'
-import { Home } from 'lucide-react'
 import Paciente from '../pages/Paciente'
 import PacientesForm from '../pages/forms/PacientesForm'
 import UpdatePaciente from '../pages/forms/UpdatPaciente'
+import Home from '../pages/Home'
 
 function MedicoLayout() {
     const { getRol } = AuthUser();

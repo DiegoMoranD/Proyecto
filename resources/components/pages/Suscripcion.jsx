@@ -1,6 +1,18 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import Config from '../layouts/PageAuth/Config';
 
 function Suscripcion() {
+    const [suscripcion, setSuscripcion] = useState([]);
+
+    useEffect(() => {
+        getAllSuscripcion()
+    }, [])
+
+    const getAllSuscripcion = async () => {
+        const response = await Config.getAllSuscripcion();
+        setSuscripcion(response.data);
+    }
+
     const suscripciones = [
         { id: 1, name: "Sps", precio: 100, descuento: 0, dias: 30, }, ,
     ];
@@ -19,11 +31,11 @@ function Suscripcion() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {suscripciones.map((sub) => (
+                        {suscripcion.map((sub) => (
                             <tr key={sub.id} className="hover:bg-gray-50 transition-colors">
-                                <td className="px-6 py-4">{sub.name}</td>
-                                <td className="px-6 py-4">{sub.precio}</td>
-                                <td className="px-6 py-4">{sub.descuento}</td>
+                                <td className="px-6 py-4">{sub.nombre}</td>
+                                <td className="px-6 py-4">${sub.precio}</td>
+                                <td className="px-6 py-4">${sub.descuento}</td>
                                 <td className="px-6 py-4">{sub.dias}</td>
                             </tr>
                         ))}

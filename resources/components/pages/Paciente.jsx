@@ -206,7 +206,7 @@ function Paciente() {
                             <th className="px-6 py-4">Peso</th>
                             <th className="px-6 py-4">IMC</th>
                             <th className="px-6 py-4 max-md:hidden">Empresa</th>
-                            {(rol === 'medico' || rol === 'admin' || rol === 'recepcion') && (
+                            {(rol === 'medico' || rol === 'admin' || rol === 'recepcion' || rol === 'root') && (
                                 <th className="px-6 py-4">-</th>
                             )}
                         </tr>

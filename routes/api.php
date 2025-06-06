@@ -3,11 +3,12 @@
 use App\Http\Controllers\Api\Admin\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Medico\PacienteMedicoController;
-use App\Http\Controllers\EmpresasController;
+use App\Http\Controllers\Api\Root\RootController;
 use App\Http\Controllers\PacientesController;
 use App\Http\Controllers\SuscripcionesController;
 use App\Http\Controllers\TiposUsuariosController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\EmpresasController;
 use App\Models\Tipo_usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +39,7 @@ Route::prefix('v1')->group(function () {
 
 
     // ? Public Tests
-    Route::post('/auth/suscripcion', [SuscripcionesController::class, 'store']);
+    Route::get('/auth/suscripcion', [SuscripcionesController::class, 'index']);
 
     Route::post('/auth/empresa', [EmpresasController::class, 'store']);
     Route::get('/auth/empresa', [EmpresasController::class, 'index']);
@@ -51,6 +52,10 @@ Route::prefix('v1')->group(function () {
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);
     Route::get('/auth/tipo-usuario', [TiposUsuariosController::class, 'index']);
 
+
+    // ! Root
+    Route::post('/root/crear-empresa', [RootController::class, 'storeEmpresa']);
+    Route::post('/root/crear-usuario', [RootController::class, 'storeUsuario']);
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth Routes
@@ -66,6 +71,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/admin/update-usuario/{id}', [AdminController::class, 'showUser']);
         Route::delete('/admin/delete-paciente/{id}', [AdminController::class, 'destroyPaciente']);
 
+
+
         // * <-------------------- Rol Medico -------------------->
         Route::post('/medico/registrar-paciente', [PacienteMedicoController::class, 'store']);
         Route::put('/medico/update-paciente/{id}', [PacienteMedicoController::class, 'update']);
@@ -76,7 +83,7 @@ Route::prefix('v1')->group(function () {
 
 
         // todo <-------------------- Rol Recepcion -------------------->
-        
+
 
     });
 });
