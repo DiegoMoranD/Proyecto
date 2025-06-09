@@ -134,15 +134,15 @@ class AuthController extends Controller
             }
 
             // Verificar el rol del usuario
-            if ($user->hasRole('admin')) {
-                $response['role'] = 'admin';
-            } elseif ($user->hasRole('medico')) {
-                $response['role'] = 'medico';
-            } elseif ($user->hasRole('paciente')) {
-                $response['role'] = 'paciente';
-            } elseif ($user->hasRole('recepcion')) {
-                $response['role'] = 'recepcion';
-            }
+            // if ($user->hasRole('admin')) {
+            //     $response['role'] = 'admin';
+            // } elseif ($user->hasRole('medico')) {
+            //     $response['role'] = 'medico';
+            // } elseif ($user->hasRole('paciente')) {
+            //     $response['role'] = 'paciente';
+            // } elseif ($user->hasRole('recepcion')) {
+            //     $response['role'] = 'recepcion';
+            // }
 
             $response['token'] = $user->createToken("caja.app")->plainTextToken;
             $response['user'] = $user;

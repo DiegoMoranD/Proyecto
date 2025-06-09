@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
 import { useNavigate } from "react-router-dom";
 
+import OpenEyeSVG from '../../svg/OpenEyeSVG';
+import OffEyeSVG from '../../svg/OffEyeSVG';
+
 function UsuarioForm() {
+    const [showPassword, setShowPassword] = useState(false); // Nuevo estado
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState({
         name: "",
@@ -15,6 +19,7 @@ function UsuarioForm() {
         telefono: "",
         empresa_id: 0,
     });
+
     const [empresas, setEmpresas] = useState([]);
     const [tipoUsuario, setTipoUsuario] = useState([]);
     const [errors, setErrors] = useState({});
@@ -84,9 +89,43 @@ function UsuarioForm() {
                 // Redirige a la tabla de empresas
                 navigate(`/${rol}/usuario`);
             }
+
+            const emailCheckResponse = await Config.getCheckEmail({ email: usuario.email });
+            if (emailCheckResponse.data.exists) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: "Cuenta ya registrada",
+                }));
+                setUsuario((prevUsuario) => ({ ...prevUsuario, email: "" })); // Limpia el campo
+                setLoading(false);
+                return; // Detener el flujo si el correo ya existe
+            }
+
         } catch (error) {
             alert("Error al registrar al usuario");
             console.error(error);
+        }
+    };
+
+    const checkEmailExists = async () => {
+        if (!usuario.email.trim()) return; // No hacer nada si el campo está vacío
+
+        try {
+            const response = await Config.getCheckEmail({ email: usuario.email }); // Verificar en la tabla empresas
+            if (response.data.exists) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: "Este correo ya está registrado",
+                }));
+                setUsuario((prevUsuario) => ({ ...prevUsuario, email: "" })); // Limpia el campo
+            } else {
+                setErrors((prevErrors) => {
+                    const { email, ...rest } = prevErrors; // Elimina el error de correo si no existe
+                    return rest;
+                });
+            }
+        } catch (error) {
+            console.error("Error al verificar el correo:", error);
         }
     };
 
@@ -109,7 +148,7 @@ function UsuarioForm() {
                             value={usuario.name}
                             onChange={handleUsuarioChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: Tech Solutions S.A."
+                            placeholder="Ej: Alejandro"
                         />
                     </div>
 
@@ -123,7 +162,7 @@ function UsuarioForm() {
                             value={usuario.paterno}
                             onChange={handleUsuarioChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: Tech Solutions S.A."
+                            placeholder="Ej: Lopez"
                         />
                     </div>
 
@@ -137,7 +176,7 @@ function UsuarioForm() {
                             value={usuario.materno}
                             onChange={handleUsuarioChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: Tech Solutions S.A."
+                            placeholder="Ej: Muñoz"
                         />
                     </div>
 
@@ -149,10 +188,15 @@ function UsuarioForm() {
                             type="text"
                             name="email"
                             value={usuario.email}
-                            onChange={handleUsuarioChange}
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: Tech Solutions S.A."
+                            onBlur={checkEmailExists}
+                            onChange={(e) => {
+                                const email = e.target.value;
+                                setUsuario((prevUsuario) => ({ ...prevUsuario, email })); // Sincronizar el correo
+                            }}
+                            className={`w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.email ? "border-red-500" : "border-gray-300"}`}
+                            placeholder="Ej: gmail, email o outlook"
                         />
+                        {errors.email && <span className="text-red-500 text-sm mt-1">{errors.email}</span>}
                     </div>
 
                     {/* Teléfono */}
@@ -166,7 +210,7 @@ function UsuarioForm() {
                             value={usuario.telefono}
                             onChange={handleUsuarioChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: +52 123 456 7890"
+                            placeholder="Ej: 3110001122"
                         />
                     </div>
 
@@ -218,7 +262,7 @@ function UsuarioForm() {
                             value={usuario.username}
                             onChange={handleUsuarioChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: +52 123 456 7890"
+                            placeholder="Ej: NompreApellido123"
                         />
                     </div>
 
@@ -226,19 +270,28 @@ function UsuarioForm() {
                         <label className="block text-gray-700 font-medium mb-1.5">
                             Contraseña
                         </label>
-                        <input
-                            type="password"
-                            name="password"
-                            value={usuario.password}
-                            onChange={(e) => {
-                                setUsuario({ ...usuario, password: e.target.value });
-                                evaluateStrPassword(e.target.value)
-                            }}
-                            className={`w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.password ? 'border-red-500' : 'border-gray-300'
-                                } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
-                            placeholder="Ingrese Contraseña"
-                        />
-
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={usuario.password}
+                                onChange={(e) => {
+                                    setUsuario({ ...usuario, password: e.target.value });
+                                    evaluateStrPassword(e.target.value)
+                                }}
+                                className={`w-full border border-gray-300 rounded-md px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.password ? 'border-red-500' : 'border-gray-300'
+                                    } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
+                                placeholder="Ingrese Contraseña"
+                            />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 focus:outline-none"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                tabIndex={-1}
+                            >
+                                {showPassword ? <OpenEyeSVG /> : <OffEyeSVG />}
+                            </button>
+                        </div>
                         <div className="mt-2 mb-4">
                             <div className="w-full h-2 bg-gray-300 rounded">
                                 <div
