@@ -1,13 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import Config from '../layouts/PageAuth/Config'
 import Process from '../imgs/process.jpg'
 
 function Home() {
-    const metrics = [
-        { title: "Total Users", value: "2,543", change: "+12.5%", color: "text-green-500" },
-        { title: "Total Users", value: "2,543", change: "+12.5%", color: "text-green-500" },
-        { title: "Total Users", value: "2,543", change: "+12.5%", color: "text-green-500" },
-        { title: "Total Users", value: "2,543", change: "+12.5%", color: "text-green-500" },
-    ];
+    const [metrics, setMetrics] = useState([
+        { title: "Usuarios", value: "-", color: "text-blue-500" },
+        { title: "Pacientes", value: "-", color: "text-green-500" },
+        { title: "Empresas", value: "-", color: "text-purple-500" },
+    ]);
+
+    useEffect(() => {
+        const fetchMetrics = async () => {
+            try {
+                const res = await Config.getDashboardMetrics();
+                setMetrics([
+                    { title: "Usuarios", value: res.data.totalUsers, color: "text-blue-500" },
+                    { title: "Pacientes", value: res.data.totalPacientes, color: "text-green-500" },
+                    { title: "Empresas", value: res.data.totalEmpresas, color: "text-purple-500" },
+                ]);
+            } catch (error) {
+                console.error("Error al obtener métricas", error);
+            }
+        };
+        fetchMetrics();
+    }, []);
 
     return (
         <div className='flex flex-col p-4'>
@@ -15,9 +31,8 @@ function Home() {
             <div className="grid gap-6 mt-6 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
                 {metrics.map((metric, index) => (
                     <div key={index} className="bg-white p-6 border border-gray-900/25 rounded-lg shadow-md">
-                        <p className="text-gray-500">{metric.title}</p>
-                        <h3 className="text-2xl font-bold">{metric.value}</h3>
-                        <span className={metric.color}>{metric.change}</span>
+                        <p className="text-gray-600">{metric.title}</p>
+                        <h3 className={`text-2xl font-bold ${metric.color}`}>{metric.value}</h3>
                     </div>
                 ))}
             </div>

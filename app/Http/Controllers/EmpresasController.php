@@ -127,6 +127,13 @@ class EmpresasController extends Controller
         $empresa->tocken_acceso = $token;
         $empresa->save();
 
+        $usuario = auth()->user();
+
+        PHPLogToFile::logToFileInfo('Nuevo token solicitado', [
+            'Empresa' => $empresa->id . ' ' . $empresa->nombre,
+            'solicitado por' => $usuario->email
+        ]);
+
         // enviar el token al correo de la empresa
         $recoveryUrl = "http://127.0.0.1:8000/activar-empresa/{$token}";
         $subject = "Reenvio de token - TecuaniSoft";
@@ -252,6 +259,12 @@ class EmpresasController extends Controller
 
         $emailStatus = PHPMailerHelper::sendEmail($usuario->email, $subject, $body);
 
+        $usuario = auth()->user();
+
+        PHPLogToFile::logToFileInfo('Correo de recuperacion enviado', [
+            'Usuario' => $usuario->id . ' ' . $usuario->nombre,
+        ]);
+
         if ($emailStatus !== true) {
             return response()->json([
                 PHPLogToFile::logToFile('Gmail de recuperacion enviado', ['correo' => $usuario->email]),
@@ -344,6 +357,11 @@ class EmpresasController extends Controller
             ";
 
         $emailStatus = PHPMailerHelper::sendEmail($usuario->email, $subject, $body);
+
+        PHPLogToFile::logToFileInfo('Contraseña Actualida', [
+            'Usuario' => $usuario->id . ' ' . $usuario->nombre,
+            'Por' => $usuario->email
+        ]);
 
         return response()->json([
             'success' => true,

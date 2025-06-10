@@ -4,12 +4,34 @@ import Config from "../../layouts/PageAuth/Config";
 import AuthUser from "../../layouts/PageAuth/AuthUser";
 import Modal from "../../Modal";
 
+import OpenEyeSVG from '../../svg/OpenEyeSVG';
+import OffEyeSVG from '../../svg/OffEyeSVG';
+
 function Register() {
+    const [showPassword, setShowPassword] = useState(false);
     const { getToken } = AuthUser();
     const navigate = useNavigate();
-
+    const [passwordStr, setPasswordStr] = useState(0);
+    const [strLabel, setStrLabel] = useState("Débil");
     const [errors, setErrors] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const evaluateStrPassword = (password) => {
+        let strength = 0;
+        if (password.length >= 8) strength += 1;
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+        let percentage = (strength / 3) * 100;
+        let label = "Débil"
+
+        if (percentage >= 75) label = "Fuerte";
+        else if (percentage >= 50) label = "Media";
+
+        setStrLabel(label)
+        setPasswordStr(percentage)
+    }
 
     const validateFields = () => {
         const newErrors = {};
@@ -38,11 +60,6 @@ function Register() {
         }
         if (!usuario.password.trim()) {
             newErrors.password = "La contraseña es obligatoria.";
-        } else {
-            const passwordStrength = checkPasswordStrength(usuario.password);
-            if (passwordStrength === "weak") {
-                newErrors.password = "Contraseña débil: usa al menos 8 caracteres, incluyendo letras, números y símbolos.";
-            }
         }
         if (!usuario.telefono.trim()) {
             newErrors.telefonoUsuario = "El teléfono del usuario es obligatorio.";
@@ -54,16 +71,6 @@ function Register() {
         return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
     };
 
-    const checkPasswordStrength = (password) => {
-        const weakRegex = /^.{0,7}$/; // Menos de 8 caracteres
-        const goodRegex = /^(?=.*[A-Za-z])(?=.*\d).{4,}$/; // Letras y números, al menos 8 caracteres
-        const strongRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{4,}$/; // Letras, números y símbolos
-
-        if (weakRegex.test(password)) return "weak";
-        if (goodRegex.test(password)) return "good";
-        if (strongRegex.test(password)) return "strong";
-        return "weak";
-    };
 
     // Estado para los datos de la empresa
     const [empresa, setEmpresa] = useState({
@@ -316,37 +323,6 @@ function Register() {
                     </div>
                     <div className="relative">
                         <input
-                            type="password"
-                            name="password"
-                            value={usuario.password}
-                            onChange={(e) => {
-                                setUsuario({ ...usuario, password: e.target.value });
-                            }}
-                            className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.password ? "border-red-500" : "border-gray-300"
-                                } appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                            placeholder="Contraseña"
-                        />
-                        {errors.password && <span className="text-red-500 text-sm mt-1">{errors.password}</span>}
-                        <div className="mt-2 text-sm">
-                            Fortaleza:{" "}
-                            <span
-                                className={`font-bold ${checkPasswordStrength(usuario.password) === "weak"
-                                    ? "text-red-500"
-                                    : checkPasswordStrength(usuario.password) === "good"
-                                        ? "text-yellow-500"
-                                        : "text-green-500"
-                                    }`}
-                            >
-                                {checkPasswordStrength(usuario.password) === "weak"
-                                    ? "Débil"
-                                    : checkPasswordStrength(usuario.password) === "good"
-                                        ? "Buena"
-                                        : "Fuerte"}
-                            </span>
-                        </div>
-                    </div>
-                    <div className="relative">
-                        <input
                             type="tel"
                             name="telefono"
                             value={usuario.telefono}
@@ -354,6 +330,41 @@ function Register() {
                             className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="Teléfono del Usuario"
                         />
+                    </div>
+                    <div className="relative">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            value={usuario.password}
+                            onChange={(e) => {
+                                setUsuario({ ...usuario, password: e.target.value });
+                                evaluateStrPassword(e.target.value)
+                            }}
+                            className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.password ? "border-red-500" : "border-gray-300"
+                                } appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                            placeholder="Contraseña"
+                        />
+                        {errors.password && <span className="text-red-500 text-sm mt-1">{errors.password}</span>}
+                        <button
+                            type="button"
+                            className="absolute right-1 top-[30%] -translate-y-1/2 focus:outline-none"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            tabIndex={-1}
+                        >
+                            {showPassword ? <OpenEyeSVG /> : <OffEyeSVG />}
+                        </button>
+                        <div className="mt-3 ">
+                            <div className="w-full h-2 bg-gray-300 rounded">
+                                <div
+                                    className={`h-full rounded transition-all duration-300 ${passwordStr < 50 ? 'bg-red-500' :
+                                        passwordStr < 75 ? 'bg-yellow-500' :
+                                            'bg-green-500'
+                                        }`}
+                                    style={{ width: `${passwordStr}%` }}
+                                ></div>
+                            </div>
+                            <p className="text-sm mt-1 text-gray-600">{strLabel}</p>
+                        </div>
                     </div>
 
                     <button

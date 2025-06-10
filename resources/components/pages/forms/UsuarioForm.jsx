@@ -6,7 +6,7 @@ import OpenEyeSVG from '../../svg/OpenEyeSVG';
 import OffEyeSVG from '../../svg/OffEyeSVG';
 
 function UsuarioForm() {
-    const [showPassword, setShowPassword] = useState(false); // Nuevo estado
+    const [showPassword, setShowPassword] = useState(false); 
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState({
         name: "",

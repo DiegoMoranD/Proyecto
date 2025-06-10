@@ -187,7 +187,7 @@ class AuthController extends Controller
         ];
 
         $usuario = auth()->user();
-        PHPLogToFile::logToFileInfo('Usuario ha cerrado sesion', ['usuario' => $usuario->email]);        
+        PHPLogToFile::logToFileInfo('Usuario ha cerrado sesion', ['usuario' => $usuario->email]);
         return response()->json($response, 200);
     }
 
@@ -249,9 +249,28 @@ class AuthController extends Controller
             ], 404); // Código de estado 404: No encontrado
         }
 
-        // Aquí puedes agregar la lógica para enviar un correo de recuperación de cuenta
-
         $response["success"] = true;
         return response()->json($response, 200);
+        PHPLogToFile::logToFileInfo('Recuperacion de cuenta exitosa', ['usuario' => $requestrequest->email]);
+    }
+
+    public function dashboardMetrics(Request $request)
+    {
+        $user = auth('sanctum')->user();
+        $totalUsers = \App\Models\User::count();
+        $totalEmpresas = \App\Models\Empresa::count();
+
+        // Pacientes según el rol
+        if ($user && ($user->hasRole('medico') || $user->hasRole('recepcion'))) {
+            $totalPacientes = \App\Models\Paciente::where('empresa_id', $user->empresa_id)->count();
+        } else {
+            $totalPacientes = \App\Models\Paciente::count();
+        }
+
+        return response()->json([
+            'totalUsers' => $totalUsers,
+            'totalPacientes' => $totalPacientes,
+            'totalEmpresas' => $totalEmpresas,
+        ]);
     }
 }

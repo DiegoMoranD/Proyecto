@@ -85,6 +85,7 @@ Route::prefix('v1')->group(function () {
         // todo <-------------------- Rol Recepcion -------------------->
 
 
+        Route::get('/auth/dashboard-metrics', [AuthController::class, 'dashboardMetrics']);
     });
 });
 
