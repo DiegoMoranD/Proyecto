@@ -88,7 +88,7 @@ function Login() {
 
     return (
         <>
-            <div className="bg-[#dbdbdb] text-black h-screen flex justify-center items-center w-full">
+            <div className="bg-[url('/resources/components/imgs/banner2.jpg')] bg-no-repeat bg-cover bg-center text-black h-screen flex justify-center items-center w-full">
                 <div className="w-full max-w-md px-4 sm:px-6 lg:px-8">
                     <div className="bg-[#fff] border border-[#e11a31] rounded-2xl p-6 sm:p-12 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
                         <h1 className="text-2xl sm:text-4xl text-black font-bold text-center mb-4 sm:mb-6 py-2 sm:py-4">
@@ -178,7 +178,7 @@ function Login() {
                         </form>
                     </div>
                 </div>
-            </div>ç
+            </div>
         </>
     );
 }

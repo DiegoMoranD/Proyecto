@@ -208,7 +208,7 @@ function Register() {
 
 
     return (
-        <div className="bg-[#626365] text-black h-screen flex justify-center items-center">
+        <div className="bg-[url('/resources/components/imgs/banner4.jpg')] bg-no-repeat bg-cover bg-center text-black h-screen flex justify-center items-center">
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
