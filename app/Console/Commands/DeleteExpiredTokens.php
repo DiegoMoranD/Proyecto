@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class DeleteExpiredTokens extends Command
 {
-    // protected $signature = 'tokens:prune-expired';
+    protected $signature = 'tokens:prune-expired';
     // protected $description = 'Elimina los tokens expirados de personal_access_tokens';
 
     // public function handle()
