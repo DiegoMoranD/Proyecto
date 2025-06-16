@@ -72,11 +72,14 @@ Route::prefix('v1')->group(function () {
         Route::post('/root/crear-usuario', [RootController::class, 'storeUsuario']);
         Route::delete('/root/delete-empresa/{id}', [RootController::class, 'destroyEmpresa']);
         Route::delete('/root/delete-usuario/{id}', [RootController::class, 'destroyUsuario']);
+        Route::get('/root/users-by-role', [RootController::class, 'usersByRole']);
 
         // * <-------------------- Rol Medico -------------------->
         Route::post('/medico/registrar-paciente', [PacienteMedicoController::class, 'store']);
         Route::put('/medico/update-paciente/{id}', [PacienteMedicoController::class, 'update']);
         Route::get('/medico/update-paciente/{id}', [PacienteMedicoController::class, 'show']);
+        
+        Route::get('/medico/paciente-metrics', [PacienteMedicoController::class, 'metrics']);
 
 
         // ? <-------------------- Rol Paciente -------------------->

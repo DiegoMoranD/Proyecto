@@ -100,4 +100,55 @@ class PacienteMedicoController extends Controller
             ])
         ]);
     }
+
+    public function metrics()
+    {
+        $user = auth()->user();
+
+        // Solo pacientes de la empresa del usuario autenticado
+        $pacientesQuery = \App\Models\Paciente::where('empresa_id', $user->empresa_id);
+
+        // Clasificación IMC
+        $imcClasificaciones = [
+            'Bajo' => [0, 18.4],
+            'Normal' => [18.5, 24.9],
+            'Sobrepeso' => [25, 29.9],
+            'Obs. Leve' => [30, 34.9],
+            'Obs. Media' => [35, 39.9],
+            'Obs. Morbida' => [40, 100]
+        ];
+
+        $imcCounts = [];
+        foreach ($imcClasificaciones as $label => [$min, $max]) {
+            $imcCounts[$label] = (clone $pacientesQuery)->whereBetween('imc', [$min, $max])->count();
+        }
+
+        // Tipos de sangre
+        $tiposSangre = (clone $pacientesQuery)
+            ->select('tipo_sangre')
+            ->groupBy('tipo_sangre')
+            ->selectRaw('count(*) as total')
+            ->pluck('total', 'tipo_sangre');
+
+        // Clasificación de edades
+        $now = now();
+        $edades = [
+            'Niños' => [0, 12],
+            'Adolescentes' => [13, 17],
+            'Adultos' => [18, 64],
+            'Adultos Mayores' => [65, 120]
+        ];
+        $edadCounts = [];
+        foreach ($edades as $label => [$min, $max]) {
+            $edadCounts[$label] = (clone $pacientesQuery)
+                ->whereRaw("TIMESTAMPDIFF(YEAR, fecha_nacimiento, ?) BETWEEN ? AND ?", [$now, $min, $max])
+                ->count();
+        }
+
+        return response()->json([
+            'imc' => $imcCounts,
+            'tipos_sangre' => $tiposSangre,
+            'edades' => $edadCounts
+        ]);
+    }
 }

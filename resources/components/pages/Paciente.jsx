@@ -33,8 +33,6 @@ function Paciente() {
     const rol = getRol();
     const user = getUser();
 
-
-
     if (rol === 'admin' || rol === 'root') {
         useEffect(() => {
             getAllPacientesByAdmin()
@@ -45,13 +43,7 @@ function Paciente() {
             setPacientes(response.data)
             setFilteredPacientes(response.data)
         }
-        const deletePaciente = async (id) => {
-            const isDelete = window.confirm("¿Desea Borrar El Paciente?");
-            if (isDelete) {
-                await Config.deletePacieteByAdmin(id);
-                getAllPacientesByAdmin();
-            }
-        }
+
     } else {
         useEffect(() => {
             getAllPaciente()
@@ -62,15 +54,16 @@ function Paciente() {
             setPacientes(response.data)
             setFilteredPacientes(response.data)
         }
-        const deletePaciente = async (id) => {
-            const isDelete = window.confirm("¿Desea Borrar Juego?");
-            if (isDelete) {
-                await Config.deletePacieteByAdmin(id);
-                getAllPaciente();
-            }
-        }
+
     }
 
+    const deletePaciente = async (id) => {
+        const isDelete = window.confirm("¿Desea Borrar El Paciente?");
+        if (isDelete) {
+            await Config.deletePacieteByAdmin(id);
+            getAllPacientesByAdmin();
+        }
+    }
     // Filtrar y ordenar pacientes
     useEffect(() => {
         let data = [...pacientes];
@@ -225,12 +218,19 @@ function Paciente() {
                                         <td className="px-6 py-4">{paciente.peso}</td>
                                         <td className="px-6 py-4">{paciente.imc}</td>
                                         <td className="px-6 py-4 max-md:hidden">{paciente.empresa_id}</td>
-                                        {(rol === 'medico' || rol === 'admin' || rol === 'recepcion' || rol === 'root') && (
+                                        {(rol === 'medico' || rol === 'admin' || rol === 'root') && (
                                             <td className="py-4 justify-around flex">
                                                 <Link to={`/${rol}/update-paciente/${paciente.id}`}>
                                                     <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
                                                 </Link>
                                                 <button onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>
+                                            </td>
+                                        )}
+                                        {(rol === 'recepcion') && (
+                                            <td className="py-4 justify-around flex">
+                                                <Link to={`/${rol}/update-paciente/${paciente.id}`}>
+                                                    <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
+                                                </Link>
                                             </td>
                                         )}
                                     </tr>

@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
+import { useNavigate } from "react-router-dom";
 
 const PacientesForm = () => {
+  const userString = sessionStorage.getItem('user');
+  const user = userString ? JSON.parse(userString) : null;
+  const navigate = useNavigate();
+
+
   const [paciente, setPaciente] = useState({
     nombre: "",
     fecha_nacimiento: "",
@@ -14,6 +20,12 @@ const PacientesForm = () => {
   })
 
   const [empresas, setEmpresaName] = useState([]);
+  const getRol = () => {
+    const rol = sessionStorage.getItem('rol');
+    return rol ? JSON.parse(rol) : null;
+  }
+
+  const rol = getRol();
 
   useEffect(() => {
     const fetchEmpresa = async () => {
@@ -57,10 +69,17 @@ const PacientesForm = () => {
     const altura = parseFloat(paciente.altura);
     const imc = altura > 0 ? (peso / (altura * altura)).toFixed(2) : 0;
 
+    // Determinar empresa_id según el rol
+    let empresa_id = paciente.empresa_id;
+    if (rol === 'medico' || rol === 'recepcion') {
+      empresa_id = user.empresa_id; // Usa la empresa del usuario logueado
+    }
+
     try {
-      await Config.storePaciente({
+      const response = await Config.storePaciente({
         ...paciente,
         imc,
+        empresa_id, // Asegura que se envía el campo correcto
       });
       alert("Paciente registrado exitosamente");
       setPaciente({
@@ -71,8 +90,9 @@ const PacientesForm = () => {
         altura: "",
         imc: "",
         fecha_registro: "",
-        empresa_id: "",
+        empresa_id: ""
       });
+      navigate(`/${rol}/pacientes`);
     } catch (error) {
       alert("Error al registrar paciente");
       console.error(error);
@@ -194,25 +214,37 @@ const PacientesForm = () => {
             />
           </div>
 
-
+          {(rol === 'admin' || rol === 'root') && (
+            <div>
+              <label className="block text-gray-700 font-medium mb-3">Empresa ID</label>
+              <select
+                value={paciente.empresa_id}
+                name="empresa_id"
+                onChange={handlePacienteChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <option value="">Selecciona una empresa</option>
+                {empresas.map((empresa) => (
+                  <option key={empresa.id} value={empresa.id}>
+                    {empresa.nombre}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Empresa ID */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-3">Empresa ID</label>
-            <select
-              value={paciente.empresa_id}
-              name="empresa_id"
-              onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="">Selecciona una empresa</option>
-              {empresas.map((empresa) => (
-                <option key={empresa.id} value={empresa.id}>
-                  {empresa.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+          {(rol === 'medico' || rol === 'recepcion') && (
+            <div>
+              <label className="block text-gray-700 font-medium mb-3">Empresa</label>
+              <input
+                type="text"
+                value={user.empresa_id}
+                readOnly
+                className="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-100"
+              />
+            </div>
+          )}
         </div>
 
         {/* Botón de Enviar */}

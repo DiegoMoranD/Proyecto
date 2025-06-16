@@ -14,6 +14,21 @@ use Spatie\Permission\Models\Role;
 
 class RootController extends Controller
 {
+
+    public function usersByRole()
+    {
+        $roles = Role::all();
+        $data = [];
+
+        foreach ($roles as $role) {
+            $data[] = [
+                'role' => $role->name,
+                'total' => $role->users()->count(),
+            ];
+        }
+
+        return response()->json($data);
+    }
     public function storeEmpresa(Request $request)
     {
         try {
@@ -115,6 +130,11 @@ class RootController extends Controller
                 // Asignar el rol con el mismo nombre
                 $usuario->assignRole($tipoUsuario->nombre_tipo);
             }
+
+            PHPLogToFile::logToFileInfo('Usuario creado', [
+            'Usuario' => $usuario->id . ' ' . $usuario->nombre,
+            'Creado  por' => $usuario->email
+        ]);
 
             return response()->json(['message' => 'Usuario registrado exitosamente'], 201);
         } catch (\Exception $e) {

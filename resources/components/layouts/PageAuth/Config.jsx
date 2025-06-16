@@ -49,4 +49,6 @@ export default {
   deleteUsuarioByRoot: (id) => axios.delete(`${base_api_url}/root/delete-usuario/${id}`),
 
   getDashboardMetrics: () => axios.get(`${base_api_url}/auth/dashboard-metrics`),
+  getUsersByRole: () => axios.get(`${base_api_url}/root/users-by-role`),
+  getPacienteMetrics: () => axios.get(`${base_api_url}/medico/paciente-metrics`),
 }
