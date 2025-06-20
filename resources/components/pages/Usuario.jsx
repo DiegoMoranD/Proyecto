@@ -111,7 +111,7 @@ function Usuario() {
             {(rol === 'root') && (
                 <div className='mb-5 flex justify-end'>
                     <Link to={`/${rol}/registrar-usuario`}>
-                        <a href={``} className='bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-500 font-semibold'>Crear Nuevo</a>
+                        <p className='bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-500 font-semibold'>Crear Nuevo</p>
                     </Link>
                 </div>
             )}
