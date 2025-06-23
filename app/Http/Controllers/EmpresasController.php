@@ -13,6 +13,75 @@ use PhpParser\Node\Stmt\TryCatch;
 
 class EmpresasController extends Controller
 {
+    private function crearPlantillaEmail(string $title, string $mensaje, string $url, string $urlText): string
+    {
+        return "
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>{$title}</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    color: #555;
+    background-color: #f9fafb;
+    padding: 30px;
+}
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
+}
+h1 {
+    color: #1e3a8a;
+    font-size: 22px;
+    text-align: left;
+}
+p {
+    font-size: 15px;
+    line-height: 1.5;
+}
+a.button {
+    display: inline-block;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #1e3a8a;
+    border-radius: 4px;
+}
+.footer {
+    font-size: 13px;
+    color: #888;
+    text-align: left;
+    margin-top: 25px;
+}
+</style>
+
+</head>
+<body>
+<div class='container'>
+    <h1>{$title}</h1>
+    <p>{$mensaje}</p>
+    <p style='text-align: center;'>
+        <a href='{$url}' class='button'>{$urlText}</a>
+    </p>
+    <div class='footer'>
+        Si no hiciste esta solicitud, simplemente ignora este mensaje.<br/>
+        &copy;" . date("Y") . " TecuaniSoft. Todos los derechos reservados.
+    </div>
+</div>
+</body>
+</html>
+";
+    }
+
+
     // funcion para obtener todas las empresas
     public function index()
     {
@@ -235,8 +304,8 @@ class EmpresasController extends Controller
         $usuario = User::where('email', $request->email)->first();
 
         if (!$usuario) {
+            PHPLogToFile::logToFile('Correo no registrado', ['correo' => $request->email]);
             return response()->json([
-                PHPLogToFile::logToFile('Correo no registrado', ['correo' => $usuario->email]),
                 'success' => false,
                 'message' => 'Correo no registrado',
             ], 404);
@@ -250,16 +319,14 @@ class EmpresasController extends Controller
         // Enviar el correo
         $recoveryUrl = "http://127.0.0.1:8000/new-password/{$token}";
         $subject = "Recuperación de cuenta - TecuaniSoft";
-        $body = "
-            <h1>Recuperación de cuenta</h1>
-            <p>Hemos recibido una solicitud para recuperar tu cuenta. Por favor, haz clic en el siguiente enlace para continuar:</p>
-            <a href='{$recoveryUrl}'>Recuperar cuenta</a>
-            <p>Este enlace expirará en 1 hora.</p>
-        ";
+        $body = $this->crearPlantillaEmail(
+            "Recuperación de cuenta",
+            "Hemos recibido una solicitud para recuperar tu cuenta. Por favor, haz clic en el siguiente botón para continuar:",
+            $recoveryUrl,
+            "Recuperar cuenta"
+        );
 
         $emailStatus = PHPMailerHelper::sendEmail($usuario->email, $subject, $body);
-
-        $usuario = auth()->user();
 
         PHPLogToFile::logToFileInfo('Correo de recuperacion enviado', [
             'Usuario' => $usuario->id . ' ' . $usuario->nombre,
