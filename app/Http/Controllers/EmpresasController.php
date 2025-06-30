@@ -24,44 +24,45 @@ class EmpresasController extends Controller
 <style>
 body {
     font-family: Arial, sans-serif;
-    color: #555;
-    background-color: #f9fafb;
+    color: #f5f5f5;
+    background-color: #1c1c1c;
     padding: 30px;
 }
 .container {
     max-width: 600px;
-    margin: 20px auto;
-    background-color: #ffffff;
+    margin: 30px auto;
+    background-color: #2c2c2c;
     padding: 30px;
-    border-radius: 5px;
-    border: 1px solid #e0e0e0;
+    border-radius: 8px;
 }
 h1 {
-    color: #1e3a8a;
-    font-size: 22px;
-    text-align: left;
+    color: #ffffff;
+    text-align: center;
+    font-size: 24px;
 }
 p {
     font-size: 15px;
     line-height: 1.5;
+    color: #d4d4d4;
 }
 a.button {
     display: inline-block;
-    padding: 12px 22px;
-    font-size: 15px;
+    padding: 12px 25px;
+    font-size: 16px;
     font-weight: bold;
     color: #ffffff;
     text-decoration: none;
-    background-color: #1e3a8a;
-    border-radius: 4px;
+    background-color: #007BFF;
+    border-radius: 5px;
 }
 .footer {
-    font-size: 13px;
-    color: #888;
-    text-align: left;
+    font-size: 14px;
+    color: #777777;
+    text-align: center;
     margin-top: 25px;
 }
 </style>
+
 
 </head>
 <body>
