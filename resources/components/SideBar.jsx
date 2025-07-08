@@ -9,6 +9,7 @@ import CompanySVG from './svg/CompanySVG';
 import UserSVG from './svg/UserSVG';
 import ContracSVG from './svg/ContracSVG';
 import AddPacienteSVG from './svg/addPacienteSVG';
+import PiiSVG from './svg/PiiSVG';
 
 import Config from './layouts/PageAuth/Config';
 import AuthUser from './layouts/PageAuth/AuthUser';
@@ -137,7 +138,12 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                             <ActivitySVG />
                                             <p className="pl-4 ">Paciente</p>
                                         </Link>
-
+                                    </li>
+                                    <li className="">
+                                        <Link to={`/${rol}/medicamentos`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
+                                            <PiiSVG />
+                                            <p className="pl-4 ">Medicamentos</p>
+                                        </Link>
                                     </li>
                                 </>
                             )}

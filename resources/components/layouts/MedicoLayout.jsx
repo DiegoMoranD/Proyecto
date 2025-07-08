@@ -7,6 +7,9 @@ import Paciente from '../pages/Paciente'
 import PacientesForm from '../pages/forms/PacientesForm'
 import UpdatePaciente from '../pages/forms/UpdatPaciente'
 import Home from '../pages/Home'
+import Medicamentos from '../pages/Medicamentos'
+import MedicamentoForm from '../pages/forms/MedicamentoForm'
+import UpdateMedicamento from '../pages/forms/UpdateMedicamento'
 
 function MedicoLayout() {
     const { getRol } = AuthUser();
@@ -38,6 +41,9 @@ function MedicoLayout() {
                                 <Route path="/pacientes" element={<Paciente />} />
                                 <Route path="/registrar-paciente" element={<PacientesForm />} />
                                 <Route path="/update-paciente/:id" element={<UpdatePaciente />} />
+                                <Route path="/medicamentos" element={<Medicamentos />} />
+                                <Route path="/medicamento-form" element={<MedicamentoForm />} />
+                                <Route path="/medicamento-update/:id" element={<UpdateMedicamento />} />
                             </Routes>
                         </div>
                     </div>

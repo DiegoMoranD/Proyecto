@@ -32,7 +32,7 @@ export default {
   updateEmpresaByAdmin: (id, data) => axios.put(`${base_api_url}/admin/update-empresa/${id}`, data),
   getEmpresaByAdmin: (id) => axios.get(`${base_api_url}/admin/update-empresa/${id}`),
   deletePacieteByAdmin: (id) => axios.delete(`${base_api_url}/admin/delete-paciente/${id}`),
-  
+
   // todo configuracion de pacientes
   getAllPaciente: (data) => axios.get(`${base_api_url}/auth/paciente`, data),
 
@@ -40,6 +40,13 @@ export default {
   storePaciente: (data) => axios.post(`${base_api_url}/medico/registrar-paciente`, data),
   updatePaciente: (id, data) => axios.put(`${base_api_url}/medico/update-paciente/${id}`, data),
   getPacienteById: (id) => axios.get(`${base_api_url}/medico/update-paciente/${id}`),
+
+  // * Medicamentos
+  storeMedicamento: (data) => axios.post(`${base_api_url}/medicamento/regristro`, data),
+  indexMedicamento: (data) => axios.get(`${base_api_url}/medicamento/catalogo`, data),
+  updateMedicamento: (id, data) => axios.put(`${base_api_url}/medicamento/update/${id}`, data),
+  getMedicamentoById: (id) => axios.get(`${base_api_url}/medicamento/ver/${id}`),
+  deleteMedicamento: (id) => axios.delete(`${base_api_url}/medicamento/delete/${id}`),
 
   // ? configuracion root
   getAllPacientesByAdmin: (data) => axios.get(`${base_api_url}/admin/pacientes`, data),

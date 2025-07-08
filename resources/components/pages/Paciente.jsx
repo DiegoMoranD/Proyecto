@@ -13,7 +13,7 @@ function Paciente() {
     const [orderEmpresa, setOrderEmpresa] = useState("");
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5; // Cambia este valor según cuántos pacientes quieras por página
+    const itemsPerPage = 15; // Cambia este valor según cuántos pacientes quieras por página
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentPacientes = filteredPacientes.slice(indexOfFirstItem, indexOfLastItem);
@@ -60,8 +60,15 @@ function Paciente() {
     const deletePaciente = async (id) => {
         const isDelete = window.confirm("¿Desea Borrar El Paciente?");
         if (isDelete) {
-            await Config.deletePacieteByAdmin(id);
-            getAllPacientesByAdmin();
+            try {
+                await Config.deletePacieteByAdmin(id);
+                const nuevosPacientes = pacientes.filter(med => med.id !== id);
+                setPacientes(nuevosPacientes)
+                setFilteredPacientes(nuevosPacientes)
+                alert("Paciente eliminado exitosamente");
+            } catch (error) {
+                alert("Error al eliminar el paciente");
+            }
         }
     }
     // Filtrar y ordenar pacientes

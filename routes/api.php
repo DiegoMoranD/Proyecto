@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Admin\AdminController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Medico\MedicamentoMedicoController;
 use App\Http\Controllers\Api\Medico\PacienteMedicoController;
 use App\Http\Controllers\Api\Root\RootController;
 use App\Http\Controllers\PacientesController;
@@ -52,6 +53,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);
     Route::get('/auth/tipo-usuario', [TiposUsuariosController::class, 'index']);
 
+    // Route::post('/test/medicamento', [MedicamentoMedicoController::class, 'storeMedicamento']);
+
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth Routes
@@ -78,8 +81,15 @@ Route::prefix('v1')->group(function () {
         Route::post('/medico/registrar-paciente', [PacienteMedicoController::class, 'store']);
         Route::put('/medico/update-paciente/{id}', [PacienteMedicoController::class, 'update']);
         Route::get('/medico/update-paciente/{id}', [PacienteMedicoController::class, 'show']);
-        
+
         Route::get('/medico/paciente-metrics', [PacienteMedicoController::class, 'metrics']);
+ 
+        // * Medicamentos
+        Route::post('/medicamento/regristro', [MedicamentoMedicoController::class, 'storeMedicamento']);
+        Route::get('/medicamento/catalogo', [MedicamentoMedicoController::class, 'indexMedicamento']);
+        Route::put('/medicamento/update/{id}', [MedicamentoMedicoController::class, 'updateMedicamento']);
+        Route::delete('/medicamento/delete/{id}', [MedicamentoMedicoController::class, 'deleteMedicamento']);
+        Route::get('/medicamento/ver/{id}', [MedicamentoMedicoController::class, 'showMedicamento']);
 
 
         // ? <-------------------- Rol Paciente -------------------->

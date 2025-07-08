@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Medicamento as ModelsMedicamento;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -44,5 +45,10 @@ class Empresa extends Model
     public function pacientes()
     {
         return $this->hasMany(Paciente::class, 'empresa_id', 'id');
+    }
+
+    public function medicamento()
+    {
+        return $this->hasMany(ModelsMedicamento::class, 'empresa_id', 'id');
     }
 }
