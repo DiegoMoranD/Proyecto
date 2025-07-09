@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Empresa;
 use App\Models\Medicamento as ModelsMedicamento;
 use Illuminate\Http\Request;
+use App\Utils\PHPLogToFile;
 
 class MedicamentoMedicoController extends Controller
 {
@@ -56,7 +57,16 @@ class MedicamentoMedicoController extends Controller
 
 
         $medicamentos->save();
-        return response()->json(['message' => 'Medicamento registrado exitosamente.'], 201);
+
+        $usuario = auth()->user();
+
+        return response()->json([
+            'message' => 'Medicamento registrado exitosamente',
+            PHPLogToFile::logToFileInfo('Datos del medicamento', [
+                'Medicamento' => $request->nombre,
+                'Registrado por' => $usuario->email
+            ])
+        ], 201);
     }
 
     public function updateMedicamento(Request $request, $id)
@@ -78,10 +88,21 @@ class MedicamentoMedicoController extends Controller
 
         $medicamento->update($request->all());
 
+        // return response()->json([
+        //     'message' => 'Medicamento actualizado exitosamente',
+        //     'id' => $medicamento->id // Devolver el ID del Medicamento actualizado
+        // ]);
+
+        $usuario = auth()->user();
+
         return response()->json([
             'message' => 'Medicamento actualizado exitosamente',
-            'id' => $medicamento->id // Devolver el ID del Medicamento actualizado
-        ]);
+            PHPLogToFile::logToFileInfo('Datos del medicamento', [
+                'id' => $medicamento->id,
+                'Medicamento' => $request->nombre,
+                'Actualizado por' => $usuario->email
+            ])
+        ], 201);
     }
 
     public function deleteMedicamento($id) {
@@ -93,10 +114,30 @@ class MedicamentoMedicoController extends Controller
 
         $medicamento->delete();
 
-        return response()->json(['Registro Borrado'], 200);
+        // return response()->json(['Registro Borrado'], 200);
+    
+        $usuario = auth()->user();
+
+        return response()->json([
+            'message' => 'Medicamento eliminado exitosamente',
+            PHPLogToFile::logToFileInfo('Datos del medicamento', [
+                'id' => $medicamento->id,
+                'Medicamento' => $medicamento->nombre,
+                'Eliminado por' => $usuario->email
+            ])
+        ], 200);
     }
 
     public function indexMedicamento()
+    {
+        $usuario = auth()->user();
+        $empresa_id = $usuario->empresa_id;
+
+        $medicamentos = ModelsMedicamento::where('empresa_id', $empresa_id)->get();
+        return response()->json($medicamentos);
+    }
+
+    public function indexMedicamentoByAdmin()
     {
         $medicamentos = ModelsMedicamento::all();
         return response()->json($medicamentos);

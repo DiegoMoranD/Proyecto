@@ -85,6 +85,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/medico/paciente-metrics', [PacienteMedicoController::class, 'metrics']);
  
         // * Medicamentos
+        Route::get('/admin/medicamento/catalogo', [MedicamentoMedicoController::class, 'indexMedicamentoByAdmin']);
         Route::post('/medicamento/regristro', [MedicamentoMedicoController::class, 'storeMedicamento']);
         Route::get('/medicamento/catalogo', [MedicamentoMedicoController::class, 'indexMedicamento']);
         Route::put('/medicamento/update/{id}', [MedicamentoMedicoController::class, 'updateMedicamento']);

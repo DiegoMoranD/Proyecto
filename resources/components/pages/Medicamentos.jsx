@@ -16,7 +16,7 @@ function Medicamentos() {
 
     const [filteredMedicamentos, setFilteredMedicamentos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 15; 
+    const itemsPerPage = 15;
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentMedicamentos = filteredMedicamentos.slice(indexOfFirstItem, indexOfLastItem);
@@ -29,19 +29,27 @@ function Medicamentos() {
 
     const rol = getRol();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await Config.indexMedicamento();
-            setMedicamento(response.data);
-            setFilteredMedicamentos(response.data);
-        };
-        fetchData();
-    }, []);
-
-    const indexMedicamento = async () => {
-        const response = await Config.indexMedicamento()
-        setMedicamento(response.data)
+    if (rol === 'admin') {
+        useEffect(() => {
+            const fetchData = async () => {
+                const response = await Config.indexMedicamentoByAdmin();
+                setMedicamento(response.data);
+                setFilteredMedicamentos(response.data);
+            };
+            fetchData();
+        }, []);
+    } else {
+        useEffect(() => {
+            const fetchData = async () => {
+                const response = await Config.indexMedicamento();
+                setMedicamento(response.data);
+                setFilteredMedicamentos(response.data);
+            };
+            fetchData();
+        }, []);
     }
+
+
 
     const eliminarMedicamento = async (id) => {
         const isDelete = window.confirm("¿Desea Borrar El Medicamento?");
@@ -224,7 +232,7 @@ function Medicamentos() {
                             <span className="font-semibold">Presentación:</span> {med.presentacion}
                         </div>
                         <div className="mb-3">
-                            <span className="font-semibold">Laboratorio:</span> {
+                            <span className="font-semibold">Clinica:</span> {
                                 empresas.find(e => e.id === med.empresa_id)?.nombre || med.empresa_id || "Empresa desconocida"
                             }
                         </div>

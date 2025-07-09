@@ -42,6 +42,7 @@ export default {
   getPacienteById: (id) => axios.get(`${base_api_url}/medico/update-paciente/${id}`),
 
   // * Medicamentos
+  indexMedicamentoByAdmin: (data) => axios.get(`${base_api_url}/admin/medicamento/catalogo`, data),
   storeMedicamento: (data) => axios.post(`${base_api_url}/medicamento/regristro`, data),
   indexMedicamento: (data) => axios.get(`${base_api_url}/medicamento/catalogo`, data),
   updateMedicamento: (id, data) => axios.put(`${base_api_url}/medicamento/update/${id}`, data),
