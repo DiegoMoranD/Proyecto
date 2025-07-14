@@ -32,6 +32,7 @@ class PacienteMedicoController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
+            'sex' => 'string|max:20',
             'fecha_nacimiento' => 'required|date',
             'tipo_sangre' => 'required|string|max:3',
             'peso' => 'required|numeric',
@@ -43,6 +44,7 @@ class PacienteMedicoController extends Controller
 
         $paciente = new Paciente();
         $paciente->nombre = $request->input('nombre');
+        $paciente->sex = $request->input('sex');
         $paciente->fecha_nacimiento = $request->input('fecha_nacimiento');
         $paciente->tipo_sangre = $request->input('tipo_sangre');
         $paciente->peso = $request->input('peso');
@@ -80,6 +82,7 @@ class PacienteMedicoController extends Controller
 
         $request->validate([
             'nombre' => 'string|max:255',
+            'sex' => 'string|max:20',
             'fecha_nacimiento' => 'date',
             'tipo_sangre' => 'string|max:3',
             'peso' => 'numeric',

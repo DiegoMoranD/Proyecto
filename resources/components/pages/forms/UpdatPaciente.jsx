@@ -7,6 +7,7 @@ function UpdatePaciente() {
 
   // Un estado por campo
   const [nombre, setNombre] = useState("");
+  const [sex, setSex] = useState("");
   const [fecha_nacimiento, setFechaNacimiento] = useState("");
   const [tipo_sangre, setTipoSangre] = useState("");
   const [peso, setPeso] = useState("");
@@ -23,6 +24,7 @@ function UpdatePaciente() {
         const response = await Config.getPacienteById(id);
         const data = response.data;
         setNombre(data.nombre || "");
+        setSex(data.sex || "");
         setFechaNacimiento(data.fecha_nacimiento || "");
         setTipoSangre(data.tipo_sangre || "");
         setPeso(data.peso || "");
@@ -64,6 +66,7 @@ function UpdatePaciente() {
     try {
       await Config.updatePaciente(id, {
         nombre,
+        sex,
         fecha_nacimiento,
         tipo_sangre,
         peso,
@@ -179,6 +182,23 @@ function UpdatePaciente() {
               ))}
             </select>
           </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-3">Sexo</label>
+            <select
+              value={sex}
+              onChange={e => setSex(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+            >
+              <option value="">Seleccionar</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Binario">Binario</option>
+              <option value="No Definido">No Definido</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+
         </div>
         <div className="mt-12 text-center">
           <button

@@ -14,6 +14,7 @@ import PiiSVG from './svg/PiiSVG';
 import Config from './layouts/PageAuth/Config';
 import AuthUser from './layouts/PageAuth/AuthUser';
 import XSVG from './svg/X';
+import CalendarSVG from './svg/CalendarSVG';
 
 export default function SideBar({ isOpen, toggleSidebar }) {
 
@@ -84,6 +85,12 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                             <Link to={`/${rol}/home`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <HomeSVG />
                                                 <p className="pl-4">Inicio</p>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link to={`/${rol}/agenda`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
+                                                <CalendarSVG />
+                                                <p className="pl-4">Agendar Cita</p>
                                             </Link>
                                         </li>
                                     </>

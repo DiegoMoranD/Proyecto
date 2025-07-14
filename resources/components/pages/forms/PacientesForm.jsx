@@ -10,6 +10,7 @@ const PacientesForm = () => {
 
   const [paciente, setPaciente] = useState({
     nombre: "",
+    sex: "",
     fecha_nacimiento: "",
     tipo_sangre: "",
     peso: "",
@@ -84,6 +85,7 @@ const PacientesForm = () => {
       alert("Paciente registrado exitosamente");
       setPaciente({
         nombre: "",
+        sex: "",
         fecha_nacimiento: "",
         tipo_sangre: "",
         peso: "",
@@ -232,6 +234,24 @@ const PacientesForm = () => {
               </select>
             </div>
           )}
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-3">
+              Sexo
+            </label>
+            <select
+              value={paciente.sex}
+              name="sex"
+              onChange={handlePacienteChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+              <option value="">Seleccionar</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Binario">Binario</option>
+              <option value="No Definido">No Definido</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
 
           {/* Empresa ID */}
           {(rol === 'medico' || rol === 'recepcion') && (

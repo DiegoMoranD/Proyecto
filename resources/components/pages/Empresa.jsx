@@ -104,7 +104,7 @@ function Empresa() {
                             <th className="px-6 py-4">RFC</th>
                             <th className="px-6 py-4 max-md:hidden">Cédula</th>
                             {(rol === 'admin' || rol === 'root') && (
-                                <th className="px-6 py-4">-</th>
+                                <th className="px-6 py-4">Opciones</th>
                             )}
                         </tr>
                     </thead>

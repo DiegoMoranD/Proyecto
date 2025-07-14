@@ -207,7 +207,10 @@ function Paciente() {
                             <th className="px-6 py-4">IMC</th>
                             <th className="px-6 py-4 max-md:hidden">Empresa</th>
                             {(rol === 'medico' || rol === 'admin' || rol === 'recepcion' || rol === 'root') && (
-                                <th className="px-6 py-4">-</th>
+                                <>
+                                    <th className="px-6 py-4">Opciones</th>
+                                    <th className="px-6 py-4">Info</th>
+                                </>
                             )}
                         </tr>
                     </thead>
@@ -226,12 +229,19 @@ function Paciente() {
                                         <td className="px-6 py-4">{paciente.imc}</td>
                                         <td className="px-6 py-4 max-md:hidden">{paciente.empresa_id}</td>
                                         {(rol === 'medico' || rol === 'admin' || rol === 'root') && (
-                                            <td className="py-4 justify-around flex">
-                                                <Link to={`/${rol}/update-paciente/${paciente.id}`}>
-                                                    <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
-                                                </Link>
-                                                <button onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>
-                                            </td>
+                                            <>
+                                                <td className="py-4 justify-around flex">
+                                                    <Link to={`/${rol}/update-paciente/${paciente.id}`}>
+                                                        <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
+                                                    </Link>
+                                                    <button onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <Link to={`/${rol}/paciente/${paciente.id}`}>
+                                                        <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Ver</p>
+                                                    </Link>
+                                                </td>
+                                            </>
                                         )}
                                         {(rol === 'recepcion') && (
                                             <td className="py-4 justify-around flex">

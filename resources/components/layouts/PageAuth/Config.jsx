@@ -40,6 +40,7 @@ export default {
   storePaciente: (data) => axios.post(`${base_api_url}/medico/registrar-paciente`, data),
   updatePaciente: (id, data) => axios.put(`${base_api_url}/medico/update-paciente/${id}`, data),
   getPacienteById: (id) => axios.get(`${base_api_url}/medico/update-paciente/${id}`),
+  getPacienteByIdCitas: (id) => axios.get(`${base_api_url}/medico/paciente/${id}`),
 
   // * Medicamentos
   indexMedicamentoByAdmin: (data) => axios.get(`${base_api_url}/admin/medicamento/catalogo`, data),

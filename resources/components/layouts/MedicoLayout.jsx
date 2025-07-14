@@ -10,6 +10,10 @@ import Home from '../pages/Home'
 import Medicamentos from '../pages/Medicamentos'
 import MedicamentoForm from '../pages/forms/MedicamentoForm'
 import UpdateMedicamento from '../pages/forms/UpdateMedicamento'
+import PacienteData from '../pages/PacienteData'
+import Agenda from '../pages/Agenda'
+import AgendarForm from '../pages/forms/AgendarForm'
+import ConsultaForm from '../pages/forms/ConsultaForm'
 
 function MedicoLayout() {
     const { getRol } = AuthUser();
@@ -38,7 +42,11 @@ function MedicoLayout() {
                         <div className="bg-white p-4 m-4 rounded-2xl overflow-x-hidden lg:max-w-[95%] md:max-w-[95%] sm:max-w-full mx-auto max-sm:w-fixed max-lg:w-full">
                             <Routes>
                                 <Route path="/home" element={<Home />} />
+                                <Route path="/agenda" element={<Agenda />} />
+                                <Route path="/agendar-form" element={<AgendarForm />} />
+                                <Route path="/consulta-form" element={<ConsultaForm />} />
                                 <Route path="/pacientes" element={<Paciente />} />
+                                <Route path="/paciente/:id" element={<PacienteData />} />
                                 <Route path="/registrar-paciente" element={<PacientesForm />} />
                                 <Route path="/update-paciente/:id" element={<UpdatePaciente />} />
                                 <Route path="/medicamentos" element={<Medicamentos />} />

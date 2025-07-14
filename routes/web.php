@@ -44,6 +44,10 @@ Route::get('/medico/{any}', function () {
     return view('welcome');
 });
 
+Route::get('/medico/pacientes/{any}', function () {
+    return view('welcome');
+});
+
 Route::get('/medico/update-paciente/{any}', function () {
     return view('welcome');
 });

@@ -124,7 +124,7 @@ function Usuario() {
                             <th className="px-6 py-4">Telefono</th>
                             <th className="px-6 py-4 max-md:hidden">Empresa</th>
                             {(rol === 'admin' || rol === 'root') && (
-                                <th className="px-6 py-4">-</th>
+                                <th className="px-6 py-4">Opciones</th>
                             )}
                         </tr>
                     </thead>
