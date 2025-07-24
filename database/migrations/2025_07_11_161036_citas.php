@@ -18,6 +18,8 @@ return new class extends Migration
             $table->date("fecha");
             $table->time("hora");
             $table->string("motivo");
+            $table->string("estado");
+            $table->string("atendido_por");
             $table->unsignedBigInteger('empresa_id');
             $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
             $table->timestamps();

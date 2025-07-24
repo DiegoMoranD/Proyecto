@@ -48,7 +48,9 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/auth/usuario', [UsuariosController::class, 'index']);
     Route::get('/auth/usuario-name/{id}', [UsuariosController::class, 'show']);
-    // Route::get('/auth/empresa/{id}', [EmpresasController::class, 'show']);
+    // Route::get('/auth/empresa/{id}', [EmpresasController::class, 'show']);}
+    Route::post('/test/agendar-form', [PacienteMedicoController::class, 'storeAgenda']);
+
 
     Route::post('/test/tipo-usuario', [TiposUsuariosController::class, 'store']);
     Route::get('/auth/tipo-usuario', [TiposUsuariosController::class, 'index']);
@@ -83,7 +85,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/medico/update-paciente/{id}', [PacienteMedicoController::class, 'show']);
         Route::get('/medico/paciente-metrics', [PacienteMedicoController::class, 'metrics']);
         Route::get('/medico/paciente/{id}', [PacienteMedicoController::class, 'show']);
- 
+
         // * Medicamentos
         Route::get('/admin/medicamento/catalogo', [MedicamentoMedicoController::class, 'indexMedicamentoByAdmin']);
         Route::post('/medicamento/regristro', [MedicamentoMedicoController::class, 'storeMedicamento']);
@@ -91,6 +93,15 @@ Route::prefix('v1')->group(function () {
         Route::put('/medicamento/update/{id}', [MedicamentoMedicoController::class, 'updateMedicamento']);
         Route::delete('/medicamento/delete/{id}', [MedicamentoMedicoController::class, 'deleteMedicamento']);
         Route::get('/medicamento/ver/{id}', [MedicamentoMedicoController::class, 'showMedicamento']);
+
+        //* Citas
+        Route::get('/medico/citas-paciente/{paciente_id}', [PacienteMedicoController::class, 'indexAgendaPaciente']);
+        Route::get('/medico/citas/{id}', [PacienteMedicoController::class, 'indexAgendaShow']);
+        Route::get('/medico/agenda', [PacienteMedicoController::class, 'indexAgenda']);
+        Route::post('/medico/agendar-form', [PacienteMedicoController::class, 'storeAgenda']);
+        Route::get('/medico/cita/{id}', [PacienteMedicoController::class, 'show']); 
+        Route::post('/medico/cita-detalles/{id}', [PacienteMedicoController::class, 'CitaDetalles']);
+        Route::get('/medico/cita-atendida/{id}', [PacienteMedicoController::class, 'citaAtendidaShow']);
 
 
         // ? <-------------------- Rol Paciente -------------------->

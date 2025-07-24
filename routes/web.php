@@ -44,6 +44,18 @@ Route::get('/medico/{any}', function () {
     return view('welcome');
 });
 
+Route::get('/medico/cita/{any}', function () {
+    return view('welcome');
+});
+
+Route::get('/medico/cita-detalles/{any}', function () {
+    return view('welcome');
+});
+
+Route::get('/medico/cita-atendida/{any}', function () {
+    return view('welcome');
+});
+
 Route::get('/medico/pacientes/{any}', function () {
     return view('welcome');
 });

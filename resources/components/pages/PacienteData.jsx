@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Config from "../layouts/PageAuth/Config";
 import { Link, useParams } from "react-router-dom";
+import ModalCita from "../ModalCita";
 
 function PacienteData() {
     const { id } = useParams();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCitaId, setSelectedCitaId] = useState(null);
 
     // Un estado por campo
+    const [citas, setCitas] = useState("");
     const [nombre, setNombre] = useState("");
     const [sex, setSex] = useState("");
     const [fecha_nacimiento, setFechaNacimiento] = useState("");
@@ -16,6 +20,25 @@ function PacienteData() {
     const [fecha_registro, setFechaRegistro] = useState("");
     const [empresa_id, setEmpresaId] = useState("");
     const [empresas, setEmpresas] = useState([]);
+
+    useEffect(() => {
+        indexAgenda()
+    }, [])
+
+    const indexAgenda = async () => {
+        const response = await Config.indexAgenda()
+        setCitas(response.data)
+    }
+
+    const handleOpenModal = (citaId) => {
+        setSelectedCitaId(citaId);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedCitaId(null);
+    };
 
     // Cargar datos del paciente y empresas al montar
     useEffect(() => {
@@ -55,6 +78,11 @@ function PacienteData() {
 
     return (
         <div className="container mx-auto p-6">
+            <ModalCita
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                id={selectedCitaId}
+            ></ModalCita>
             <h2 className="text-2xl font-bold mb-5 border-b border-gray-600/25 pb-4">Datos del Paciente</h2>
             <div className="overflow-auto grid grid-cols-4 gap-5 mb-8">
                 <div>
@@ -91,31 +119,48 @@ function PacienteData() {
                 <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-white">
                     <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider ">
                         <tr>
-                            <th className="px-6 py-4">id</th>
-                            <th className="px-6 py-4">peso</th>
-                            <th className="px-6 py-4">altura</th>
-                            <th className="px-6 py-4">sintomas</th>
-                            <th className="px-6 py-4">Fecha Cita</th>
-                            <th className="px-6 py-4">Estado</th>
-                            <th className="px-6 py-4">Opciones</th>
-
+                            <th className="px-6 py-4">ID</th>
+                            <th className="px-6 py-4">ID-Paciente</th>
+                            <th className="px-6 py-4">motivo</th>
+                            <th className="px-6 py-4">fecha</th>
+                            <th className="px-6 py-4">hora</th>
+                            <th className="px-6 py-4">empresa_id</th>
+                            <th className="px-6 py-4">Detalles</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 ">
-                        <tr className="hover:bg-gray-50 transition-colors">
-                            <td className="px-6 py-4">1</td>
-                            <td className="px-6 py-4">67 KG</td>
-                            <td className="px-6 py-4">1.67 mtr</td>
-                            <td className="px-6 py-4">Lorem</td>
-                            <td className="px-6 py-4">11-04-2025</td>
-                            <td className="px-6 py-4">ACtivo</td>
-                            <td className="px-6 py-4 ">
-                                <Link to=''>
-                                    <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Ver detalles</p>
-                                </Link>
-                            </td>
-                        </tr>
+                        {!citas ? (
+                            <tr>
+                                <td className="px-6 py-4" colSpan="7">Cargando...</td>
+                            </tr>
+                        ) : (
+                            citas
+                                .filter(cita => cita.paciente_id == id) // 👈 Filtra las citas con el mismo id del paciente
+                                .map((cita) => (
+                                    <tr key={cita.id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="px-6 py-4">{cita.id}</td>
+                                        <td className="px-6 py-4">{cita.estado}</td>
+                                        <td className="px-6 py-4">{cita.motivo}</td>
+                                        <td className="px-6 py-4">{cita.fecha}</td>
+                                        <td className="px-6 py-4">{cita.hora}</td>
+                                        <td className="px-6 py-4">{cita.empresa_id}</td>
+                                        <td>
+                                            {(cita.estado === 'atendido') && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleOpenModal(cita.id)}
+                                                        className='cursor-pointer font-bold text-blue-500 hover:text-blue-600 transition duration-500'
+                                                    >
+                                                        Ver detalles
+                                                    </button></>
+                                            )
+                                            }
+                                        </td>
+                                    </tr>
+                                ))
+                        )}
                     </tbody>
+
                 </table>
 
             </div>

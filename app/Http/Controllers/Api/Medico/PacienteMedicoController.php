@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Medico;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cita;
+use App\Models\Cita_detalles;
 use App\Models\Paciente;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -153,5 +155,110 @@ class PacienteMedicoController extends Controller
             'tipos_sangre' => $tiposSangre,
             'edades' => $edadCounts
         ]);
+    }
+
+    public function storeAgenda(Request $request)
+    {
+        $request->validate([
+            'paciente_id' => 'required|integer',
+            'motivo' => 'required|string|max:250',
+            'fecha' => 'required|date',
+            'hora' => 'required|date_format:H:i',
+            'atendido_por' => 'string',
+            'estado' => 'string',
+            'empresa_id' => 'required|integer',
+        ]);
+
+        $cita = new Cita();
+        $cita->paciente_id = $request->input('paciente_id');
+        $cita->motivo = $request->input('motivo');
+        $cita->fecha = $request->input('fecha');
+        $cita->hora = $request->input('hora');
+        $cita->atendido_por = $request->input('atendido_por');
+        $cita->estado = $request->input('estado');
+        $cita->empresa_id = $request->input('empresa_id');
+
+        $usuario = auth()->user();
+
+        $cita->atendido_por = $usuario->name . ' ' . $usuario->paterno . ' ' . $usuario->materno;
+        $cita->estado = 'registrado';
+
+        $cita->save();
+
+        return response()->json([
+            'message' => 'Cita registrada correctamente',
+            'id' => $cita->id
+        ], 201);
+    }
+
+    public function indexAgenda()
+    {
+        $usuario = auth()->user();
+        $empresa_id = $usuario->empresa_id; // Asegúrate de que el usuario tenga este campo
+
+        $citas = Cita::where('empresa_id', $empresa_id)->get();
+        return response()->json($citas);
+    }
+
+    public function indexAgendaShow($id)
+    {
+        $cita = Cita::find($id);
+        if (!$cita) {
+            return response()->json(['message' => 'cita no encontrada'], 404);
+        }
+        return response()->json($cita);
+    }
+
+    public function CitaDetalles(Request $request, $id)
+    {
+        $request->validate([
+            'cita_id' => 'integer',
+            'peso' => 'required|numeric',
+            'altura' => 'required|numeric',
+            'imc' => 'numeric',
+            'sintomas' => 'required|string|max:250',
+            'alergias' => 'required|string|max:250',
+            'diagnostico' => 'required|string|max:250',
+            'atendido_por' => 'string|max:250',
+            'recomendaciones' => 'required|string|max:250',
+        ]);
+
+        $cita = Cita::find($id);
+        if (!$cita) {
+            return response()->json(['message' => 'Cita no encontrada'], 404);
+        }
+
+        // Crear detalles de la cita
+        $detalles = new Cita_detalles();
+        $detalles->cita_id = $cita->id;
+        $detalles->peso = $request->input('peso');
+        $detalles->altura = $request->input('altura');
+        $detalles->imc = $request->input('imc');
+        $detalles->sintomas = $request->input('sintomas');
+        $detalles->alergias = $request->input('alergias');
+        $detalles->diagnostico = $request->input('diagnostico');
+        $detalles->recomendaciones = $request->input('recomendaciones');
+        $detalles->atendido_por = $request->input('atendido_por');
+        $usuario = auth()->user();
+        $detalles->atendido_por = $usuario->name . ' ' . $usuario->paterno . ' ' . $usuario->materno;
+        $detalles->save();
+
+        // Cambiar estado de la cita
+        $cita->estado = 'atendido';
+        $cita->save();
+
+        return response()->json([
+            'message' => 'Detalles de cita guardados y estado actualizado',
+            'cita_id' => $cita->id
+        ]);
+    }
+
+    public function citaAtendidaShow($id)
+    {
+        $detalles = Cita_detalles::where('cita_id', $id)->first();
+        if (!$detalles) {
+            return response()->json(['message' => 'No hay detalles para esta cita'], 404);
+        }
+        return response()->json($detalles);
     }
 }

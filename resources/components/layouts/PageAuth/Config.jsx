@@ -50,6 +50,15 @@ export default {
   getMedicamentoById: (id) => axios.get(`${base_api_url}/medicamento/ver/${id}`),
   deleteMedicamento: (id) => axios.delete(`${base_api_url}/medicamento/delete/${id}`),
 
+  // * Agenda
+  indexAgendaPaciente: (paciente_id) => axios.get(`${base_api_url}/medico/citas-paciente/${paciente_id}`),
+  getCitaById: (id) => axios.get(`${base_api_url}/medico/citas/${id}`),
+  indexAgenda: (data) => axios.get(`${base_api_url}/medico/agenda`, data),
+  storeAgenda: (data) => axios.post(`${base_api_url}/medico/agendar-form`, data),
+  showPacienteCita: (id) => axios.get(`${base_api_url}/medico/cita/${id}`),
+  CitaDetalles: (id, data) => axios.post(`${base_api_url}/medico/cita-detalles/${id}`, data),
+  citaAtendidaShow: (id) => axios.get(`${base_api_url}/medico/cita-atendida/${id}`),
+
   // ? configuracion root
   getAllPacientesByAdmin: (data) => axios.get(`${base_api_url}/admin/pacientes`, data),
   storeEmpresaByRoot: (data) => axios.post(`${base_api_url}/root/crear-empresa`, data),

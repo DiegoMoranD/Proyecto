@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string("alergias");
             $table->string("diagnostico");
             $table->string("recomendaciones");
+            $table->string("atendido_por");
             $table->timestamps();
         });
     }

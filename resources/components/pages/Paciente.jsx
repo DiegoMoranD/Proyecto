@@ -231,13 +231,13 @@ function Paciente() {
                                         {(rol === 'medico' || rol === 'admin' || rol === 'root') && (
                                             <>
                                                 <td className="py-4 justify-around flex">
-                                                    <Link to={`/${rol}/update-paciente/${paciente.id}`}>
+                                                    <Link to={`/${rol}/update-pacientes/${paciente.id}`}>
                                                         <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
                                                     </Link>
                                                     <button onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <Link to={`/${rol}/paciente/${paciente.id}`}>
+                                                    <Link to={`/${rol}/pacientes/${paciente.id}`}>
                                                         <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Ver</p>
                                                     </Link>
                                                 </td>
