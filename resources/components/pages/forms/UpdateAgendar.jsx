@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import Config from '../../layouts/PageAuth/Config';
 import { Link } from 'react-router-dom';
 
-function AgendarForm() {
-    const [pacientes, setPacientes] = useState([]);
-    const [empresas, setEmpresaName] = useState([]);
+function UpdateAgendar() {
+    const [paciente, setPacientes] = useState("");
+    const [fecha, setFecha] = useState("");
+    const [hora, setHora] = useState("");
+    const [motivo, setMotivo] = useState("");
 
     const getRol = () => {
         const rol = sessionStorage.getItem('rol');
@@ -13,62 +15,14 @@ function AgendarForm() {
 
     const rol = getRol();
 
-    // Estados para los campos del formulario
-    const [form, setForm] = useState({
-        paciente_id: '',
-        fecha: '',
-        hora: '',
-        motivo: '',
-    });
-
-    useEffect(() => {
-        getAllPaciente()
-    }, [])
-
-    const getAllPaciente = async () => {
-        const response = await Config.getAllPaciente()
-        setPacientes(response.data)
-    }
-
-    useEffect(() => {
-        const fetchEmpresa = async () => {
-            try {
-                const response = await Config.getAlltEmpresa();
-                setEmpresaName(response.data);
-            } catch (error) {
-                console.error("Error encontrado", error);
-            }
-        };
-        fetchEmpresa();
-    }, []);
-
-    // Manejar cambios en los campos
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    // Manejar el submit
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await Config.storeAgenda(form);
-            alert('Cita registrada correctamente');
-            // Opcional: limpiar formulario o redirigir
-        } catch (error) {
-            alert('Error al registrar la cita');
-        }
-    };
-
+    
     return (
         <div className="container mx-auto p-6">
             <h2 className="text-2xl font-bold mb-6 border-b pb-4 border-gray-600/25">
                 Agendar Consulta
             </h2>
 
-            <form onSubmit={handleSubmit}>
+            <form >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Paciente */}
                     <div>
@@ -77,15 +31,9 @@ function AgendarForm() {
                         </label>
                         <select
                             name="paciente_id"
-                            value={form.paciente_id}
-                            onChange={handleChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
                             <option value="">Seleccionar</option>
-                            {pacientes.map((paciente) => (
-                                <option key={paciente.id} value={paciente.id}>
-                                    {paciente.nombre}
-                                </option>
-                            ))}
+                            
                         </select>
                     </div>
 
@@ -97,8 +45,6 @@ function AgendarForm() {
                         <input
                             type="date"
                             name="fecha"
-                            value={form.fecha}
-                            onChange={handleChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                     </div>
@@ -111,8 +57,6 @@ function AgendarForm() {
                         <input
                             type="time"
                             name="hora"
-                            value={form.hora}
-                            onChange={handleChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                     </div>
@@ -125,8 +69,6 @@ function AgendarForm() {
                         <input
                             type="text"
                             name="motivo"
-                            value={form.motivo}
-                            onChange={handleChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                     </div>
@@ -151,4 +93,4 @@ function AgendarForm() {
     );
 }
 
-export default AgendarForm
+export default UpdateAgendar

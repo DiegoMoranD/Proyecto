@@ -41,13 +41,13 @@ const CalendarView = () => {
     }, []);
 
     return (
-        <div className="bg-gray-100 shadow p-6">
+        <div className=" p-2">
             <ModalCitasPop
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 id={selectedCitaId}
             />
-            <h2 className="text-xl mb-4 font-[500]">Calendario</h2>
+            <h2 className="text-xl mb-4 font-[500] border-b border-black/20 pb-1">Calendario</h2>
             <Calendar
                 localizer={localizer}
                 events={events}

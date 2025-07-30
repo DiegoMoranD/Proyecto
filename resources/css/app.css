@@ -27,5 +27,5 @@
 }
 
 .rbc-event {
-    @apply bg-blue-500 text-white p-1 rounded;
+    @apply bg-blue-500 hover:bg-blue-400 transition duration-500 text-white p-1 rounded;
 }

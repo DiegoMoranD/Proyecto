@@ -16,6 +16,7 @@ import UpdateEmpresa from '../pages/forms/UpdateEmpresa';
 import EmpresaForm from '../pages/forms/EmpresaForm';
 import UsuarioForm from '../pages/forms/UsuarioForm';
 import RecepcionForm from '../pages/forms/RecepcionForm';
+import PacienteData from '../pages/PacienteData';
 
 function RootLayout() {
     const { getRol } = AuthUser();
@@ -57,6 +58,7 @@ function RootLayout() {
                                 <Route path="/crear-empresa" element={<EmpresaForm />} />
                                 <Route path="/registrar-usuario" element={<UsuarioForm />} />
                                 <Route path="/registrar-recepcion" element={<RecepcionForm />} />
+                                <Route path="/pacientes/:id" element={<PacienteData />} />
                             </Routes>
                         </div>
                     </div>

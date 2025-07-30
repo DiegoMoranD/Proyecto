@@ -228,7 +228,7 @@ function Paciente() {
                                         <td className="px-6 py-4">{paciente.peso}</td>
                                         <td className="px-6 py-4">{paciente.imc}</td>
                                         <td className="px-6 py-4 max-md:hidden">{paciente.empresa_id}</td>
-                                        {(rol === 'medico' || rol === 'admin' || rol === 'root') && (
+                                        {(rol === 'medico' || rol === 'admin' || rol === 'root' || rol === 'recepcion') && (
                                             <>
                                                 <td className="py-4 justify-around flex">
                                                     <Link to={`/${rol}/update-pacientes/${paciente.id}`}>
@@ -242,13 +242,6 @@ function Paciente() {
                                                     </Link>
                                                 </td>
                                             </>
-                                        )}
-                                        {(rol === 'recepcion') && (
-                                            <td className="py-4 justify-around flex">
-                                                <Link to={`/${rol}/update-paciente/${paciente.id}`}>
-                                                    <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
-                                                </Link>
-                                            </td>
                                         )}
                                     </tr>
                                 ))

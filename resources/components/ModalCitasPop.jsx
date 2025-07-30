@@ -8,6 +8,13 @@ function ModalCitasPop({ isOpen, onClose, id }) {
     const [cita, setCita] = useState(null);
     const [nombre, setNombre] = useState("");
 
+    const getRol = () => {
+        const rol = sessionStorage.getItem('rol');
+        return rol ? JSON.parse(rol) : null;
+    }
+
+    const rol = getRol();
+
     useEffect(() => {
         if (!isOpen || !id) return;
         const fetchCita = async () => {
@@ -36,12 +43,12 @@ function ModalCitasPop({ isOpen, onClose, id }) {
                 <div className="flex items-center mb-4">
                     <h2 className="p-1">Estado: </h2>
                     <span className={`px-2 py-1 text-xs rounded font-semibold ${cita.estado === 'registrado'
-                            ? 'bg-yellow-100 text-yellow-600'
-                            : cita.estado === 'atendido'
-                                ? 'bg-green-100 text-green-600'
-                                : cita.estado === 'cancelado'
-                                    ? 'bg-red-100 text-red-600'
-                                    : ''
+                        ? 'bg-yellow-100 text-yellow-600'
+                        : cita.estado === 'atendido'
+                            ? 'bg-green-100 text-green-600'
+                            : cita.estado === 'cancelado'
+                                ? 'bg-red-100 text-red-600'
+                                : ''
                         }`}>
                         {cita.estado}
                     </span>
@@ -53,19 +60,32 @@ function ModalCitasPop({ isOpen, onClose, id }) {
                     <div>
                         <p>{cita.motivo}.</p>
                     </div>
-                    <div className='my-2'>
-                        <div className='grid grid-cols-3 gap-4'>
-                            <Link to={`/medico/cita-detalles/${id}`} className='bg-green-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-green-600 transition-colors duration-500 font-medium text-center'>
-                                <button>Atender Cita</button>
-                            </Link>
-                            <Link to={''} className='bg-yellow-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-yellow-600 transition-colors duration-500 font-medium text-center'>
-                                <button>Reprogramar Cita</button>
-                            </Link>
-                            <Link to={''} className='bg-red-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-red-600 transition-colors duration-500 font-medium text-center'>
-                                <button>Eliminar Cita</button>
-                            </Link>
-                        </div>
-                    </div>
+
+
+                    {(cita.estado === 'registrado') && (
+                        <>
+                            <div className='my-2'>
+                                <div className='flex justify-around'>
+
+
+                                    {(rol === 'medico') && (
+                                        <>
+                                            <Link to={`/medico/cita-detalles/${id}`} className='bg-green-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-green-600 transition-colors duration-500 font-medium text-center w-1/4'>
+                                                <button>Atender Cita</button>
+                                            </Link>
+                                        </>
+                                    )}
+
+                                    <Link to={''} className='bg-yellow-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-yellow-600 transition-colors duration-500 font-medium text-center w-1/4'>
+                                        <button>Reprogramar Cita</button>
+                                    </Link>
+                                    <Link to={''} className='bg-red-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-red-600 transition-colors duration-500 font-medium text-center w-1/4'>
+                                        <button>Eliminar Cita</button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
                 <div className="mb-6 border border-gray-500/25 rounded-[6px] p-6 flex flex-col">
                     <div className='flex items-center gap-2'>

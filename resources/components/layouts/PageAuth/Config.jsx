@@ -58,6 +58,7 @@ export default {
   showPacienteCita: (id) => axios.get(`${base_api_url}/medico/cita/${id}`),
   CitaDetalles: (id, data) => axios.post(`${base_api_url}/medico/cita-detalles/${id}`, data),
   citaAtendidaShow: (id) => axios.get(`${base_api_url}/medico/cita-atendida/${id}`),
+  getCitasSemana: () => axios.get(`${base_api_url}/medico/citas-semana`),
 
   // ? configuracion root
   getAllPacientesByAdmin: (data) => axios.get(`${base_api_url}/admin/pacientes`, data),

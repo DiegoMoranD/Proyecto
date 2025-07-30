@@ -8,8 +8,12 @@ function PacienteData() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCitaId, setSelectedCitaId] = useState(null);
 
-    // Un estado por campo
-    const [citas, setCitas] = useState("");
+    const [citas, setCitas] = useState([]); // Inicializamos como array
+    const [filteredCitas, setFilteredCitas] = useState([]); // Inicializamos como array
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    // Estados del paciente
     const [nombre, setNombre] = useState("");
     const [sex, setSex] = useState("");
     const [fecha_nacimiento, setFechaNacimiento] = useState("");
@@ -22,25 +26,15 @@ function PacienteData() {
     const [empresas, setEmpresas] = useState([]);
 
     useEffect(() => {
-        indexAgenda()
-    }, [])
+        indexAgenda();
+    }, []);
 
     const indexAgenda = async () => {
-        const response = await Config.indexAgenda()
-        setCitas(response.data)
-    }
-
-    const handleOpenModal = (citaId) => {
-        setSelectedCitaId(citaId);
-        setIsModalOpen(true);
+        const response = await Config.indexAgenda();
+        setCitas(response.data);
+        setFilteredCitas(response.data);
     };
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setSelectedCitaId(null);
-    };
-
-    // Cargar datos del paciente y empresas al montar
     useEffect(() => {
         const fetchPaciente = async () => {
             try {
@@ -72,6 +66,26 @@ function PacienteData() {
         fetchPaciente();
         fetchEmpresas();
     }, [id]);
+
+    // Filtrar citas por paciente_id antes de paginar
+    const citasPaciente = filteredCitas.filter(cita => cita.paciente_id == id);
+
+    // Paginación
+    const totalPages = Math.ceil(citasPaciente.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentCitas = citasPaciente.slice(indexOfFirstItem, indexOfLastItem);
+
+    const handleOpenModal = (citaId) => {
+        setSelectedCitaId(citaId);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedCitaId(null);
+    };
+
 
     const userString = sessionStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
@@ -120,7 +134,7 @@ function PacienteData() {
                     <thead className="bg-gray-100 text-left font-semibold text-gray-700 uppercase tracking-wider ">
                         <tr>
                             <th className="px-6 py-4">ID</th>
-                            <th className="px-6 py-4">ID-Paciente</th>
+                            <th className="px-6 py-4">Estado</th>
                             <th className="px-6 py-4">motivo</th>
                             <th className="px-6 py-4">fecha</th>
                             <th className="px-6 py-4">hora</th>
@@ -129,42 +143,71 @@ function PacienteData() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 ">
-                        {!citas ? (
+                        {!currentCitas ? (
                             <tr>
                                 <td className="px-6 py-4" colSpan="7">Cargando...</td>
                             </tr>
                         ) : (
-                            citas
-                                .filter(cita => cita.paciente_id == id) // 👈 Filtra las citas con el mismo id del paciente
-                                .map((cita) => (
-                                    <tr key={cita.id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4">{cita.id}</td>
-                                        <td className="px-6 py-4">{cita.estado}</td>
-                                        <td className="px-6 py-4">{cita.motivo}</td>
-                                        <td className="px-6 py-4">{cita.fecha}</td>
-                                        <td className="px-6 py-4">{cita.hora}</td>
-                                        <td className="px-6 py-4">{cita.empresa_id}</td>
-                                        <td>
-                                            {(cita.estado === 'atendido') && (
-                                                <>
-                                                    <button
-                                                        onClick={() => handleOpenModal(cita.id)}
-                                                        className='cursor-pointer font-bold text-blue-500 hover:text-blue-600 transition duration-500'
-                                                    >
-                                                        Ver detalles
-                                                    </button></>
-                                            )
-                                            }
-                                        </td>
-                                    </tr>
-                                ))
+                            currentCitas.map((cita) => (
+                                <tr key={cita.id} className="hover:bg-gray-50 transition-colors">
+                                    <td className="px-6 py-4">{cita.id}</td>
+                                    <td className="px-6 py-4"><p className={` py-1 text-center rounded font-semibold ${cita.estado === 'registrado'
+                                        ? 'bg-yellow-200 text-yellow-700'
+                                        : cita.estado === 'atendido'
+                                            ? 'bg-green-200 text-green-700'
+                                            : cita.estado === 'cancelado'
+                                                ? 'bg-red-200 text-red-700'
+                                                : ''
+                                        }`}>{cita.estado}</p></td>
+                                    <td className="px-6 py-4">{cita.motivo}</td>
+                                    <td className="px-6 py-4">{cita.fecha}</td>
+                                    <td className="px-6 py-4">{cita.hora}</td>
+                                    <td className="px-6 py-4">{cita.empresa_id}</td>
+                                    <td>
+                                        {(cita.estado === 'atendido') && (
+                                            <>
+                                                <button
+                                                    onClick={() => handleOpenModal(cita.id)}
+                                                    className='cursor-pointer font-bold text-blue-500 hover:text-blue-600 transition duration-500'
+                                                >
+                                                    Ver detalles
+                                                </button></>
+                                        )
+                                        }
+                                    </td>
+                                </tr>
+                            ))
                         )}
                     </tbody>
 
                 </table>
 
             </div>
-
+            <div className="flex justify-center mt-6 gap-2">
+                <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                    Anterior
+                </button>
+                {[...Array(totalPages)].map((_, idx) => (
+                    <button
+                        key={idx + 1}
+                        onClick={() => setCurrentPage(idx + 1)}
+                        className={`px-3 py-1 rounded ${currentPage === idx + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                    >
+                        {idx + 1}
+                    </button>
+                ))}
+                <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                    Siguiente
+                </button>
+            </div>
         </div>
     )
 }

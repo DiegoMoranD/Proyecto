@@ -102,6 +102,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/medico/cita/{id}', [PacienteMedicoController::class, 'show']); 
         Route::post('/medico/cita-detalles/{id}', [PacienteMedicoController::class, 'CitaDetalles']);
         Route::get('/medico/cita-atendida/{id}', [PacienteMedicoController::class, 'citaAtendidaShow']);
+        Route::get('/medico/citas-semana', [PacienteMedicoController::class, 'citasSemana']);
 
 
         // ? <-------------------- Rol Paciente -------------------->

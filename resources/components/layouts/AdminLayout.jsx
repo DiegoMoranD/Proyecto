@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Route, Routes, useNavigate } from 'react-router-dom';
-import AuthUser from './PageAuth/AuthUser';
-import SideBar from '../SideBar';
 import TopBar from '../Topbar';
+import SideBar from '../SideBar';
 import Home from '../pages/Home';
 import Empresa from '../pages/Empresa';
+import Usuario from '../pages/Usuario';
+import Paciente from '../pages/Paciente';
+import AuthUser from './PageAuth/AuthUser';
 import TipoUsuario from '../pages/TipoUsuario';
 import Suscripcion from '../pages/Suscripcion';
-import Paciente from '../pages/Paciente';
-import Usuario from '../pages/Usuario';
-import UpdateUsuario from '../pages/forms/UpdateUsuario';
-import UpdatePaciente from '../pages/forms/UpdatPaciente';
+import Medicamentos from '../pages/Medicamentos'
+import PacienteData from '../pages/PacienteData';
 import PacientesForm from '../pages/forms/PacientesForm';
 import UpdateEmpresa from '../pages/forms/UpdateEmpresa';
-import Medicamentos from '../pages/Medicamentos'
+import UpdateUsuario from '../pages/forms/UpdateUsuario';
+import UpdatePaciente from '../pages/forms/UpdatPaciente';
 import MedicamentoForm from '../pages/forms/MedicamentoForm'
 import UpdateMedicamento from '../pages/forms/UpdateMedicamento'
 
@@ -46,6 +47,7 @@ function AdminLayout() {
                             <Routes>
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/empresa" element={<Empresa />} />
+                                <Route path="/pacientes/:id" element={<PacienteData />} />
                                 <Route path="/update-empresa/:id" element={<UpdateEmpresa />} />
                                 <Route path="/tipo-usuario" element={<TipoUsuario />} />
                                 <Route path="/suscripcion" element={<Suscripcion />} />

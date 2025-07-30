@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
-import AuthUser from './PageAuth/AuthUser'
-import SideBar from '../SideBar'
 import TopBar from '../Topbar'
+import SideBar from '../SideBar'
 import Home from '../pages/Home'
+import Agenda from '../pages/Agenda'
 import Paciente from '../pages/Paciente'
+import AuthUser from './PageAuth/AuthUser'
+import PacienteData from '../pages/PacienteData'
+import React, { useEffect, useState } from 'react'
+import AgendarForm from '../pages/forms/AgendarForm'
 import PacientesForm from '../pages/forms/PacientesForm'
+import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 
 function RecepcionLayout() {
     const { getRol } = AuthUser();
@@ -35,7 +38,11 @@ function RecepcionLayout() {
                             <Routes> 
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/pacientes" element={<Paciente />} />
+                                <Route path="/pacientes/:id" element={<PacienteData />} />
                                 <Route path="/registrar-paciente" element={<PacientesForm />} />
+                                <Route path="/agenda" element={<Agenda />} />
+                                <Route path="/agendar-form" element={<AgendarForm />} />
+                                <Route path="/pacientes/:id" element={<PacienteData />} />
                             </Routes>
                         </div>  
                     </div>

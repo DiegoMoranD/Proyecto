@@ -17,6 +17,7 @@ import ConsultaForm from '../pages/forms/ConsultaForm'
 import ModalCita from '../ModalCita'
 import ModalCitasPop from '../ModalCitasPop'
 import CitaForm from '../pages/forms/CitaForm'
+import UpdateAgendar from '../pages/forms/UpdateAgendar'
 
 function MedicoLayout() {
     const { getRol } = AuthUser();
@@ -45,11 +46,9 @@ function MedicoLayout() {
                         <div className="bg-white p-4 m-4 rounded-2xl overflow-x-hidden lg:max-w-[95%] md:max-w-[95%] sm:max-w-full mx-auto max-sm:w-fixed max-lg:w-full">
                             <Routes>
                                 <Route path="/home" element={<Home />} />
-                                <Route path="/cita-detalles/:id" element={<CitaForm />} />
-                                <Route path="/cita-atendida/:id" element={<ModalCita />} />
-                                <Route path="/cita/:id" element={<ModalCitasPop />} />
                                 <Route path="/agenda" element={<Agenda />} />
                                 <Route path="/agendar-form" element={<AgendarForm />} />
+                                <Route path="/agendar-update" element={<UpdateAgendar />} />
                                 <Route path="/consulta-form" element={<ConsultaForm />} />
                                 <Route path="/pacientes" element={<Paciente />} />
                                 <Route path="/pacientes/:id" element={<PacienteData />} />
@@ -58,6 +57,9 @@ function MedicoLayout() {
                                 <Route path="/medicamentos" element={<Medicamentos />} />
                                 <Route path="/medicamento-form" element={<MedicamentoForm />} />
                                 <Route path="/medicamento-update/:id" element={<UpdateMedicamento />} />
+                                <Route path="/cita-detalles/:id" element={<CitaForm />} />
+                                <Route path="/cita-atendida/:id" element={<ModalCita />} />
+                                <Route path="/cita/:id" element={<ModalCitasPop />} />
                             </Routes>
                         </div>
                     </div>

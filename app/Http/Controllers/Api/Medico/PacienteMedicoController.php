@@ -166,7 +166,7 @@ class PacienteMedicoController extends Controller
             'hora' => 'required|date_format:H:i',
             'atendido_por' => 'string',
             'estado' => 'string',
-            'empresa_id' => 'required|integer',
+            'empresa_id' => 'integer',
         ]);
 
         $cita = new Cita();
@@ -180,7 +180,8 @@ class PacienteMedicoController extends Controller
 
         $usuario = auth()->user();
 
-        $cita->atendido_por = $usuario->name . ' ' . $usuario->paterno . ' ' . $usuario->materno;
+        $cita->atendido_por = $usuario->name;
+        $cita->empresa_id = $usuario->empresa_id;
         $cita->estado = 'registrado';
 
         $cita->save();
@@ -260,5 +261,31 @@ class PacienteMedicoController extends Controller
             return response()->json(['message' => 'No hay detalles para esta cita'], 404);
         }
         return response()->json($detalles);
+    }
+
+    public function citasSemana()
+    {
+        $usuario = auth()->user();
+        $empresa_id = $usuario->empresa_id;
+
+        $hoy = now()->startOfDay();
+        $finSemana = now()->addDays(6)->endOfDay();
+
+        $citas = Cita::with('paciente')
+            ->where('empresa_id', $empresa_id)
+            ->whereBetween('fecha', [$hoy, $finSemana])
+            ->whereIn('estado', ['registrado', 'atendido'])
+            ->orderBy('fecha', 'asc')
+            ->get()
+            ->map(function ($cita) {
+                return [
+                    'id' => $cita->id,
+                    'nombre_paciente' => $cita->paciente ? $cita->paciente->nombre : 'Sin nombre',
+                    'estado' => $cita->estado,
+                    'fecha' => $cita->fecha,
+                ];
+            });
+
+        return response()->json($citas);
     }
 }
