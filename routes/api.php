@@ -103,6 +103,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/medico/cita-detalles/{id}', [PacienteMedicoController::class, 'CitaDetalles']);
         Route::get('/medico/cita-atendida/{id}', [PacienteMedicoController::class, 'citaAtendidaShow']);
         Route::get('/medico/citas-semana', [PacienteMedicoController::class, 'citasSemana']);
+        Route::put('/medico/agendar-update/{id}', [PacienteMedicoController::class, 'updateCita']);
+        Route::put('/medico/agendar-delete/{id}', [PacienteMedicoController::class, 'cancelCita']);
 
 
         // ? <-------------------- Rol Paciente -------------------->

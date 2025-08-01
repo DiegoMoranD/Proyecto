@@ -41,33 +41,35 @@ const CalendarView = () => {
     }, []);
 
     return (
-        <div className=" p-2">
-            <ModalCitasPop
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                id={selectedCitaId}
-            />
-            <h2 className="text-xl mb-4 font-[500] border-b border-black/20 pb-1">Calendario</h2>
-            <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ height: 500, width: 850 }}
-                onSelectEvent={(event) => {
-                    setSelectedCitaId(event.id);
-                    setIsModalOpen(true);
-                }}
-                messages={{
-                    today: 'Hoy',
-                    previous: 'Atrás',
-                    next: 'Siguiente',
-                    month: 'Mes',
-                    week: 'Semana',
-                    day: 'Día',
-                    agenda: 'Agenda',
-                }}
-            />
+        <div className=" sm:p-4 md:p-6 max-w-full overflow-x-auto">
+            <div className="min-w-[600px] w-full">
+                <ModalCitasPop
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    id={selectedCitaId}
+                />
+                <h2 className="text-xl mb-4 font-[500] border-b border-black/20 pb-1 -mt-4">Calendario</h2>
+                <Calendar
+                    localizer={localizer}
+                    events={events}
+                    startAccessor="start"
+                    endAccessor="end"
+                    style={{ height: 500, width: '100%' }}
+                    onSelectEvent={(event) => {
+                        setSelectedCitaId(event.id);
+                        setIsModalOpen(true);
+                    }}
+                    messages={{
+                        today: 'Hoy',
+                        previous: 'Atrás',
+                        next: 'Siguiente',
+                        month: 'Mes',
+                        week: 'Semana',
+                        day: 'Día',
+                        agenda: 'Agenda',
+                    }}
+                />
+            </div>
         </div>
     );
 };

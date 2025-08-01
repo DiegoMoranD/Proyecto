@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Config from "./layouts/PageAuth/Config";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Clock4 } from "lucide-react";
 
 function ModalCitasPop({ isOpen, onClose, id }) {
 
     const [cita, setCita] = useState(null);
     const [nombre, setNombre] = useState("");
+    const [estado, setEstado] = useState("");
 
     const getRol = () => {
         const rol = sessionStorage.getItem('rol');
@@ -33,6 +34,17 @@ function ModalCitasPop({ isOpen, onClose, id }) {
     }, [id, isOpen]);
 
     if (!isOpen || !cita) return null;
+
+    const cancelCitaPaciente = async () => {
+        try {
+            await Config.cancelCita(cita.id, { estado: "cancelado" });
+            alert("Cita cancelada exitosamente");
+            onClose();
+        } catch (error) {
+            alert("Error al cancelar la cita");
+            console.error(error);
+        }
+    }
 
 
     return (
@@ -76,12 +88,10 @@ function ModalCitasPop({ isOpen, onClose, id }) {
                                         </>
                                     )}
 
-                                    <Link to={''} className='bg-yellow-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-yellow-600 transition-colors duration-500 font-medium text-center w-1/4'>
+                                    <Link to={`/${rol}/agendar-update/${id}`} className='bg-yellow-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-yellow-600 transition-colors duration-500 font-medium text-center w-1/4'>
                                         <button>Reprogramar Cita</button>
                                     </Link>
-                                    <Link to={''} className='bg-red-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-red-600 transition-colors duration-500 font-medium text-center w-1/4'>
-                                        <button>Eliminar Cita</button>
-                                    </Link>
+                                    <button onClick={cancelCitaPaciente} className='bg-red-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-red-600 transition-colors duration-500 font-medium text-center w-1/4'>Eliminar Cita</button>
                                 </div>
                             </div>
                         </>

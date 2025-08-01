@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Config from '../../layouts/PageAuth/Config';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function AgendarForm() {
     const [pacientes, setPacientes] = useState([]);
     const [empresas, setEmpresaName] = useState([]);
+    const navigate = useNavigate();
 
     const getRol = () => {
         const rol = sessionStorage.getItem('rol');
@@ -54,9 +55,11 @@ function AgendarForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await Config.storeAgenda(form);
-            alert('Cita registrada correctamente');
-            // Opcional: limpiar formulario o redirigir
+            const response = await Config.storeAgenda(form);
+            if (response.status === 201) {
+                alert('Cita registrada correctamente');
+                navigate(`/${rol}/agenda`);
+            }
         } catch (error) {
             alert('Error al registrar la cita');
         }

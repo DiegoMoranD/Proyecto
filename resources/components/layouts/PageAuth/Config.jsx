@@ -59,6 +59,8 @@ export default {
   CitaDetalles: (id, data) => axios.post(`${base_api_url}/medico/cita-detalles/${id}`, data),
   citaAtendidaShow: (id) => axios.get(`${base_api_url}/medico/cita-atendida/${id}`),
   getCitasSemana: () => axios.get(`${base_api_url}/medico/citas-semana`),
+  updateCita: (id, data) => axios.put(`${base_api_url}/medico/agendar-update/${id}`, data),
+  cancelCita: (id, data) => axios.put(`${base_api_url}/medico/agendar-delete/${id}`, data),
 
   // ? configuracion root
   getAllPacientesByAdmin: (data) => axios.get(`${base_api_url}/admin/pacientes`, data),

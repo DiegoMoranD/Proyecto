@@ -83,6 +83,10 @@ Route::get('/medico/update-paciente/{any}', function () {
     return view('welcome');
 });
 
+Route::get('/medico/agendar-update/{any}', function () {
+    return view('welcome');
+});
+
 // ----------------------------------------------
 // todo Rutas para el rol "recepcion"
 // ----------------------------------------------
@@ -90,6 +94,10 @@ Route::get('/recepcion/{any}', function () {
     return view('welcome');
 });
 Route::get('/recepcion/pacientes/{any}', function () {
+    return view('welcome');
+});
+
+Route::get('/recepcion/agendar-update/{any}', function () {
     return view('welcome');
 });
 

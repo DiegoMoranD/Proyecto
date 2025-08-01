@@ -188,6 +188,10 @@ class PacienteMedicoController extends Controller
 
         return response()->json([
             'message' => 'Cita registrada correctamente',
+            PHPLogToFile::logToFileInfo('Cita registrada', [
+                'Paciente' => $cita->paciente_id,
+                'Registrado por' => $usuario->email
+            ]),
             'id' => $cita->id
         ], 201);
     }
@@ -250,8 +254,54 @@ class PacienteMedicoController extends Controller
 
         return response()->json([
             'message' => 'Detalles de cita guardados y estado actualizado',
-            'cita_id' => $cita->id
+            PHPLogToFile::logToFileInfo('Cita atendida registrada', [
+                'Cita' => $detalles->cita_id,
+                'Atendida por' => $usuario->email
+            ]),
         ]);
+    }
+
+    public function updateCita(Request $request, $id)
+    {
+        // Actualizar cita (reeprogramar dia y hora de la cita)
+        $request->validate([
+            'motivo' => 'string',
+            'fecha' => 'date',
+            'hora' => 'date_format:H:i',
+        ]);
+
+        $cita = Cita::find($id);
+        $usuario = auth()->user();
+        $cita->update($request->all());
+
+        if (!$cita) {
+            return response()->json([
+                'message' => 'Cita no encontrada'
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Detalles de cita estado actualizado',
+            PHPLogToFile::logToFileInfo('Cita Actializada', [
+                'Cita_id' => $cita->cita_id,
+                'Actualizada por' => $usuario->email
+            ]),
+        ]);
+    }
+
+    public function cancelCita(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'string',
+        ]);
+        $cita = Cita::find($id);
+        if (!$cita) {
+            return response()->json(['message' => 'Cita no encontrada'], 404);
+        }
+        $cita->estado = 'cancelado'; // Cambia a cancelado
+        $cita->update($request->all());
+
+        return response()->json(['message' => 'Cita cancelada exitosamente']);
     }
 
     public function citaAtendidaShow($id)

@@ -19,31 +19,32 @@ function Agenda() {
     }, []);
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto p-4 sm:p-6 overflow-auto">
             <h2 className="text-2xl font-bold mb-5 border-b border-gray-600/25 pb-4">Agenda de citas</h2>
-            <div className='flex justify-between'>
-                <div className='grid content-between w-1/4'>
-                    <div className='bg-gray-100 p-4 rounded-lg h-[480px] overflow-auto'>
-                        <div className='bg-white p-4 rounded-lg '>
-                            <p className='border-b border-gray-600/25 mb-4 font-medium'>Actividad Reciente:</p>
-                            <div className='flex justify-between'>
-                                <table className='min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-gray-100 border-collapse border border-black/10'>
-                                    <thead className='bg-gray-100 text-left font-medium text-gray-700 uppercase tracking-wider'>
+            <div className="flex flex-col lg:flex-row gap-6">
+                {/* Tabla de actividad reciente */}
+                <div className="w-full lg:w-1/4 flex flex-col">
+                    <div className="bg-gray-100 p-4 rounded-lg shadow-md border border-gray-900/25 h-[400px] sm:h-[480px] overflow-auto mb-4">
+                        <div className="bg-white p-4 rounded-lg shadow-md border border-gray-900/25">
+                            <p className="border-b border-gray-600/25 mb-4 font-medium">Actividad Reciente:</p>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700 bg-gray-100 border-collapse border border-black/10">
+                                    <thead className="bg-gray-100 text-left font-medium text-gray-700 uppercase tracking-wider">
                                         <tr>
                                             <th className="px-3 py-2">Nombre</th>
                                             <th className="px-3 py-2">Estado</th>
                                         </tr>
                                     </thead>
-                                    <tbody className='divide-y divide-gray-200 bg-white'>
+                                    <tbody className="divide-y divide-gray-200 bg-white">
                                         {citas.length === 0 && (
                                             <tr>
-                                                <td colSpan={2} className='px-2.5 py-1.5 text-center'>Sin citas recientes</td>
+                                                <td colSpan={2} className="px-2.5 py-1.5 text-center">Sin citas recientes</td>
                                             </tr>
                                         )}
                                         {citas.map((cita) => (
-                                            <tr key={cita.id} className='hover:bg-gray-50 transition-colors'>
-                                                <td className='px-2.5 py-1.5'>{cita.nombre_paciente}</td>
-                                                <td className='px-2.5 py-1.5'>
+                                            <tr key={cita.id} className="hover:bg-gray-50 transition-colors">
+                                                <td className="px-2.5 py-1.5">{cita.nombre_paciente}</td>
+                                                <td className="px-2.5 py-1.5">
                                                     {cita.estado === 'atendido' && (
                                                         <p className="py-1 text-center rounded font-semibold bg-green-100 text-green-600">Atendido</p>
                                                     )}
@@ -58,13 +59,17 @@ function Agenda() {
                             </div>
                         </div>
                     </div>
-                    <Link to={`/${rol}/agendar-form`} className='bg-green-500 text-white rounded-[8px] p-2 mt-6 cursor-pointer hover:bg-green-600 transition-colors duration-500 font-medium text-center'>
-                        <button>Regristar Cita</button>
+                    <Link
+                        to={`/${rol}/agendar-form`}
+                        className="bg-green-500 text-white rounded-[8px] p-2 mt-2 sm:mt-6 cursor-pointer hover:bg-green-600 transition-colors duration-500 font-medium text-center"
+                    >
+                        <button className="w-full">Registrar Cita</button>
                     </Link>
                 </div>
-                <div className=''>
-                    <div className=''>
-                        <CalendarView></CalendarView>
+                {/* Calendario */}
+                <div className="w-full lg:w-3/4">
+                    <div className="bg-white rounded-lg shadow-md border border-gray-900/25 sm:p-4">
+                        <CalendarView />
                     </div>
                 </div>
             </div>

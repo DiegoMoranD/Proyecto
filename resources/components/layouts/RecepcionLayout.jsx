@@ -8,6 +8,7 @@ import PacienteData from '../pages/PacienteData'
 import React, { useEffect, useState } from 'react'
 import AgendarForm from '../pages/forms/AgendarForm'
 import PacientesForm from '../pages/forms/PacientesForm'
+import UpdateAgendar from '../pages/forms/UpdateAgendar'
 import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 
 function RecepcionLayout() {
@@ -43,6 +44,7 @@ function RecepcionLayout() {
                                 <Route path="/agenda" element={<Agenda />} />
                                 <Route path="/agendar-form" element={<AgendarForm />} />
                                 <Route path="/pacientes/:id" element={<PacienteData />} />
+                                <Route path="/agendar-update/:id" element={<UpdateAgendar />} />
                             </Routes>
                         </div>  
                     </div>
