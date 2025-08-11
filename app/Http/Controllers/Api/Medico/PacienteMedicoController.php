@@ -283,7 +283,7 @@ class PacienteMedicoController extends Controller
         return response()->json([
             'message' => 'Detalles de cita estado actualizado',
             PHPLogToFile::logToFileInfo('Cita Actializada', [
-                'Cita_id' => $cita->cita_id,
+                'Cita_id' => $cita->id,
                 'Actualizada por' => $usuario->email
             ]),
         ]);
