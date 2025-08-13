@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Logo from './imgs/logo.png';
+import Logo from './imgs/logo2.png';
 import HomeSVG from './svg/HomeSVG';
 import { Link } from 'react-router-dom';
 import LogoutSVG from './svg/LogoutSVG';
@@ -50,12 +50,12 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                     </div>
                 </div>
             )}
-            <div className={`flex flex-col justify-between py-4 fixed top-0 left-0 h-full bg-white shadow-lg w-64 z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'
+            <div className={`flex flex-col justify-between fixed top-0 left-0 h-full bg-white shadow-lg w-64 z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'
                 } sm:relative sm:translate-x-0`}>
                 <div>
                     {/* Logo */}
                     <div className="mb-2 p-4 flex items-center flex-col border-b-1 border-gray-900/25">
-                        <img src={Logo} alt="Logo" className="h-12" />
+                        <img src={Logo} alt="Logo" className="h-[63px]" />
                     </div>
 
                     {/* Items */}
@@ -162,9 +162,9 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                 <div className="p-4 rounded w-full border-t-1 border-gray-900/25">
                     <ul>
                         <li className="">
-                            <button className="bg-red-500 text-white py-3 px-8 rounded hover:bg-red-600 transition duration-300 flex items-center justify-center w-full">
+                            <button onClick={logoutUser} className="bg-red-500 text-white py-3 px-8 rounded hover:bg-red-600 transition duration-300 flex items-center justify-center w-full cursor-pointer">
                                 <LogoutSVG />
-                                <Link onClick={logoutUser} to={"#"} className="pl-4  font-bold max-2xl:text-[12px] max-2xl:pl-2">
+                                <Link  to={"#"} className="pl-4  font-bold max-2xl:text-[12px] max-2xl:pl-2">
                                     Cerrar Sesion
                                 </Link>
                             </button>
