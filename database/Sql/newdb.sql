@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-07-2025 a las 01:19:34
+-- Tiempo de generación: 15-08-2025 a las 00:06:50
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -69,7 +69,23 @@ CREATE TABLE `citas` (
 --
 
 INSERT INTO `citas` (`id`, `paciente_id`, `fecha`, `hora`, `motivo`, `estado`, `atendido_por`, `empresa_id`, `created_at`, `updated_at`) VALUES
-(1, 1, '2025-07-22', '17:30:00', 'Dolores estomacales', 'registrado', ' Castillo Pinal', 9, '2025-07-22 19:18:02', '2025-07-22 19:18:02');
+(1, 1, '2025-07-22', '17:30:00', 'Dolores estomacales', 'atendido', ' Castillo Pinal', 9, '2025-07-22 19:18:02', '2025-07-23 20:50:59'),
+(2, 1, '2025-07-31', '08:20:00', 'Irritación en la piel', 'atendido', 'Pedro Castillo Pinal', 9, '2025-07-23 22:15:51', '2025-08-01 23:33:13'),
+(3, 1, '2025-07-23', '05:20:00', 'Fractura ligeras en las extremidades', 'atendido', 'Pedro Castillo Pinal', 9, '2025-07-23 22:16:51', '2025-07-23 22:25:56'),
+(4, 1, '2025-07-25', '10:30:00', 'Marcas en la espalda', 'registrado', 'Pedro Castillo Pinal', 9, '2025-07-23 22:17:28', '2025-07-23 22:17:28'),
+(5, 7, '2025-07-31', '00:22:00', 'Dolores de cabeza', 'atendido', 'Pedro Castillo Pinal', 9, '2025-07-24 23:05:56', '2025-07-29 23:17:45'),
+(6, 18, '2025-07-26', '14:20:00', 'Manchas en la piel', 'registrado', 'Pedro', 9, '2025-07-25 23:07:00', '2025-07-25 23:07:00'),
+(7, 21, '2025-07-26', '17:10:00', 'Decoloración en la piel', 'registrado', 'Pedro', 9, '2025-07-25 23:10:52', '2025-07-25 23:10:52'),
+(8, 22, '2025-07-26', '18:10:00', 'Chequeo medico', 'registrado', 'Pedro', 9, '2025-07-25 23:11:13', '2025-07-25 23:11:13'),
+(9, 22, '2025-08-03', '03:10:00', 'Chequeo medico', 'registrado', 'Pedro', 9, '2025-07-29 22:24:23', '2025-07-31 19:07:13'),
+(10, 35, '2025-08-04', '14:20:00', 'Chequeo medico', 'cancelado', 'Pedro', 9, '2025-07-29 22:35:29', '2025-08-01 20:46:21'),
+(11, 54, '2025-08-13', '16:20:00', 'Chequeo medico', 'registrado', 'Pedro', 9, '2025-07-29 22:35:43', '2025-08-11 19:26:02'),
+(12, 1, '2025-08-03', '14:06:00', 'Chequeo Dental', 'registrado', 'Pedro', 9, '2025-08-01 20:48:33', '2025-08-01 20:48:33'),
+(13, 1, '2025-08-06', '18:10:00', 'Chequeo medico', 'registrado', 'Pedro', 9, '2025-08-01 21:17:15', '2025-08-01 23:53:40'),
+(14, 54, '2025-07-04', '00:11:00', 'Chequeo medico', 'registrado', 'Pedro', 9, '2025-08-01 21:18:28', '2025-08-01 21:31:42'),
+(15, 25, '2025-08-13', '15:10:00', 'Chequeo medico', 'registrado', 'Pedro', 9, '2025-08-01 22:57:09', '2025-08-12 18:18:39'),
+(16, 87, '2025-08-13', '16:00:00', 'Chequeo de colesterol', 'registrado', 'David', 9, '2025-08-11 22:56:21', '2025-08-11 22:56:21'),
+(17, 88, '2025-08-12', '17:00:00', 'Ta cansao y le duele la rodilla', 'atendido', 'David', 9, '2025-08-13 00:59:10', '2025-08-13 01:02:07');
 
 -- --------------------------------------------------------
 
@@ -91,6 +107,17 @@ CREATE TABLE `cita_detalles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `cita_detalles`
+--
+
+INSERT INTO `cita_detalles` (`id`, `cita_id`, `peso`, `altura`, `imc`, `sintomas`, `alergias`, `diagnostico`, `recomendaciones`, `atendido_por`, `created_at`, `updated_at`) VALUES
+(1, 1, '44', '1.5', '19.56', 'qq', 'qq', 'qq', 'qq', 'Pedro Castillo Pinal', '2025-07-23 20:50:59', '2025-07-23 20:50:59'),
+(2, 3, '55', '1.45', '26.16', 'ee', 'ee', 'ee', 'ee', 'Pedro Castillo Pinal', '2025-07-23 22:25:56', '2025-07-23 22:25:56'),
+(3, 5, '67', '1.85', '19.58', 'zzz', 'zzz', 'zzz', 'zzz', 'Pedro Castillo Pinal', '2025-07-29 23:17:45', '2025-07-29 23:17:45'),
+(4, 2, '70', '1.7', '24.22', 'aaa', 'aaa', 'aaa', 'aaa', 'Pedro Castillo Pinal', '2025-08-01 23:33:13', '2025-08-01 23:33:13'),
+(5, 17, '88', '1.75', '28.73', 'Cansancio todo el dia, y dolor en las rodillas', 'Ninguna', 'Tiene cancer de edad', 'Descanse y tomar vitamnas y calsio.', 'Pedro Castillo Pinal', '2025-08-13 01:02:07', '2025-08-13 01:02:07');
 
 -- --------------------------------------------------------
 
@@ -196,95 +223,96 @@ CREATE TABLE `medicamentos` (
   `stock` int(11) NOT NULL,
   `receta` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `disponible` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `medicamentos`
 --
 
-INSERT INTO `medicamentos` (`id`, `nombre`, `descripcion`, `categoria`, `presentacion`, `empresa_id`, `stock`, `receta`, `created_at`, `updated_at`) VALUES
-(1, 'eadsa', 'gggg', 'Analgésicos', 'Gel', 9, 200, 0, NULL, NULL),
-(2, 'Parecetamol', 'Parecetamol- 100mg', 'Analgésicos', 'Tabletas', 10, 111, 0, NULL, NULL),
-(10, 'Amoxil', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 9, 50, 0, NULL, NULL),
-(11, 'Amoxina', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 10, 100, 1, NULL, NULL),
-(12, 'Amoxibac', 'Amoxicilina - 1000mg', 'Antibióticos', 'Cápsulas', 11, 55, 1, NULL, NULL),
-(13, 'Bactimox', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 12, 95, 1, NULL, NULL),
-(14, 'Amoxigran', 'Amoxicilina - 875mg', 'Antibióticos', 'Cápsulas', 13, 65, 1, NULL, NULL),
-(15, 'Amoxx', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 15, 70, 1, NULL, NULL),
-(16, 'Amoxinor', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 16, 80, 1, NULL, NULL),
-(17, 'Amoxicina', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 9, 60, 1, NULL, NULL),
-(18, 'Maximox', 'Amoxicilina - 1000mg', 'Antibióticos', 'Cápsulas', 10, 85, 1, NULL, NULL),
-(19, 'Normoxil', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 11, 75, 1, NULL, NULL),
-(20, 'Clavamox', 'Amoxicilina - 875mg', 'Antibióticos', 'Cápsulas', 12, 90, 1, NULL, NULL),
-(21, 'Amoxita', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 13, 55, 1, NULL, NULL),
-(22, 'Amoxin', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 15, 70, 1, NULL, NULL),
-(23, 'Bioamox', 'Amoxicilina - 1000mg', 'Antibióticos', 'Cápsulas', 16, 50, 1, NULL, NULL),
-(25, 'Amoximed Forte', 'Amoxicilina - 875mg', 'Antibióticos', 'Cápsulas', 10, 80, 1, NULL, NULL),
-(26, 'Amoxifarm', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 11, 65, 1, NULL, NULL),
-(27, 'Farmamox', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 12, 70, 1, NULL, NULL),
-(28, 'Medimox', 'Amoxicilina - 1000mg', 'Antibióticos', 'Cápsulas', 13, 90, 1, NULL, NULL),
-(29, 'Amoxical', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 15, 60, 1, NULL, NULL),
-(30, 'Amoxiclina', 'Amoxicilina - 875mg', 'Antibióticos', 'Cápsulas', 16, 85, 1, NULL, NULL),
-(31, 'Dismox', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 9, 70, 1, NULL, NULL),
-(32, 'Amoxidro', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 10, 80, 1, NULL, NULL),
-(33, 'Paracetamol', 'Alivia fiebre y dolor leve', 'Analgésico', 'Tabletas 500mg', 9, 500, 0, NULL, NULL),
-(34, 'Amoxicilina', 'Antibiótico de amplio espectro', 'Antibiótico', 'Cápsulas 250mg', 10, 300, 1, NULL, NULL),
-(35, 'Ibuprofeno', 'Reduce inflamación y dolor', 'Antiinflamatorio', 'Tabletas 400mg', 11, 450, 0, NULL, NULL),
-(36, 'Omeprazol', 'Protector gástrico', 'Inhibidor de bomba de protones', 'Cápsulas 20mg', 12, 600, 1, NULL, NULL),
-(37, 'Loratadina', 'Antialérgico de segunda generación', 'Antihistamínico', 'Tabletas 10mg', 13, 350, 0, NULL, NULL),
-(38, 'Metformina', 'Control de glucosa en sangre', 'Antidiabético', 'Tabletas 850mg', 15, 200, 1, NULL, NULL),
-(39, 'Salbutamol', 'Broncodilatador en casos de asma', 'Antiasmático', 'Inhalador 100mcg', 16, 150, 1, NULL, NULL),
-(40, 'Diclofenaco', 'Alivio del dolor e inflamación', 'Antiinflamatorio', 'Gel tópico 1%', 9, 400, 0, NULL, NULL),
-(41, 'Azitromicina', 'Antibiótico de dosis única', 'Antibiótico', 'Tabletas 500mg', 10, 180, 1, NULL, NULL),
-(42, 'Losartán', 'Tratamiento de hipertensión', 'Antihipertensivo', 'Tabletas 50mg', 11, 320, 1, NULL, NULL),
-(43, 'Cetirizina', 'Control de alergias', 'Antihistamínico', 'Tabletas 10mg', 12, 270, 0, NULL, NULL),
-(44, 'Furosemida', 'Diurético para retención de líquidos', 'Diurético', 'Tabletas 40mg', 13, 230, 1, NULL, NULL),
-(45, 'Naproxeno', 'Dolor muscular y articular', 'Antiinflamatorio', 'Tabletas 500mg', 15, 300, 0, NULL, NULL),
-(46, 'Clonazepam', 'Ansiedad y trastornos del sueño', 'Ansiolítico', 'Tabletas 2mg', 16, 100, 1, NULL, NULL),
-(47, 'Prednisona', 'Antiinflamatorio sistémico', 'Corticoide', 'Tabletas 5mg', 9, 350, 1, NULL, NULL),
-(48, 'Insulina NPH', 'Tratamiento de la diabetes', 'Hormonal', 'Frasco 100UI/ml', 10, 90, 1, NULL, NULL),
-(49, 'Ranitidina', 'Alivio de acidez estomacal', 'Antiácido', 'Tabletas 150mg', 11, 400, 0, NULL, NULL),
-(50, 'Enalapril', 'Control de presión arterial', 'Antihipertensivo', 'Tabletas 10mg', 12, 280, 1, NULL, NULL),
-(51, 'Claritromicina', 'Antibiótico macrólido', 'Antibiótico', 'Tabletas 500mg', 13, 190, 1, NULL, NULL),
-(52, 'Vitamina C', 'Suplemento inmunológico', 'Vitaminas', 'Tabletas 1g', 15, 700, 0, NULL, NULL),
-(53, 'Meloxicam', 'Dolor articular crónico', 'Antiinflamatorio', 'Tabletas 15mg', 16, 210, 1, NULL, NULL),
-(54, 'Diazepam', 'Trastornos de ansiedad', 'Ansiolítico', 'Tabletas 10mg', 9, 160, 1, NULL, NULL),
-(55, 'Doxiciclina', 'Antibiótico de amplio espectro', 'Antibiótico', 'Cápsulas 100mg', 10, 220, 1, NULL, NULL),
-(56, 'Levotiroxina', 'Terapia para hipotiroidismo', 'Hormonal', 'Tabletas 100mcg', 11, 350, 1, NULL, NULL),
-(57, 'Ibuprofeno infantil', 'Dolor y fiebre en niños', 'Analgésico', 'Suspensión 100mg/5ml', 12, 300, 0, NULL, NULL),
-(58, 'Clorfenamina', 'Alivio de alergias leves', 'Antihistamínico', 'Tabletas 4mg', 13, 270, 0, NULL, NULL),
-(59, 'Ácido fólico', 'Prevención de malformaciones fetales', 'Vitaminas', 'Tabletas 5mg', 15, 800, 0, NULL, NULL),
-(60, 'Ketorolaco', 'Analgésico potente', 'Analgésico', 'Inyectable 30mg/ml', 16, 120, 1, NULL, NULL),
-(61, 'Aspirina', 'Prevención de eventos cardiovasculares', 'Antiplaquetario', 'Tabletas 100mg', 9, 900, 0, NULL, NULL),
-(62, 'Lansoprazol', 'Tratamiento de úlceras gástricas', 'Inhibidor de bomba de protones', 'Cápsulas 30mg', 10, 270, 1, NULL, NULL),
-(63, 'Clindamicina', 'Tratamiento de infecciones bacterianas', 'Antibiótico', 'Cápsulas 300mg', 11, 200, 1, NULL, NULL),
-(64, 'Bromhexina', 'Expectorante para vías respiratorias', 'Mucolítico', 'Jarabe 4mg/5ml', 12, 400, 0, NULL, NULL),
-(65, 'Metoclopramida', 'Alivio de náuseas y vómitos', 'Antiemético', 'Tabletas 10mg', 13, 240, 1, NULL, NULL),
-(66, 'Simvastatina', 'Reducción de colesterol', 'Hipolipemiante', 'Tabletas 20mg', 15, 310, 1, NULL, NULL),
-(67, 'Amlodipino', 'Tratamiento de hipertensión', 'Antihipertensivo', 'Tabletas 5mg', 16, 260, 1, NULL, NULL),
-(68, 'Albendazol', 'Tratamiento antiparasitario', 'Antiparasitario', 'Tabletas 400mg', 9, 210, 0, NULL, NULL),
-(69, 'Ciprofloxacino', 'Infecciones urinarias', 'Antibiótico', 'Tabletas 500mg', 10, 190, 1, NULL, NULL),
-(70, 'Loperamida', 'Alivio de diarrea', 'Antidiarreico', 'Tabletas 2mg', 11, 380, 0, NULL, NULL),
-(71, 'Desloratadina', 'Tratamiento de rinitis alérgica', 'Antihistamínico', 'Tabletas 5mg', 12, 220, 0, NULL, NULL),
-(72, 'Trimetoprima/Sulfametoxazol', 'Infecciones urinarias', 'Antibiótico', 'Tabletas 160/800mg', 13, 240, 1, NULL, NULL),
-(73, 'Pantoprazol', 'Reducción de acidez estomacal', 'Inhibidor de bomba de protones', 'Tabletas 40mg', 15, 290, 1, NULL, NULL),
-(74, 'Vitamina D', 'Salud ósea y muscular', 'Vitaminas', 'Tabletas 1000 UI', 16, 600, 0, NULL, NULL),
-(75, 'Clonidina', 'Tratamiento de hipertensión', 'Antihipertensivo', 'Tabletas 0.1mg', 9, 120, 1, NULL, NULL),
-(76, 'Mebendazol', 'Eliminación de lombrices intestinales', 'Antiparasitario', 'Tabletas 100mg', 10, 350, 0, NULL, NULL),
-(77, 'Ambroxol', 'Fluidificante bronquial', 'Mucolítico', 'Jarabe 15mg/5ml', 11, 310, 0, NULL, NULL),
-(78, 'Eritromicina', 'Infecciones respiratorias', 'Antibiótico', 'Tabletas 250mg', 12, 200, 1, NULL, NULL),
-(79, 'Carbamazepina', 'Control de epilepsia', 'Antiepiléptico', 'Tabletas 200mg', 13, 180, 1, NULL, NULL),
-(80, 'Glibenclamida', 'Control de glucosa', 'Antidiabético', 'Tabletas 5mg', 15, 300, 1, NULL, NULL),
-(81, 'Topiramato', 'Epilepsia y migraña', 'Antiepiléptico', 'Tabletas 50mg', 16, 150, 1, NULL, NULL),
-(82, 'Clopidogrel', 'Prevención de trombosis', 'Antiplaquetario', 'Tabletas 75mg', 9, 230, 1, NULL, NULL),
-(83, 'Fentanilo', 'Ta fuerte a 10 mg', 'Analgésicos', 'Tabletas', 9, 12, 1, NULL, NULL),
-(84, 'Amoxicilina', 'Tabletas 100 mg', 'Antibióticos', 'Tabletas', 11, 111, 1, NULL, NULL),
-(85, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 22, 1, NULL, NULL),
-(86, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 22, 1, NULL, NULL),
-(87, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 223, 0, NULL, NULL),
-(88, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 223, 0, NULL, NULL),
-(89, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 223, 0, NULL, NULL);
+INSERT INTO `medicamentos` (`id`, `nombre`, `descripcion`, `categoria`, `presentacion`, `empresa_id`, `stock`, `receta`, `created_at`, `updated_at`, `disponible`) VALUES
+(1, 'eadsa', 'gggg', 'Analgésicos', 'Gel', 9, 200, 0, NULL, NULL, 1),
+(2, 'Parecetamol', 'Parecetamol- 100mg', 'Analgésicos', 'Tabletas', 10, 111, 0, NULL, NULL, 1),
+(10, 'Amoxil', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 9, 50, 0, NULL, NULL, 1),
+(11, 'Amoxina', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 10, 100, 1, NULL, NULL, 1),
+(12, 'Amoxibac', 'Amoxicilina - 1000mg', 'Antibióticos', 'Cápsulas', 11, 55, 1, NULL, NULL, 1),
+(13, 'Bactimox', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 12, 95, 1, NULL, NULL, 1),
+(14, 'Amoxigran', 'Amoxicilina - 875mg', 'Antibióticos', 'Cápsulas', 13, 65, 1, NULL, NULL, 1),
+(15, 'Amoxx', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 15, 70, 1, NULL, NULL, 1),
+(16, 'Amoxinor', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 16, 80, 1, NULL, NULL, 1),
+(17, 'Amoxicina', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 9, 60, 1, NULL, NULL, 1),
+(18, 'Maximox', 'Amoxicilina - 1000mg', 'Antibióticos', 'Cápsulas', 10, 85, 1, NULL, NULL, 1),
+(19, 'Normoxil', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 11, 75, 1, NULL, NULL, 1),
+(20, 'Clavamox', 'Amoxicilina - 875mg', 'Antibióticos', 'Cápsulas', 12, 90, 1, NULL, NULL, 1),
+(21, 'Amoxita', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 13, 55, 1, NULL, NULL, 1),
+(22, 'Amoxin', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 15, 70, 1, NULL, NULL, 1),
+(23, 'Bioamox', 'Amoxicilina - 1000mg', 'Antibióticos', 'Cápsulas', 16, 50, 1, NULL, NULL, 1),
+(25, 'Amoximed Forte', 'Amoxicilina - 875mg', 'Antibióticos', 'Cápsulas', 10, 80, 1, NULL, NULL, 1),
+(26, 'Amoxifarm', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 11, 65, 1, NULL, NULL, 1),
+(27, 'Farmamox', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 12, 70, 1, NULL, NULL, 1),
+(28, 'Medimox', 'Amoxicilina - 1000mg', 'Antibióticos', 'Cápsulas', 13, 90, 1, NULL, NULL, 1),
+(29, 'Amoxical', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 15, 60, 1, NULL, NULL, 1),
+(30, 'Amoxiclina', 'Amoxicilina - 875mg', 'Antibióticos', 'Cápsulas', 16, 85, 1, NULL, NULL, 1),
+(31, 'Dismox', 'Amoxicilina - 500mg', 'Antibióticos', 'Cápsulas', 9, 70, 1, NULL, NULL, 1),
+(32, 'Amoxidro', 'Amoxicilina - 750mg', 'Antibióticos', 'Cápsulas', 10, 80, 1, NULL, NULL, 1),
+(33, 'Paracetamol', 'Alivia fiebre y dolor leve', 'Analgésico', 'Tabletas 500mg', 9, 500, 0, NULL, NULL, 1),
+(34, 'Amoxicilina', 'Antibiótico de amplio espectro', 'Antibiótico', 'Cápsulas 250mg', 10, 300, 1, NULL, NULL, 1),
+(35, 'Ibuprofeno', 'Reduce inflamación y dolor', 'Antiinflamatorio', 'Tabletas 400mg', 11, 450, 0, NULL, NULL, 1),
+(36, 'Omeprazol', 'Protector gástrico', 'Inhibidor de bomba de protones', 'Cápsulas 20mg', 12, 600, 1, NULL, NULL, 1),
+(37, 'Loratadina', 'Antialérgico de segunda generación', 'Antihistamínico', 'Tabletas 10mg', 13, 350, 0, NULL, NULL, 1),
+(38, 'Metformina', 'Control de glucosa en sangre', 'Antidiabético', 'Tabletas 850mg', 15, 200, 1, NULL, NULL, 1),
+(39, 'Salbutamol', 'Broncodilatador en casos de asma', 'Antiasmático', 'Inhalador 100mcg', 16, 150, 1, NULL, NULL, 1),
+(40, 'Diclofenaco', 'Alivio del dolor e inflamación', 'Antiinflamatorio', 'Gel tópico 1%', 9, 400, 0, NULL, NULL, 1),
+(41, 'Azitromicina', 'Antibiótico de dosis única', 'Antibiótico', 'Tabletas 500mg', 10, 180, 1, NULL, NULL, 1),
+(42, 'Losartán', 'Tratamiento de hipertensión', 'Antihipertensivo', 'Tabletas 50mg', 11, 320, 1, NULL, NULL, 1),
+(43, 'Cetirizina', 'Control de alergias', 'Antihistamínico', 'Tabletas 10mg', 12, 270, 0, NULL, NULL, 1),
+(44, 'Furosemida', 'Diurético para retención de líquidos', 'Diurético', 'Tabletas 40mg', 13, 230, 1, NULL, NULL, 1),
+(45, 'Naproxeno', 'Dolor muscular y articular', 'Antiinflamatorio', 'Tabletas 500mg', 15, 300, 0, NULL, NULL, 1),
+(46, 'Clonazepam', 'Ansiedad y trastornos del sueño', 'Ansiolítico', 'Tabletas 2mg', 16, 100, 1, NULL, NULL, 1),
+(47, 'Prednisona', 'Antiinflamatorio sistémico', 'Corticoide', 'Tabletas 5mg', 9, 350, 1, NULL, NULL, 1),
+(48, 'Insulina NPH', 'Tratamiento de la diabetes', 'Hormonal', 'Frasco 100UI/ml', 10, 90, 1, NULL, NULL, 1),
+(49, 'Ranitidina', 'Alivio de acidez estomacal', 'Antiácido', 'Tabletas 150mg', 11, 400, 0, NULL, NULL, 1),
+(50, 'Enalapril', 'Control de presión arterial', 'Antihipertensivo', 'Tabletas 10mg', 12, 280, 1, NULL, NULL, 1),
+(51, 'Claritromicina', 'Antibiótico macrólido', 'Antibiótico', 'Tabletas 500mg', 13, 190, 1, NULL, NULL, 1),
+(52, 'Vitamina C', 'Suplemento inmunológico', 'Vitaminas', 'Tabletas 1g', 15, 700, 0, NULL, NULL, 1),
+(53, 'Meloxicam', 'Dolor articular crónico', 'Antiinflamatorio', 'Tabletas 15mg', 16, 210, 1, NULL, NULL, 1),
+(54, 'Diazepam', 'Trastornos de ansiedad', 'Ansiolítico', 'Tabletas 10mg', 9, 160, 1, NULL, NULL, 1),
+(55, 'Doxiciclina', 'Antibiótico de amplio espectro', 'Antibiótico', 'Cápsulas 100mg', 10, 220, 1, NULL, NULL, 1),
+(56, 'Levotiroxina', 'Terapia para hipotiroidismo', 'Hormonal', 'Tabletas 100mcg', 11, 350, 1, NULL, NULL, 1),
+(57, 'Ibuprofeno infantil', 'Dolor y fiebre en niños', 'Analgésico', 'Suspensión 100mg/5ml', 12, 300, 0, NULL, NULL, 1),
+(58, 'Clorfenamina', 'Alivio de alergias leves', 'Antihistamínico', 'Tabletas 4mg', 13, 270, 0, NULL, NULL, 1),
+(59, 'Ácido fólico', 'Prevención de malformaciones fetales', 'Vitaminas', 'Tabletas 5mg', 15, 800, 0, NULL, NULL, 1),
+(60, 'Ketorolaco', 'Analgésico potente', 'Analgésico', 'Inyectable 30mg/ml', 16, 120, 1, NULL, NULL, 1),
+(61, 'Aspirina', 'Prevención de eventos cardiovasculares', 'Antiplaquetario', 'Tabletas 100mg', 9, 900, 0, NULL, NULL, 1),
+(62, 'Lansoprazol', 'Tratamiento de úlceras gástricas', 'Inhibidor de bomba de protones', 'Cápsulas 30mg', 10, 270, 1, NULL, NULL, 1),
+(63, 'Clindamicina', 'Tratamiento de infecciones bacterianas', 'Antibiótico', 'Cápsulas 300mg', 11, 200, 1, NULL, NULL, 1),
+(64, 'Bromhexina', 'Expectorante para vías respiratorias', 'Mucolítico', 'Jarabe 4mg/5ml', 12, 400, 0, NULL, NULL, 1),
+(65, 'Metoclopramida', 'Alivio de náuseas y vómitos', 'Antiemético', 'Tabletas 10mg', 13, 240, 1, NULL, NULL, 1),
+(66, 'Simvastatina', 'Reducción de colesterol', 'Hipolipemiante', 'Tabletas 20mg', 15, 310, 1, NULL, NULL, 1),
+(67, 'Amlodipino', 'Tratamiento de hipertensión', 'Antihipertensivo', 'Tabletas 5mg', 16, 260, 1, NULL, NULL, 1),
+(68, 'Albendazol', 'Tratamiento antiparasitario', 'Antiparasitario', 'Tabletas 400mg', 9, 210, 0, NULL, NULL, 1),
+(69, 'Ciprofloxacino', 'Infecciones urinarias', 'Antibiótico', 'Tabletas 500mg', 10, 190, 1, NULL, NULL, 1),
+(70, 'Loperamida', 'Alivio de diarrea', 'Antidiarreico', 'Tabletas 2mg', 11, 380, 0, NULL, NULL, 1),
+(71, 'Desloratadina', 'Tratamiento de rinitis alérgica', 'Antihistamínico', 'Tabletas 5mg', 12, 220, 0, NULL, NULL, 1),
+(72, 'Trimetoprima/Sulfametoxazol', 'Infecciones urinarias', 'Antibiótico', 'Tabletas 160/800mg', 13, 240, 1, NULL, NULL, 1),
+(73, 'Pantoprazol', 'Reducción de acidez estomacal', 'Inhibidor de bomba de protones', 'Tabletas 40mg', 15, 290, 1, NULL, NULL, 1),
+(74, 'Vitamina D', 'Salud ósea y muscular', 'Vitaminas', 'Tabletas 1000 UI', 16, 600, 0, NULL, NULL, 1),
+(75, 'Clonidina', 'Tratamiento de hipertensión', 'Antihipertensivo', 'Tabletas 0.1mg', 9, 120, 1, NULL, NULL, 1),
+(76, 'Mebendazol', 'Eliminación de lombrices intestinales', 'Antiparasitario', 'Tabletas 100mg', 10, 350, 0, NULL, NULL, 1),
+(77, 'Ambroxol', 'Fluidificante bronquial', 'Mucolítico', 'Jarabe 15mg/5ml', 11, 310, 0, NULL, NULL, 1),
+(78, 'Eritromicina', 'Infecciones respiratorias', 'Antibiótico', 'Tabletas 250mg', 12, 200, 1, NULL, NULL, 1),
+(79, 'Carbamazepina', 'Control de epilepsia', 'Antiepiléptico', 'Tabletas 200mg', 13, 180, 1, NULL, NULL, 1),
+(80, 'Glibenclamida', 'Control de glucosa', 'Antidiabético', 'Tabletas 5mg', 15, 300, 1, NULL, NULL, 1),
+(81, 'Topiramato', 'Epilepsia y migraña', 'Antiepiléptico', 'Tabletas 50mg', 16, 150, 1, NULL, NULL, 1),
+(82, 'Clopidogrel', 'Prevención de trombosis', 'Antiplaquetario', 'Tabletas 75mg', 9, 230, 1, NULL, NULL, 1),
+(83, 'Fentanilo', 'Ta fuerte a 10 mg', 'Analgésicos', 'Tabletas', 9, 12, 1, NULL, NULL, 1),
+(84, 'Amoxicilina', 'Tabletas 100 mg', 'Antibióticos', 'Tabletas', 11, 111, 1, NULL, NULL, 1),
+(85, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 22, 1, NULL, NULL, 1),
+(86, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 22, 1, NULL, NULL, 1),
+(87, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 223, 0, NULL, NULL, 1),
+(88, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 223, 0, NULL, NULL, 1),
+(89, 'Atea', 'Parecetamol- 100mg', 'Antiinflamatorios', 'Tabletas', 10, 223, 0, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -314,7 +342,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2025_05_12_172045_failed_logins', 7),
 (11, '2025_07_01_120855_medicamentos', 8),
 (16, '2025_07_11_161036_citas', 9),
-(17, '2025_07_11_161100_cita_detalles', 10);
+(17, '2025_07_11_161100_cita_detalles', 10),
+(18, '2025_08_14_124630_receta', 11),
+(19, '2025_08_14_124938_receta_detalles', 12);
 
 -- --------------------------------------------------------
 
@@ -465,7 +495,9 @@ INSERT INTO `pacientes` (`id`, `nombre`, `fecha_nacimiento`, `tipo_sangre`, `pes
 (83, 'Renata Cabrera', '1993-09-25', 'AB+', '61.9', '1.63', '23.30', '2025-07-04', 16, NULL, NULL, NULL),
 (84, 'Óscar Vera', '1984-04-15', 'O+', '85.2', '1.82', '25.72', '2025-07-04', 9, NULL, NULL, NULL),
 (85, 'Julia Méndez', '1992-12-06', 'A-', '58.7', '1.61', '22.65', '2025-07-04', 10, NULL, NULL, NULL),
-(86, 'Raul Perez Lopez', '2006-03-20', 'A-', '150', '1.60', '58.59', '2025-07-10', 9, NULL, NULL, 'Otro');
+(86, 'Raul Perez Lopez', '2006-03-20', 'A-', '150', '1.60', '58.59', '2025-07-10', 9, NULL, NULL, 'Otro'),
+(87, 'Manuel Alejandro Torres', '2000-08-11', 'B-', '80', '1.74', '26.42', '2025-08-11', 9, NULL, NULL, 'Masculino'),
+(88, 'Joel Benjamin Hernandez Fuertes', '1992-03-31', 'A-', '95', '1.75', '31.02', '2025-08-12', 9, NULL, NULL, 'Masculino');
 
 -- --------------------------------------------------------
 
@@ -505,9 +537,38 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
-(197, 'App\\Models\\User', 6, 'caja.app', '9ab798d7afd9afd7d6c519a648b4a58c6bf3cbb8b1b83a6e25733bf8a8098e3b', '[\"*\"]', NULL, NULL, '2025-07-21 18:41:49', '2025-07-21 18:41:49'),
-(198, 'App\\Models\\User', 6, 'caja.app', 'bc3b56c94b87ef042d599fdbe61e417ab71bf47a51e6d709bda25e316ad6dd2b', '[\"*\"]', NULL, NULL, '2025-07-21 23:13:54', '2025-07-21 23:13:54'),
-(199, 'App\\Models\\User', 6, 'caja.app', 'deafaa814ca42cbaa70e8e19e7a2917d1878c1926a1f67dca2345a246a8c35e2', '[\"*\"]', NULL, NULL, '2025-07-22 17:56:41', '2025-07-22 17:56:41');
+(232, 'App\\Models\\User', 6, 'caja.app', '5101824ca51d5d5f962da9d08b796f624f41fa929c17ee0e27be51330e2aae1b', '[\"*\"]', NULL, NULL, '2025-08-14 18:13:02', '2025-08-14 18:13:02');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `receta`
+--
+
+CREATE TABLE `receta` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `paciente_id` bigint(20) UNSIGNED NOT NULL,
+  `fecha_receta` date NOT NULL,
+  `hora_receta` time NOT NULL,
+  `usuario_receta` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `receta_detalles`
+--
+
+CREATE TABLE `receta_detalles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `medicamento_id` bigint(20) UNSIGNED NOT NULL,
+  `receta_id` bigint(20) UNSIGNED NOT NULL,
+  `indicaciones` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -644,7 +705,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `paterno`, `materno`, `email`, `telefono`, `username`, `password`, `intentos`, `last_attempt_at`, `tipo_usuario_id`, `empresa_id`, `remember_token`, `created_at`, `updated_at`, `tocken_acceso_expiracion`) VALUES
 (3, 'Joel', 'Gomez', 'Torres', 'ate@gmail.com', '5553219438', 'default_username', '$2y$12$lQZAQTfaRvcfiPq2jUtZKO0AetGaqdN.Xgw4QsDcJzewmoQGF54Qe', 0, '2025-05-16 19:54:58', 3, 9, 'RECUPa1j4', '2025-05-15 18:48:49', '2025-06-11 19:38:05', '2025-06-11 20:38:05'),
 (4, 'Diego', 'Moran', 'Diaz', 'morandiazdiegoarmando@gmail.com', '3111959116', 'DiegoDiaz', '$2y$12$tD6e1pysgpfCnakN9./hY.heGxgRCV25njjv7RGF8qSozPsqG5Dky', 0, NULL, 3, 10, 'RECUPwJiR', '2025-05-15 18:50:06', '2025-06-23 21:27:43', '2025-06-23 22:27:43'),
-(6, 'Pedro', 'Castillo', 'Pinal', 'medico@gmail.com', '31243246', 'DiegoM', '$2y$12$mLe.JduC4FYwuAPLwtd0H.R2m4MNqVMoVANQdyuV.1kgmG7lkajK2', 0, '2025-07-08 18:55:43', 3, 9, NULL, '2025-05-19 20:18:47', '2025-07-08 18:55:55', NULL),
+(6, 'Pedro', 'Castillo', 'Pinal', 'medico@gmail.com', '31243246', 'DiegoM', '$2y$12$mLe.JduC4FYwuAPLwtd0H.R2m4MNqVMoVANQdyuV.1kgmG7lkajK2', 0, '2025-07-30 19:55:57', 3, 9, NULL, '2025-05-19 20:18:47', '2025-07-30 19:56:01', NULL),
 (7, 'Paul', 'Hernandez', 'Lopez', 'admin@gmail.com', '31243246', 'DiegoM', '$2y$12$1bCEqdp8vqshWydBDVR9XeR9qT9ZhjmsIpgtGPuAso8WQ6TSPmdt2', 0, '2025-05-19 23:56:01', 2, 9, NULL, '2025-05-19 20:24:54', '2025-05-19 23:56:11', NULL),
 (8, 'Nelson', 'Mercado', 'Garcia', 'paciente@gmail.com', '31243246', 'DiegoMPaciente', '$2y$12$Dc3wfbmpV.5oDcMS86LMnejOC.Gfn/PwPObSiQZAcEFfomhxAmk7a', 0, NULL, 4, 9, NULL, '2025-05-19 21:07:55', '2025-05-19 21:07:55', NULL),
 (9, 'David', 'Santos', 'Ruvalcaba', 'ate6@gmail.com', '5553219438', 'DiegoMRecepcion', '$2y$12$uv3g3KEFxnS.jnbr/MxoyuylT9vcDQG7S652uVmmDxxxPbXdfHxWO', 0, '2025-05-22 00:46:57', 5, 9, NULL, '2025-05-20 19:19:13', '2025-05-28 20:07:06', NULL),
@@ -762,6 +823,21 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indices de la tabla `receta`
+--
+ALTER TABLE `receta`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `receta_paciente_id_foreign` (`paciente_id`);
+
+--
+-- Indices de la tabla `receta_detalles`
+--
+ALTER TABLE `receta_detalles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `receta_detalles_medicamento_id_foreign` (`medicamento_id`),
+  ADD KEY `receta_detalles_receta_id_foreign` (`receta_id`);
+
+--
 -- Indices de la tabla `roles`
 --
 ALTER TABLE `roles`
@@ -811,13 +887,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `cita_detalles`
 --
 ALTER TABLE `cita_detalles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `empresas`
@@ -847,13 +923,13 @@ ALTER TABLE `medicamentos`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `pacientes`
 --
 ALTER TABLE `pacientes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
@@ -865,7 +941,19 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
+
+--
+-- AUTO_INCREMENT de la tabla `receta`
+--
+ALTER TABLE `receta`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `receta_detalles`
+--
+ALTER TABLE `receta_detalles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -937,6 +1025,19 @@ ALTER TABLE `model_has_roles`
 --
 ALTER TABLE `pacientes`
   ADD CONSTRAINT `pacientes_empresa_id_foreign` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `receta`
+--
+ALTER TABLE `receta`
+  ADD CONSTRAINT `receta_paciente_id_foreign` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `receta_detalles`
+--
+ALTER TABLE `receta_detalles`
+  ADD CONSTRAINT `receta_detalles_medicamento_id_foreign` FOREIGN KEY (`medicamento_id`) REFERENCES `medicamentos` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `receta_detalles_receta_id_foreign` FOREIGN KEY (`receta_id`) REFERENCES `receta` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `role_has_permissions`

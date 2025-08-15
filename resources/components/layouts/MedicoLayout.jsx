@@ -19,6 +19,8 @@ import ModalCitasPop from '../ModalCitasPop'
 import CitaForm from '../pages/forms/CitaForm'
 import UpdateAgendar from '../pages/forms/UpdateAgendar'
 
+import MyDocument from '../DocumentPDF'
+
 function MedicoLayout() {
     const { getRol } = AuthUser();
     const navigate = useNavigate()
@@ -45,6 +47,7 @@ function MedicoLayout() {
                     <div className='flex-1 p-4 overflow-auto'>
                         <div className="bg-white p-4 m-4 rounded-2xl overflow-x-hidden lg:max-w-[95%] md:max-w-[95%] sm:max-w-full mx-auto max-sm:w-fixed max-lg:w-full">
                             <Routes>
+                                <Route path="/pdf" element={<MyDocument />} />
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/agenda" element={<Agenda />} />
                                 <Route path="/agendar-form" element={<AgendarForm />} />

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Cita;
 use App\Models\Cita_detalles;
 use App\Models\Paciente;
+use App\Models\Receta;
+use App\Models\Receta_detalles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Utils\PHPLogToFile;
@@ -226,12 +228,17 @@ class PacienteMedicoController extends Controller
             'diagnostico' => 'required|string|max:250',
             'atendido_por' => 'string|max:250',
             'recomendaciones' => 'required|string|max:250',
+            'medicamentos' => 'array', 
+            'medicamentos.*.medicamento_id' => 'required|integer',
+            'medicamentos.*.indicaciones' => 'required|string|max:250',
         ]);
 
         $cita = Cita::find($id);
         if (!$cita) {
             return response()->json(['message' => 'Cita no encontrada'], 404);
         }
+
+        $usuario = auth()->user();
 
         // Crear detalles de la cita
         $detalles = new Cita_detalles();
@@ -244,9 +251,26 @@ class PacienteMedicoController extends Controller
         $detalles->diagnostico = $request->input('diagnostico');
         $detalles->recomendaciones = $request->input('recomendaciones');
         $detalles->atendido_por = $request->input('atendido_por');
-        $usuario = auth()->user();
         $detalles->atendido_por = $usuario->name . ' ' . $usuario->paterno . ' ' . $usuario->materno;
         $detalles->save();
+
+        // todo Registro de Receta
+        $receta = new Receta();
+        $receta->paciente_id = $cita->paciente_id;
+        $receta->fecha_receta = now()->toDateString();
+        $receta->hora_receta = now()->format('H:i:s');
+        $receta->usuario_receta = $usuario->name . ' ' . $usuario->paterno . ' ' . $usuario->materno;
+        $receta->save();
+
+        // ! Registro Receta Detalles
+        $medicamentos = $request->input('medicamentos', []);
+        foreach ($medicamentos as $med) {
+            $recetaDetalle = new Receta_detalles();
+            $recetaDetalle->receta_id = $receta->id;
+            $recetaDetalle->medicamento_id = $med['medicamento_id'];
+            $recetaDetalle->indicaciones = $med['indicaciones'];
+            $recetaDetalle->save();
+        }
 
         // Cambiar estado de la cita
         $cita->estado = 'atendido';
