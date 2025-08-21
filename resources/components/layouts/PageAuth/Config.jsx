@@ -32,6 +32,8 @@ export default {
   updateEmpresaByAdmin: (id, data) => axios.put(`${base_api_url}/admin/update-empresa/${id}`, data),
   getEmpresaByAdmin: (id) => axios.get(`${base_api_url}/admin/update-empresa/${id}`),
   deletePacieteByAdmin: (id) => axios.delete(`${base_api_url}/admin/delete-paciente/${id}`),
+  getEmpresaByID: (id) => axios.get(`${base_api_url}/auth/empresa/${id}`),
+
 
   // todo configuracion de pacientes
   getAllPaciente: (data) => axios.get(`${base_api_url}/auth/paciente`, data),

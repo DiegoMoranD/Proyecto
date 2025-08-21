@@ -1,3 +1,5 @@
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import RecetaPDF from "../RecetaPDF";
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
 import { Link, useParams } from "react-router-dom";
@@ -5,7 +7,10 @@ import { Link, useParams } from "react-router-dom";
 function CitaForm() {
     const { id } = useParams(); // id de la cita
     const { paciente_id } = useParams(); // id de la cita
+    const [pdfData, setPdfData] = useState(null);
 
+    const [empresa, setEmpresa] = useState("");
+    const [nombreMedico, setNombreMedico] = useState("");
     const [nombre, setNombre] = useState("");
     const [medicamentosMap, setMedicamentosMap] = useState([]);
     const [medicamentos, setMedicamentos] = useState([]);
@@ -18,7 +23,16 @@ function CitaForm() {
     const agregarMedicamento = (e) => {
         e.preventDefault();
         if (medicamentoActual.medicamento_id && medicamentoActual.indicaciones) {
-            setMedicamentos([...medicamentos, medicamentoActual]);
+            // Buscar el nombre del medicamento
+            const medObj = medicamentosMap.find(m => m.id === parseInt(medicamentoActual.medicamento_id));
+            const nombreMedicamento = medObj ? medObj.nombre : "";
+            setMedicamentos([
+                ...medicamentos,
+                {
+                    ...medicamentoActual,
+                    nombre: nombreMedicamento // Guarda el nombre
+                }
+            ]);
             setMedicamentoActual({ medicamento_id: '', indicaciones: '' });
         }
     };
@@ -27,17 +41,6 @@ function CitaForm() {
         setMedicamentos(medicamentos.filter((_, i) => i !== index));
     };
 
-    useEffect(() => {
-        const fetchMed = async () => {
-            try {
-                const response = await Config.indexMedicamento();
-                setMedicamentosMap(response.data);
-            } catch (error) {
-                console.error("Error encontrado", error);
-            }
-        };
-        fetchMed();
-    }, []);
 
     const [form, setForm] = useState({
         peso: '',
@@ -66,6 +69,71 @@ function CitaForm() {
         fetchPaciente();
     }, [id]);
 
+    // useEffect(() => {
+    //     const fetchEmpresa = async () => {
+    //         try {
+    //             const response = await Config.getEmpresaByID(id);
+    //             const data = response.data;
+    //             setEmpresa(data.nombre || "");
+    //         } catch (error) {
+    //             console.error("Error al obtener paciente", error);
+    //         }
+    //     };
+    //     fetchEmpresa();
+    // }, [id]);
+
+    useEffect(() => {
+        const fetchMedico = async () => {
+            try {
+                const response = await Config.getMedicamentoById(id);
+                const data = response.data;
+                setNombreMedico(data.nombre || "");
+            } catch (error) {
+                console.error("Error al obtener paciente", error);
+            }
+        };
+        fetchMedico();
+    }, [id]);
+
+    useEffect(() => {
+        const fetchCita = async () => {
+            try {
+                const citaRes = await Config.getCitaById(id);
+                const cita = citaRes.data;
+                setForm((prev) => ({
+                    ...prev,
+                }));
+
+                // Buscar paciente y empresa con los ids correctos
+                const pacienteRes = await Config.getPacienteById(cita.paciente_id);
+                const pacienteData = pacienteRes.data;
+                setNombre(pacienteRes.data.nombre || "");
+
+                // Si tienes datos del médico en la cita, puedes obtenerlos aquí
+                setNombreMedico(cita.atendido_por || "");
+
+                const empresaRes = await Config.getEmpresaByAdmin(pacienteData.empresa_id);
+                setEmpresa(empresaRes.data);
+
+            } catch (error) {
+                console.error("Error al obtener datos de la cita, paciente o empresa", error);
+            }
+        };
+        fetchCita();
+    }, [id]);
+
+    useEffect(() => {
+        const fetchMed = async () => {
+            try {
+                const response = await Config.indexMedicamento();
+                setMedicamentosMap(response.data);
+            } catch (error) {
+                console.error("Error encontrado", error);
+            }
+        };
+        fetchMed();
+    }, []);
+
     const handleSubmitCita = async (e) => {
         e.preventDefault();
         const peso = parseFloat(form.peso);
@@ -76,8 +144,19 @@ function CitaForm() {
             await Config.CitaDetalles(id, {
                 ...form,
                 imc,
-                medicamentos
+                medicamentos,
             });
+
+            setPdfData({
+                paciente: nombre,
+                fecha: new Date().toLocaleDateString(),
+                ...form,
+                imc,
+                medicamentos,
+                empresaNombre: empresa.nombre,
+                empresaCedula: empresa.cedula,
+            })
+
             setForm({
                 peso: '',
                 altura: '',
@@ -260,6 +339,32 @@ function CitaForm() {
                     </button>
                 </div>
             </form>
+
+            {pdfData && (
+                <div className="mt-8">
+                    <h3 className="font-bold mb-2">Receta generada:</h3>
+                    <PDFViewer width="100%" height={600}>
+                        <RecetaPDF data={pdfData} />
+                    </PDFViewer>
+                    <div className="mt-4">
+                        <PDFDownloadLink
+                            document={<RecetaPDF data={pdfData} />}
+                            fileName={`receta_${nombre}_${pdfData.fecha}.pdf`}
+                            style={{
+                                padding: "10px 20px",
+                                backgroundColor: "#007bff",
+                                color: "white",
+                                borderRadius: "5px",
+                                textDecoration: "none",
+                            }}
+                        >
+                            {({ loading }) =>
+                                loading ? "Generando receta..." : "Descargar Receta"
+                            }
+                        </PDFDownloadLink>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
