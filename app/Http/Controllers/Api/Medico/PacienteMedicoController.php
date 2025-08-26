@@ -11,6 +11,7 @@ use App\Models\Receta_detalles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Utils\PHPLogToFile;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class PacienteMedicoController extends Controller
 {
@@ -228,7 +229,7 @@ class PacienteMedicoController extends Controller
             'diagnostico' => 'required|string|max:250',
             'atendido_por' => 'string|max:250',
             'recomendaciones' => 'required|string|max:250',
-            'medicamentos' => 'array', 
+            'medicamentos' => 'array',
             'medicamentos.*.medicamento_id' => 'required|integer',
             'medicamentos.*.indicaciones' => 'required|string|max:250',
         ]);
@@ -361,5 +362,49 @@ class PacienteMedicoController extends Controller
             });
 
         return response()->json($citas);
+    }
+
+    public function enviarPDFCita(Request $request,)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'pdf' => 'required|string', // base64 transmutacion del archivo (alquimia dura y pura)
+            'asunto' => 'required|string',
+            'mensaje' => 'required|string',
+            'paciente' => 'required|string',
+        ]);
+
+        $pdfContent = base64_decode($request->pdf);
+        $tempPdfPath = storage_path('app/temp_receta.pdf');
+        file_put_contents($tempPdfPath, $pdfContent);
+
+        $fecha = $request->fecha ?? date('Y-m-d');
+
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host = env('MAIL_HOST', 'smtp.gmail.com');
+            $mail->SMTPAuth = true;
+            $mail->Username = env('MAIL_USERNAME', 'morandiazdiegoarmando@gmail.com');
+            $mail->Password = env('MAIL_PASSWORD', 'tufwlvsichtlpsqg');
+            $mail->SMTPSecure = env('MAIL_ENCRYPTION', 'tls');
+            $mail->Port = env('MAIL_PORT', 587);
+
+            $mail->setFrom(env('MAIL_FROM_ADDRESS', 'morandiazdiegoarmando@gmail.com'), env('MAIL_FROM_NAME', 'TecuaniSoft'));
+            $mail->addAddress($request->email);
+
+            $mail->isHTML(true);
+            $mail->Subject = $request->asunto;
+            $mail->Body = $request->mensaje;
+
+            $mail->addAttachment($tempPdfPath, $request->paciente . '-receta-'. $fecha . '.pdf');
+
+            $mail->send();
+            unlink($tempPdfPath); // Borra el archivo temporal
+            return response()->json(['message' => 'PDF enviado correctamente']);
+        } catch (\Exception $e) {
+            if (file_exists($tempPdfPath)) unlink($tempPdfPath);
+            return response()->json(['error' => $mail->ErrorInfo], 500);
+        }
     }
 }

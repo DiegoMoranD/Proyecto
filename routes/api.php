@@ -64,6 +64,7 @@ Route::prefix('v1')->group(function () {
 
         Route::get('/auth/empresa/{id}', [EmpresasController::class, 'show']);
 
+        Route::post('/medico/enviar-pdf-cita', [PacienteMedicoController::class, 'enviarPDFCita']);
 
         // todo <-------------------- Rol Root y Admin -------------------->
         Route::get('/admin/pacientes', [AdminController::class, 'indexPacientes']);

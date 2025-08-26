@@ -1,4 +1,4 @@
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer, pdf } from "@react-pdf/renderer";
 import RecetaPDF from "../RecetaPDF";
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
@@ -15,6 +15,9 @@ function CitaForm() {
     const [medicamentosMap, setMedicamentosMap] = useState([]);
     const [medicamentos, setMedicamentos] = useState([]);
     const [medicamentoActual, setMedicamentoActual] = useState({ medicamento_id: '', indicaciones: '' });
+
+    const userString = sessionStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : {};
 
     const handleMedicamentoChange = (e) => {
         setMedicamentoActual({ ...medicamentoActual, [e.target.name]: e.target.value });
@@ -69,19 +72,6 @@ function CitaForm() {
         fetchPaciente();
     }, [id]);
 
-    // useEffect(() => {
-    //     const fetchEmpresa = async () => {
-    //         try {
-    //             const response = await Config.getEmpresaByID(id);
-    //             const data = response.data;
-    //             setEmpresa(data.nombre || "");
-    //         } catch (error) {
-    //             console.error("Error al obtener paciente", error);
-    //         }
-    //     };
-    //     fetchEmpresa();
-    // }, [id]);
-
     useEffect(() => {
         const fetchMedico = async () => {
             try {
@@ -134,6 +124,34 @@ function CitaForm() {
         fetchMed();
     }, []);
 
+    // todo <-------------------- Enviar PDF al Correo -------------------->
+
+    const enviarPDFPorCorreo = async (pdfData, medicoEmail) => {
+        // Genera el PDF como blob
+        const blob = await pdf(<RecetaPDF data={pdfData} />).toBlob();
+        // Convierte el blob a base64
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            const base64PDF = reader.result.split(',')[1];
+            try {
+                await Config.enviarPDFCita({
+                    email: medicoEmail,
+                    pdf: base64PDF,
+                    asunto: `Cita del paciente ${nombre} atendida`,
+                    mensaje: "Se Adjunto la receta médica.",
+                    paciente: nombre,
+                    
+                });
+                alert("PDF enviado al correo del médico");
+            } catch (error) {
+                alert("Error al enviar el PDF por correo");
+            }
+        };
+        reader.readAsDataURL(blob);
+    };
+
+    // todo <-------------------- Enviar PDF al Correo -------------------->
+
     const handleSubmitCita = async (e) => {
         e.preventDefault();
         const peso = parseFloat(form.peso);
@@ -156,6 +174,16 @@ function CitaForm() {
                 empresaNombre: empresa.nombre,
                 empresaCedula: empresa.cedula,
             })
+
+            enviarPDFPorCorreo({
+                paciente: nombre,
+                fecha: new Date().toLocaleDateString(),
+                ...form,
+                imc,
+                medicamentos,
+                empresaNombre: empresa.nombre,
+                empresaCedula: empresa.cedula,
+            }, user.email);
 
             setForm({
                 peso: '',
@@ -340,7 +368,7 @@ function CitaForm() {
                 </div>
             </form>
 
-            {pdfData && (
+            {/* {pdfData && (
                 <div className="mt-8">
                     <h3 className="font-bold mb-2">Receta generada:</h3>
                     <PDFViewer width="100%" height={600}>
@@ -364,7 +392,7 @@ function CitaForm() {
                         </PDFDownloadLink>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

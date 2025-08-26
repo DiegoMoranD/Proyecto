@@ -64,6 +64,9 @@ export default {
   updateCita: (id, data) => axios.put(`${base_api_url}/medico/agendar-update/${id}`, data),
   cancelCita: (id, data) => axios.put(`${base_api_url}/medico/agendar-delete/${id}`, data),
 
+  // ? Enviar PDF al Correo
+  enviarPDFCita: (data) => axios.post(`${base_api_url}/medico/enviar-pdf-cita`, data),  
+
   // ? configuracion root
   getAllPacientesByAdmin: (data) => axios.get(`${base_api_url}/admin/pacientes`, data),
   storeEmpresaByRoot: (data) => axios.post(`${base_api_url}/root/crear-empresa`, data),
