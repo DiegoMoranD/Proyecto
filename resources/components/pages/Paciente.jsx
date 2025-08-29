@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Config from '../layouts/PageAuth/Config';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function Paciente() {
     const [pacientes, setPacientes] = useState([]);
@@ -58,18 +59,40 @@ function Paciente() {
     }
 
     const deletePaciente = async (id) => {
-        const isDelete = window.confirm("¿Desea Borrar El Paciente?");
-        if (isDelete) {
-            try {
-                await Config.deletePacieteByAdmin(id);
+        // const isDelete = window.confirm("¿Desea Borrar El Paciente?");
+        // if (isDelete) {
+        //     try {
+        //         await Config.deletePacieteByAdmin(id);
+        //         const nuevosPacientes = pacientes.filter(med => med.id !== id);
+        //         setPacientes(nuevosPacientes)
+        //         setFilteredPacientes(nuevosPacientes)
+        //         alert("Paciente eliminado exitosamente");
+        //     } catch (error) {
+        //         alert("Error al eliminar el paciente");
+        //     }
+        // }
+
+        Swal.fire({
+            title: "¿Eliminar paciente?",
+            text: "¿Esta seguro de eliminar a este paciente?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Config.deletePacieteByAdmin(id);
                 const nuevosPacientes = pacientes.filter(med => med.id !== id);
                 setPacientes(nuevosPacientes)
                 setFilteredPacientes(nuevosPacientes)
-                alert("Paciente eliminado exitosamente");
-            } catch (error) {
-                alert("Error al eliminar el paciente");
+                Swal.fire({
+                    title: "Eliminado!",
+                    text: "El paciente ha sido eliminado exitosamente.",
+                    icon: "success"
+                });
             }
-        }
+        });
     }
     // Filtrar y ordenar pacientes
     useEffect(() => {
@@ -231,7 +254,7 @@ function Paciente() {
                                         {(rol === 'medico' || rol === 'admin' || rol === 'root' || rol === 'recepcion') && (
                                             <>
                                                 <td className="py-4 justify-around flex">
-                                                    <Link to={`/${rol}/update-pacientes/${paciente.id}`}>
+                                                    <Link to={`/${rol}/update-paciente/${paciente.id}`}>
                                                         <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
                                                     </Link>
                                                     <button onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>

@@ -21,7 +21,8 @@ class Medicamento extends Model
         'presentacion',
         'empresa_id',
         'stock',
-        'receta'        
+        'receta',
+        'disponible'  
     ];
 
     public function empresa()

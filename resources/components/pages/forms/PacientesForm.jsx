@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const PacientesForm = () => {
   const userString = sessionStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
   const navigate = useNavigate();
 
+  const getRol = () => {
+    const rol = sessionStorage.getItem('rol');
+    return rol ? JSON.parse(rol) : null;
+  }
+
+  const rol = getRol();
 
   const [paciente, setPaciente] = useState({
     nombre: "",
@@ -21,12 +28,6 @@ const PacientesForm = () => {
   })
 
   const [empresas, setEmpresaName] = useState([]);
-  const getRol = () => {
-    const rol = sessionStorage.getItem('rol');
-    return rol ? JSON.parse(rol) : null;
-  }
-
-  const rol = getRol();
 
   useEffect(() => {
     const fetchEmpresa = async () => {
@@ -82,7 +83,6 @@ const PacientesForm = () => {
         imc,
         empresa_id, // Asegura que se envía el campo correcto
       });
-      alert("Paciente registrado exitosamente");
       setPaciente({
         nombre: "",
         sex: "",
@@ -94,9 +94,20 @@ const PacientesForm = () => {
         fecha_registro: "",
         empresa_id: ""
       });
-      navigate(`/${rol}/pacientes`);
+
+      Swal.fire({
+        title: "Paciente Registrado",
+        text: "Nuevo paciente registrado exitosamente",
+        icon: "success"
+      }).then(() => {
+        navigate(`/${rol}/pacientes`);
+      });
     } catch (error) {
-      alert("Error al registrar paciente");
+      Swal.fire({
+        title: "Hubo un error",
+        text: "Parece que hubo un error en el formulario, revise bien los campos.",
+        icon: "error"
+      })
       console.error(error);
     }
   };

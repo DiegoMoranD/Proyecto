@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdateMedicamento() {
     const { id } = useParams();
@@ -14,6 +15,8 @@ function UpdateMedicamento() {
     const [receta, setReceta] = useState("");
 
     const [empresas, setEmpresas] = useState([]);
+
+    const navigate = useNavigate();
 
     const getRol = () => {
         const rol = sessionStorage.getItem('rol');
@@ -31,7 +34,7 @@ function UpdateMedicamento() {
                 setDescripcion(data.descripcion || "");
                 setCategoria(data.categoria || "");
                 setPresentacion(data.presentacion || "");
-                setEmpresaId(data.empresa_id || "");
+                // setEmpresaId(data.empresa_id || "");
                 setStock(data.stock || "");
                 setReceta(data.receta || "");
             } catch (error) {
@@ -60,13 +63,22 @@ function UpdateMedicamento() {
                 descripcion,
                 categoria,
                 presentacion,
-                empresa_id,
                 stock,
                 receta,
             });
-            alert("Medicamento actualizado exitosamente");
+            Swal.fire({
+                title: "Medicamento Actualizado",
+                text: "Los datos del medicamento han sido actualizados exitosamente",
+                icon: "success"
+            }).then(() => {
+                navigate(`/${rol}/medicamentos`);
+            });
         } catch (error) {
-            alert("Error al actualizar el medicamento");
+            Swal.fire({
+                title: "Hubo un error",
+                text: "Parece que hubo un error en el formulario, revise bien los campos.",
+                icon: "error"
+            })
             console.error(error);
         }
     };
@@ -171,7 +183,7 @@ function UpdateMedicamento() {
                     </div>
 
                     {/* Empresa */}
-                    <div>
+                    {/* <div>
                         <label className="block text-gray-700 font-medium mb-3">
                             Empresa
                         </label>
@@ -187,7 +199,7 @@ function UpdateMedicamento() {
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
 
                     {/* Stock */}
                     <div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdatePaciente() {
   const { id } = useParams();
@@ -16,6 +17,15 @@ function UpdatePaciente() {
   const [fecha_registro, setFechaRegistro] = useState("");
   const [empresa_id, setEmpresaId] = useState("");
   const [empresas, setEmpresas] = useState([]);
+
+  const navigate = useNavigate();
+
+  const getRol = () => {
+    const rol = sessionStorage.getItem('rol');
+    return rol ? JSON.parse(rol) : null;
+  }
+
+  const rol = getRol();
 
   // Cargar datos del paciente y empresas al montar
   useEffect(() => {
@@ -75,9 +85,19 @@ function UpdatePaciente() {
         fecha_registro,
         empresa_id,
       });
-      alert("Paciente actualizado exitosamente");
+      Swal.fire({
+        title: "Paciente Actualizado",
+        text: "Los datos del paciente han sido actualizados exitosamente",
+        icon: "success"
+      }).then(() => {
+        navigate(`/${rol}/pacientes`);
+      });
     } catch (error) {
-      alert("Error al actualizar paciente");
+      Swal.fire({
+        title: "Hubo un error",
+        text: "Parece que hubo un error en el formulario, revise bien los campos.",
+        icon: "error"
+      })
       console.error(error);
     }
   };

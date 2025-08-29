@@ -2,12 +2,21 @@ import { PDFDownloadLink, PDFViewer, pdf } from "@react-pdf/renderer";
 import RecetaPDF from "../RecetaPDF";
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function CitaForm() {
     const { id } = useParams(); // id de la cita
     const { paciente_id } = useParams(); // id de la cita
     const [pdfData, setPdfData] = useState(null);
+    const navigate = useNavigate();
+
+    const getRol = () => {
+        const rol = sessionStorage.getItem('rol');
+        return rol ? JSON.parse(rol) : null;
+    }
+
+    const rol = getRol();
 
     const [empresa, setEmpresa] = useState("");
     const [nombreMedico, setNombreMedico] = useState("");
@@ -140,9 +149,8 @@ function CitaForm() {
                     asunto: `Cita del paciente ${nombre} atendida`,
                     mensaje: "Se Adjunto la receta médica.",
                     paciente: nombre,
-                    
+
                 });
-                alert("PDF enviado al correo del médico");
             } catch (error) {
                 alert("Error al enviar el PDF por correo");
             }
@@ -195,13 +203,23 @@ function CitaForm() {
                 recomendaciones: '',
             })
             setMedicamentos([])
-            alert('Cita atendida correctamente');
+            Swal.fire({
+                title: "Cita Atendida",
+                text: "La cita ha sido atendida , el PDF sera enviado al correo",
+                icon: "success"
+            }).then(() => {
+                navigate(`/${rol}/agenda`);
+            });
         } catch (error) {
             if (error.response && error.response.data && error.response.data.errors) {
                 console.log(error.response.data.errors);
                 alert('Error: ' + JSON.stringify(error.response.data.errors));
             } else {
-                alert('Error al atender la cita');
+                Swal.fire({
+                    title: "Hubo un error",
+                    text: "Parece que hubo un error en el formulario, revise bien los campos.",
+                    icon: "error"
+                });
             }
         }
     };

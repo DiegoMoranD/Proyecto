@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Config from '../../layouts/PageAuth/Config'
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 function MedicamentoForm() {
+    const userString = sessionStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
     const [empresas, setEmpresa] = useState([]);
     const navigate = useNavigate();
     const [medicamento, setMedicamento] = useState({
@@ -14,6 +17,7 @@ function MedicamentoForm() {
         empresa_id: "",
         stock: "",
         receta: "",
+        disponible: true,
     });
 
     const getRol = () => {
@@ -41,6 +45,12 @@ function MedicamentoForm() {
 
     const submitMedicamento = async (e) => {
         e.preventDefault();
+
+        let empresa_id = medicamento.empresa_id;
+        if (rol === 'medico' || rol === 'recepcion') {
+            empresa_id = user.empresa_id; // Usa la empresa del usuario logueado
+        }
+
         try {
             // Convertir receta a booleano
             const dataToSend = {
@@ -48,14 +58,23 @@ function MedicamentoForm() {
                 receta: medicamento.receta === "true" || medicamento.receta === true,
             };
 
-            const response = await Config.storeMedicamento(dataToSend);
+            const response = await Config.storeMedicamento({...dataToSend , empresa_id});
 
             if (response.status === 201 || response.data.success) {
-                alert("Medicamento registrado exitosamente");
-                navigate(`/${rol}/medicamento-form`);
+                Swal.fire({
+                    title: "Medicamento Registrado",
+                    text: "Nuevo medicamento registrado exitosamente",
+                    icon: "success"
+                }).then(() => {
+                    navigate(`/${rol}/medicamentos`);
+                });
             }
         } catch (error) {
-            alert("Error al registrar el Medicamento");
+            Swal.fire({
+                title: "Hubo un error",
+                text: "Parece que hubo un error en el formulario, revise bien los campos.",
+                icon: "error"
+            })
             console.error(error);
         }
     };
@@ -160,23 +179,17 @@ function MedicamentoForm() {
                     </div>
 
                     {/* Empresa */}
-                    <div>
-                        <label className="block text-gray-700 font-medium mb-3">
-                            Id de la empresa
-                        </label>
-                        <select
-                            value={medicamento.empresa_id}
-                            name="empresa_id"
-                            onChange={handleMedicamentoChange}
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                            <option value="">Selecciona una empresa</option>
-                            {empresas.map((empresa) => (
-                                <option key={empresa.id} value={empresa.id}>
-                                    {empresa.nombre}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    {(rol === 'medico' || rol === 'recepcion') && (
+                        <div>
+                            <label className="block text-gray-700 font-medium mb-3">Empresa</label>
+                            <input
+                                type="text"
+                                value={user.empresa_id}
+                                readOnly
+                                className="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-100"
+                            />
+                        </div>
+                    )}
 
                     {/* Stock */}
                     <div>

@@ -43,7 +43,8 @@ class MedicamentoMedicoController extends Controller
             'presentacion' => 'string',
             'empresa_id' => 'integer',
             'stock' => 'integer',
-            'receta' => 'boolean'
+            'receta' => 'boolean',
+            'disponible' => 'boolean'
         ]);
 
         $medicamentos = new ModelsMedicamento();
@@ -54,6 +55,7 @@ class MedicamentoMedicoController extends Controller
         $medicamentos->empresa_id = $request->input('empresa_id');
         $medicamentos->stock = $request->input('stock');
         $medicamentos->receta = $request->input('receta');
+        $medicamentos->disponible = $request->input('disponible');
 
 
         $medicamentos->save();
