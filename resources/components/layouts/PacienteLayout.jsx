@@ -32,7 +32,7 @@ function PacienteLayout() {
                 <TopBar toggleSidebar={toggleSidebar} />
                 <section className="flex-1 overflow-y-auto bg-gray-200">
                     <div className='flex-1 p-4 overflow-auto'>
-                        <div className="bg-white p-4 m-4 rounded-2xl overflow-x-hidden lg:max-w-[95%] md:max-w-[95%] sm:max-w-full mx-auto max-sm:w-fixed max-lg:w-full">
+                        <div className="bg-white shadow-md border border-gray-900/25 p-4 m-4 rounded-2xl overflow-x-hidden lg:max-w-[95%] md:max-w-[95%] sm:max-w-full mx-auto max-sm:w-fixed max-lg:w-full">
                             <Routes>
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/empresa" element={<Empresa />} />

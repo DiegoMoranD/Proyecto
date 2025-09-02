@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Config from '../../layouts/PageAuth/Config';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 function UpdateAgendar() {
     const { id } = useParams();
@@ -46,11 +47,20 @@ function UpdateAgendar() {
                 motivo,
             });
             if (response.status === 201 || response.status === 200) {
-                alert("Cita actualizada exitosamente");
-                navigate(`/${rol}/agenda`)
+                Swal.fire({
+                    title: "Cita Actualizada",
+                    text: "La cita ha sido actualizada exitosamente",
+                    icon: "success"
+                }).then(() => {
+                    navigate(`/${rol}/agenda`);
+                });
             }
         } catch (error) {
-            alert("Error al actualizar la empresa o no se cambio todo los campos");
+            Swal.fire({
+                title: "Hubo un error",
+                text: "Error al actualizar la empresa o no se cambio todo los campos.",
+                icon: "error"
+            })
             console.error(error);
         }
     };

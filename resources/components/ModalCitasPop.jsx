@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Config from "./layouts/PageAuth/Config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Clock4 } from "lucide-react";
+import Swal from "sweetalert2";
 
 function ModalCitasPop({ isOpen, onClose, id }) {
 
     const [cita, setCita] = useState(null);
     const [nombre, setNombre] = useState("");
     const [estado, setEstado] = useState("");
+    const navigate = useNavigate();
+
 
     const getRol = () => {
         const rol = sessionStorage.getItem('rol');
@@ -37,9 +40,34 @@ function ModalCitasPop({ isOpen, onClose, id }) {
 
     const cancelCitaPaciente = async () => {
         try {
-            await Config.cancelCita(cita.id, { estado: "cancelado" });
-            alert("Cita cancelada exitosamente");
-            onClose();
+            // await Config.cancelCita(cita.id, { estado: "cancelado" });
+            // alert("Cita cancelada exitosamente");
+            // onClose();
+
+            Swal.fire({
+                title: "¿Cancelar Cita?",
+                text: "¿Esta seguro de cancelar la cita?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, Cancelarla!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Config.cancelCita(cita.id, { estado: "cancelado" });
+                    // const nuevosPacientes = pacientes.filter(med => med.id !== id);
+                    // setPacientes(nuevosPacientes)
+                    // setFilteredPacientes(nuevosPacientes)
+                    Swal.fire({
+                        title: "Cancelado!",
+                        text: "La Cita ha sido cancelada exitosamente.",
+                        icon: "success"
+                    }).then(() => {
+                        onClose();
+                        navigate(`/${rol}/agenda`);
+                    });;
+                }
+            });
         } catch (error) {
             alert("Error al cancelar la cita");
             console.error(error);

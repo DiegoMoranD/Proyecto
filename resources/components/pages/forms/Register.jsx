@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Config from "../../layouts/PageAuth/Config";
 import AuthUser from "../../layouts/PageAuth/AuthUser";
-import Modal from "../../Modal";
-
 import OpenEyeSVG from '../../svg/OpenEyeSVG';
 import OffEyeSVG from '../../svg/OffEyeSVG';
+import Swal from "sweetalert2";
 
 function Register() {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +13,6 @@ function Register() {
     const [passwordStr, setPasswordStr] = useState(0);
     const [strLabel, setStrLabel] = useState("Débil");
     const [errors, setErrors] = useState({});
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const evaluateStrPassword = (password) => {
         let strength = 0;
@@ -68,27 +66,36 @@ function Register() {
         }
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
+
+        if (Object.keys(newErrors).length > 0) {
+            // Mostrar los errores con SweetAlert2
+            Swal.fire({
+                title: "Errores en el formulario",
+                html: `<ul style="text-align:left; color:red;">
+                        ${Object.values(newErrors).map(err => `<li>${err}</li>`).join("")}
+                       </ul>`,
+                icon: "error"
+            });
+        }
+
+        return Object.keys(newErrors).length === 0;
     };
 
-
-    // Estado para los datos de la empresa
     const [empresa, setEmpresa] = useState({
         nombre: "",
         correo: "",
-        telefono: "", // Debe ser un número entero
+        telefono: "",
         cedula: "",
-        suscripcion_id: 1, // Cambiado a "suscripcion_id" para coincidir con la base de datos
+        suscripcion_id: 1,
     });
 
-    // Estado para los datos del usuario
     const [usuario, setUsuario] = useState({
-        name: "", // Cambiado a "name" para coincidir con la base de datos
-        paterno: "", // Cambiado a "paterno"        
-        materno: "", // Cambiado a "materno"
-        password: "", // Cambiado a "password"
-        telefono: "", // Debe ser un número entero
-        empresa_id: null, // Cambiado a "empresa_id"
+        name: "",
+        paterno: "",
+        materno: "",
+        password: "",
+        telefono: "",
+        empresa_id: null,
     });
 
     const [loading, setLoading] = useState(false);
@@ -111,64 +118,64 @@ function Register() {
         e.preventDefault();
 
         if (!validateFields()) {
-            setIsModalOpen(true); // Mostrar el modal si hay errores
             return;
         }
 
         setLoading(true);
 
         try {
-            // Verificar si el correo ya existe
             const emailCheckResponse = await Config.getCheckEmail({ email: empresa.email });
             if (emailCheckResponse.data.exists) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
                     correo: "Cuenta ya registrada",
                 }));
-                setUsuario((prevEmpresa) => ({ ...prevEmpresa, correo: "" })); // Limpia el campo
+                setUsuario((prevEmpresa) => ({ ...prevEmpresa, correo: "" }));
                 setLoading(false);
-                return; // Detener el flujo si el correo ya existe
+                return;
             }
 
-            // Registrar la empresa
             const empresaResponse = await Config.getEmpresaStore({
                 nombre: empresa.nombre,
                 correo: empresa.correo,
-                telefono: empresa.telefono, // Convertir a número entero
+                telefono: empresa.telefono,
                 cedula: empresa.cedula,
                 suscripcion_id: empresa.suscripcion_id,
-                rfc: "default_rfc", // Valor por defecto
-                tocken_acceso: "default_token", // Valor por defecto
-                cuenta_valida: 1, // Valor por defecto
-                fecha_registro: new Date().toISOString().split("T")[0], // Fecha actual
-                fecha_vencimiento: "2025-12-31", // Fecha de ejemplo
-                fecha_compra: new Date().toISOString().split("T")[0], // Fecha actual
+                rfc: "default_rfc",
+                tocken_acceso: "default_token",
+                cuenta_valida: 1,
+                fecha_registro: new Date().toISOString().split("T")[0],
+                fecha_vencimiento: "2025-12-31",
+                fecha_compra: new Date().toISOString().split("T")[0],
             });
 
-            const empresa_id = empresaResponse.data.id; // Obtener el ID de la empresa registrada
-
+            const empresa_id = empresaResponse.data.id;
             if (!empresa_id) {
                 throw new Error("No se pudo obtener el ID de la empresa registrada.");
             }
 
-            // Registrar el usuario con el ID de la empresa
             const usuarioData = { ...usuario, empresa_id };
             await Config.getUsuarioStore({
                 name: usuarioData.name,
                 paterno: usuarioData.paterno,
                 materno: usuarioData.materno,
-                username: "default_username", // Valor por defecto
-                tipo_usuario_id: 3, // Cambiado a "tipo_usuario_id" para coincidir con la base de datos
-                intentos: 3, // Cambiado a "tipo_usuario_id" para coincidir con la base de datos
+                username: "default_username",
+                tipo_usuario_id: 3,
+                intentos: 3,
                 email: usuarioData.email,
                 password: usuarioData.password,
-                telefono: usuarioData.telefono, // Convertir a número entero
+                telefono: usuarioData.telefono,
                 empresa_id: usuarioData.empresa_id,
-                remember_token: "default_token", // Valor por defecto
+                remember_token: "default_token",
             });
 
-            alert("Empresa y usuario registrados exitosamente");
-            navigate("/login");
+            Swal.fire({
+                title: "Registro Existoso",
+                text: "La empresa y usuario se registraron exitosamente",
+                icon: "success"
+            }).then(() => {
+                navigate("/login");
+            });
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 409) {
@@ -176,14 +183,22 @@ function Register() {
                         ...prevErrors,
                         correo: "Este correo ya está registrado",
                     }));
-                    setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: "" })); // Limpia el campo
+                    setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: "" }));
                 } else if (error.response.status === 422) {
                     const errors = error.response.data.errors;
-                    const errorMessages = Object.values(errors).flat().join("\n");
-                    alert(`Errores de validación:\n${errorMessages}`);
+                    const errorMessages = Object.values(errors).flat().join("<br/>");
+                    Swal.fire({
+                        title: "Errores de validación",
+                        html: errorMessages,
+                        icon: "error"
+                    });
                 } else {
                     console.error("Error al registrar:", error);
-                    alert("Ocurrió un error al registrar los datos.");
+                    Swal.fire({
+                        title: "Hubo un error",
+                        text: "Ocurrió un error al registrar los datos.",
+                        icon: "error"
+                    });
                 }
             }
         } finally {
@@ -192,19 +207,19 @@ function Register() {
     };
 
     const checkEmailExists = async () => {
-        if (!empresa.correo.trim()) return; // No hacer nada si el campo está vacío
+        if (!empresa.correo.trim()) return;
 
         try {
-            const response = await Config.getCheckEmail({ email: empresa.correo }); // Verificar en la tabla empresas
+            const response = await Config.getCheckEmail({ email: empresa.correo });
             if (response.data.exists) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
                     correo: "Este correo ya está registrado",
                 }));
-                setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: "" })); // Limpia el campo
+                setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: "" }));
             } else {
                 setErrors((prevErrors) => {
-                    const { correo, ...rest } = prevErrors; // Elimina el error de correo si no existe
+                    const { correo, ...rest } = prevErrors;
                     return rest;
                 });
             }
@@ -213,10 +228,9 @@ function Register() {
         }
     };
 
-
     return (
         <div className="bg-[url('/resources/components/imgs/banner4.jpg')] bg-no-repeat bg-cover bg-center text-black h-screen flex justify-center items-center">
-            <Modal
+            {/* <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title="Errores en el formulario"
@@ -229,7 +243,7 @@ function Register() {
                         ))}
                     </ul>
                 }
-            />
+            /> */}
             <div className="bg-[#fff] border border-[#e11a31] rounded-md p-6 md:p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative max-w-lg md:max-w-4xl mx-auto">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl text-black/75 font-bold text-center mb-8">
                     Registro de Empresa y Usuario

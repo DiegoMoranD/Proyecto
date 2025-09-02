@@ -116,7 +116,10 @@ function Home() {
     const openAlert = async () => {
         Swal.fire({
             title: "The Internet?",
-            text: "That thing is still around?",
+            html: `
+    You can use <b>bold text</b>,
+    <a href="#" autofocus>links</a>,
+    and other HTML tags`,
             icon: "success"
         });
     }

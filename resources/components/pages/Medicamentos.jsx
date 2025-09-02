@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Config from '../layouts/PageAuth/Config';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function Medicamentos() {
 
@@ -52,19 +53,41 @@ function Medicamentos() {
 
 
     const eliminarMedicamento = async (id) => {
-        const isDelete = window.confirm("¿Desea Borrar El Medicamento?");
-        if (isDelete) {
-            try {
-                await Config.deleteMedicamento(id);
-                // Filtra el medicamento eliminado del estado
-                const nuevosMedicamentos = medicamentoz.filter(med => med.id !== id);
-                setMedicamento(nuevosMedicamentos);
-                setFilteredMedicamentos(nuevosMedicamentos);
-                alert("Medicamento eliminado exitosamente");
-            } catch (error) {
-                alert("Error al eliminar el medicamento");
-            }
-        }
+        // const isDelete = window.confirm("¿Desea Borrar El Medicamento?");
+        // if (isDelete) {
+        //     try {
+        //         await Config.deleteMedicamento(id);
+        //         // Filtra el medicamento eliminado del estado
+        //         const nuevosMedicamentos = medicamentoz.filter(med => med.id !== id);
+        //         setMedicamento(nuevosMedicamentos);
+        //         setFilteredMedicamentos(nuevosMedicamentos);
+        //         alert("Medicamento eliminado exitosamente");
+        //     } catch (error) {
+        //         alert("Error al eliminar el medicamento");
+        //     }
+        // }
+
+        Swal.fire({
+                    title: "¿Eliminar medicamento?",
+                    text: "¿Esta seguro de eliminar este medicamento?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si, eliminar!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Config.deleteMedicamento(id);
+                        const nuevosMed = medicamentoz.filter(med => med.id !== id);
+                        setMedicamento(nuevosMed)
+                        setFilteredMedicamentos(nuevosMed)
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: "El medicamento ha sido eliminado exitosamente.",
+                            icon: "success"
+                        });
+                    }
+                });
     }
 
     useEffect(() => {
