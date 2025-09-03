@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Config from "../../layouts/PageAuth/Config";
+import Swal from 'sweetalert2';
 
 const SuscripcionForm = () => {
   const [nombre, setNombre] = useState('');
   const [precio, setPrecio] = useState('');
   const [descuento, setDescuento] = useState('');
   const [dias, setDiasSuscripcion] = useState('');
-  
+  const navigate = useNavigate();
+  const getRol = () => {
+    const rol = sessionStorage.getItem('rol');
+    return rol ? JSON.parse(rol) : null;
+  }
+
+  const rol = getRol();
+
   const sumitSuscripcion = async (e) => {
     e.preventDefault();
     await Config.getSuscripcionStore({
@@ -18,13 +26,23 @@ const SuscripcionForm = () => {
     })
       .then((response) => {
         console.log(response.data);
-        alert('Suscripción guardada con éxito');
+        Swal.fire({
+          title: "Suscripcion Registrada",
+          text: "La suscripcion ha sido registrada correctamente.",
+          icon: "success"
+        }).then(() => {
+          navigate(`/${rol}/suscripcion`);
+        });
       })
       .catch((error) => {
-        console.error(error);
-        alert('Error al guardar la suscripción');
+        Swal.fire({
+          title: "Hubo un error",
+          text: "Parece que hubo un error en el formulario, revise bien los campos.",
+          icon: "error"
+        });
       });
-    }
+    console.error(error);
+  }
 
   return (
     <div className="min-w-[800px] h-fit mx-auto bg-white shadow-lg rounded-lg p-10 mt-10">

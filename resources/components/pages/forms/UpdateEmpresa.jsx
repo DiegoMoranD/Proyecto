@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function EmpresaForms() {
     const { id } = useParams();
+
+    const navigate = useNavigate();
+    const getRol = () => {
+        const rol = sessionStorage.getItem('rol');
+        return rol ? JSON.parse(rol) : null;
+    }
+
+    const rol = getRol();
 
     // Un estado por campo
     const [nombre, setNombre] = useState("");
@@ -37,9 +46,19 @@ function EmpresaForms() {
                 cedula,
                 telefono,
             });
-            alert("Empresa actualizada exitosamente");
+            Swal.fire({
+                title: "Empresa Actualizada",
+                text: "La empresa ha sido actualizada correctamente.",
+                icon: "success"
+            }).then(() => {
+                navigate(`/${rol}/empresa`);
+            });
         } catch (error) {
-            alert("Error al actualizar la empresa");
+            Swal.fire({
+                title: "Hubo un error",
+                text: "Parece que hubo un error en el formulario, revise bien los campos.",
+                icon: "error"
+            });
             console.error(error);
         }
     };

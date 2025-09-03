@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Config from "../../layouts/PageAuth/Config";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function EmpresaForm() {
-
+  
+  const navigate = useNavigate();
   const getRol = () => {
     const rol = sessionStorage.getItem('rol');
     return rol ? JSON.parse(rol) : null;
@@ -11,7 +13,6 @@ function EmpresaForm() {
 
   const rol = getRol();
   const [suscripcion, setSuscripcion] = useState([]);
-  const navigate = useNavigate();
   const [empresa, setEmpresa] = useState({
     nombre: "",
     correo: "",
@@ -42,23 +43,31 @@ function EmpresaForm() {
   };
 
   const submitEmpresa = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await Config.storeEmpresaByRoot({
-      ...empresa
-    });
+    e.preventDefault();
+    try {
+      const response = await Config.storeEmpresaByRoot({
+        ...empresa
+      });
 
-    // Si el registro fue exitoso (status 201 o success en la respuesta)
-    if (response.status === 201 || response.data.success) {
-      alert("Empresa registrada exitosamente");
-      // Redirige a la tabla de empresas
-      navigate(`/${rol}/empresa`);
+      // Si el registro fue exitoso (status 201 o success en la respuesta)
+      if (response.status === 201 || response.data.success) {
+        Swal.fire({
+          title: "Empresa Registrada",
+          text: "La empresa ha sido registrada correctamente.",
+          icon: "success"
+        }).then(() => {
+          navigate(`/${rol}/empresa`);
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Hubo un error",
+        text: "Parece que hubo un error en el formulario, revise bien los campos.",
+        icon: "error"
+      });
+      console.error(error);
     }
-  } catch (error) {
-    alert("Error al registrar la empresa");
-    console.error(error);
-  }
-};
+  };
 
   return (
     <div className="container mx-auto p-6">

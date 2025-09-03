@@ -152,7 +152,11 @@ function CitaForm() {
 
                 });
             } catch (error) {
-                alert("Error al enviar el PDF por correo");
+                Swal.fire({
+                    title: "Hubo un error",
+                    text: "Error al enviar el PDF por correo.",
+                    icon: "error"
+                });
             }
         };
         reader.readAsDataURL(blob);

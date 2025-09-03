@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import OpenEyeSVG from '../../svg/OpenEyeSVG';
 import OffEyeSVG from '../../svg/OffEyeSVG';
 
+import Swal from "sweetalert2";
+
 function UsuarioForm() {
-    const [showPassword, setShowPassword] = useState(false); 
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState({
         name: "",
@@ -85,9 +87,13 @@ function UsuarioForm() {
 
             // Si el registro fue exitoso (status 201 o success en la respuesta)
             if (response.status === 201 || response.data.success) {
-                alert("Usuario registrado exitosamente");
-                // Redirige a la tabla de empresas
-                navigate(`/${rol}/usuario`);
+                Swal.fire({
+                    title: "Usuario Registrado",
+                    text: "El usuario ha sido registrado correctamente.",
+                    icon: "success"
+                }).then(() => {
+                    navigate(`/${rol}/usuario`);
+                });
             }
 
             const emailCheckResponse = await Config.getCheckEmail({ email: usuario.email });
@@ -102,7 +108,11 @@ function UsuarioForm() {
             }
 
         } catch (error) {
-            alert("Error al registrar al usuario");
+            Swal.fire({
+                title: "Hubo un error",
+                text: "Parece que hubo un error en el formulario, revise bien los campos.",
+                icon: "error"
+            });
             console.error(error);
         }
     };

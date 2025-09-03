@@ -40,9 +40,7 @@ function ModalCitasPop({ isOpen, onClose, id }) {
 
     const cancelCitaPaciente = async () => {
         try {
-            // await Config.cancelCita(cita.id, { estado: "cancelado" });
-            // alert("Cita cancelada exitosamente");
-            // onClose();
+
 
             Swal.fire({
                 title: "¿Cancelar Cita?",
@@ -69,7 +67,11 @@ function ModalCitasPop({ isOpen, onClose, id }) {
                 }
             });
         } catch (error) {
-            alert("Error al cancelar la cita");
+            Swal.fire({
+                title: "Hubo un error",
+                text: "Error al cancelar la cita.",
+                icon: "error"
+            });
             console.error(error);
         }
     }

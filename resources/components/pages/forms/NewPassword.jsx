@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Config from "../../layouts/PageAuth/Config";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function NewPassword() {
     const { token } = useParams();
@@ -12,6 +13,7 @@ function NewPassword() {
     const [passwordConfimation, setPasswordConfirmation] = useState("")
     const [passwordStr, setPasswordStr] = useState(0);
     const [strLabel, setStrLabel] = useState("Débil");
+    const navigate = useNavigate()
 
     const evaluateStrPassword = (password) => {
         let strength = 0;
@@ -62,10 +64,13 @@ function NewPassword() {
             });
             if (response.data.success) {
                 setMessage("Contraseña actulizada correctamente.")
-                alert("Contraseña actualizada volviendo al login")
-                setTimeout(() => {
-                    window.location.href = "/login"
-                }, 2000)
+                Swal.fire({
+                    title: "Empresa Registrada",
+                    text: "La empresa ha sido registrada correctamente.",
+                    icon: "success"
+                }).then(() => {
+                    navigate(`/login`);
+                });
             }
             setMessage(response.data.message);
         } catch (error) {

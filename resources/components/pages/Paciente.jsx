@@ -59,19 +59,6 @@ function Paciente() {
     }
 
     const deletePaciente = async (id) => {
-        // const isDelete = window.confirm("¿Desea Borrar El Paciente?");
-        // if (isDelete) {
-        //     try {
-        //         await Config.deletePacieteByAdmin(id);
-        //         const nuevosPacientes = pacientes.filter(med => med.id !== id);
-        //         setPacientes(nuevosPacientes)
-        //         setFilteredPacientes(nuevosPacientes)
-        //         alert("Paciente eliminado exitosamente");
-        //     } catch (error) {
-        //         alert("Error al eliminar el paciente");
-        //     }
-        // }
-
         Swal.fire({
             title: "¿Eliminar paciente?",
             text: "¿Esta seguro de eliminar a este paciente?",
