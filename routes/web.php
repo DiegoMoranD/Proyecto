@@ -82,7 +82,9 @@ Route::get('/medico/pacientes/{any}', function () {
 Route::get('/medico/update-paciente/{any}', function () {
     return view('welcome');
 });
-
+Route::get('/medico/agendar-form/{any}', function () {
+    return view('welcome');
+});
 Route::get('/medico/agendar-update/{any}', function () {
     return view('welcome');
 });

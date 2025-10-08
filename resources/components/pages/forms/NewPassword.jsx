@@ -65,8 +65,8 @@ function NewPassword() {
             if (response.data.success) {
                 setMessage("Contraseña actulizada correctamente.")
                 Swal.fire({
-                    title: "Empresa Registrada",
-                    text: "La empresa ha sido registrada correctamente.",
+                    title: "Contraseña Actualizada",
+                    text: "La contraseña ha sido actualizada correctamente.",
                     icon: "success"
                 }).then(() => {
                     navigate(`/login`);

@@ -27,6 +27,7 @@ import SuscripcionForm from "./pages/forms/SuscripcionForm";
 import ActivateEmpresa from "./pages/forms/ActivateEmpresa";
 import NewPassword from "./pages/forms/NewPassword";
 import UpdatePassword from "./pages/forms/UpdatePassword";
+import Home from "./pages/Home";
 
 export default function App() {
     return (
@@ -60,7 +61,7 @@ export default function App() {
 
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/medico/*" element={<MedicoLayout />}>
-                        <Route index element={<ContentArea />}></Route>
+                        <Route path="home" element={<Home />}></Route>
                     </Route>
                 </Route>
 

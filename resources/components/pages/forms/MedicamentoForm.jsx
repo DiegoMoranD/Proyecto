@@ -5,6 +5,9 @@ import Swal from "sweetalert2";
 
 
 function MedicamentoForm() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+
     const userString = sessionStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
     const [empresas, setEmpresa] = useState([]);
@@ -46,6 +49,34 @@ function MedicamentoForm() {
     const submitMedicamento = async (e) => {
         e.preventDefault();
 
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
+
+        const camposObligatorios = [
+            "nombre",
+            "descripcion",
+            "categoria",
+            "presentacion",
+            "stock",
+            "receta",
+            "disponible",
+        ].filter(Boolean);
+
+        const camposVacios = camposObligatorios.filter(
+            (campo) => !medicamento[campo] || medicamento[campo].toString().trim() === ""
+        );
+
+        if (camposVacios.length > 0) {
+            Swal.fire({
+                title: "Campos incompletos",
+                text: "Por favor, verifique que todos los campos estén completos.",
+                icon: "warning"
+            });
+            setIsSubmitting(false);
+            return;
+        }
+
         let empresa_id = medicamento.empresa_id;
         if (rol === 'medico' || rol === 'recepcion') {
             empresa_id = user.empresa_id; // Usa la empresa del usuario logueado
@@ -58,7 +89,7 @@ function MedicamentoForm() {
                 receta: medicamento.receta === "true" || medicamento.receta === true,
             };
 
-            const response = await Config.storeMedicamento({...dataToSend , empresa_id});
+            const response = await Config.storeMedicamento({ ...dataToSend, empresa_id });
 
             if (response.status === 201 || response.data.success) {
                 Swal.fire({
@@ -76,6 +107,8 @@ function MedicamentoForm() {
                 icon: "error"
             })
             console.error(error);
+        } finally {
+            setIsSubmitting(false); // habilitar de nuevo
         }
     };
 
@@ -96,7 +129,7 @@ function MedicamentoForm() {
                             value={medicamento.nombre}
                             onChange={handleMedicamentoChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: Juan Pérez"
+                            placeholder="Ej: Parecetamol"
                         />
                     </div>
 
@@ -109,7 +142,7 @@ function MedicamentoForm() {
                             value={medicamento.descripcion}
                             onChange={handleMedicamentoChange}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Ej: Juan Pérez"
+                            placeholder="Ej: Parecetamol 100 mg"
                         />
                     </div>
 
@@ -201,7 +234,7 @@ function MedicamentoForm() {
                             onChange={handleMedicamentoChange}
                             step="1"
                             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="Stocñ disponible"
+                            placeholder="Stock disponible"
                         />
                     </div>
 
@@ -227,9 +260,13 @@ function MedicamentoForm() {
                 <div className="mt-12 text-center">
                     <button
                         type="submit"
-                        className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition"
+                        disabled={isSubmitting}
+                        className={`px-6 py-2 rounded-md shadow-md transition 
+                        ${isSubmitting
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-green-500 hover:bg-green-600 text-white font-medium"}`}
                     >
-                        Guardar Medicamento
+                        {isSubmitting ? "Guardando..." : "Guardar Medicamento"}
                     </button>
                 </div>
             </form>

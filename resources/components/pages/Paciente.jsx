@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import Config from '../layouts/PageAuth/Config';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { Eye, SquarePen, Trash, CalendarPlus } from 'lucide-react';
+import { Tooltip } from 'chart.js';
 
 function Paciente() {
     const [pacientes, setPacientes] = useState([]);
@@ -242,13 +244,27 @@ function Paciente() {
                                             <>
                                                 <td className="py-4 justify-around flex">
                                                     <Link to={`/${rol}/update-paciente/${paciente.id}`}>
-                                                        <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p>
+                                                        {/* <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Editar</p> */}
+                                                        <SquarePen className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>
+                                                            <title>Editar Paciente</title>
+                                                        </SquarePen>
                                                     </Link>
-                                                    <button onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button>
+                                                    {/* <button onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500'>Eliminar</button> */}
+                                                    <Trash onClick={() => deletePaciente(paciente.id)} className='font-bold text-red-500 hover:text-red-600 transition duration-500 cursor-pointer'>
+                                                        <title>Eliminar Paciente</title>
+                                                    </Trash>
+                                                    <Link to={`/${rol}/agendar-form/${paciente.id}`}>
+                                                        <CalendarPlus className='font-bold text-green-500 hover:text-green-600 transition duration-500 cursor-pointer'>
+                                                            <title>Agendar Cita</title>
+                                                        </CalendarPlus>
+                                                    </Link>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <Link to={`/${rol}/pacientes/${paciente.id}`}>
-                                                        <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Ver</p>
+                                                        {/* <p className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>Ver</p> */}
+                                                        <Eye className='font-bold text-blue-500 hover:text-blue-600 transition duration-500'>
+                                                            <title>Ver Paciente</title>
+                                                        </Eye>
                                                     </Link>
                                                 </td>
                                             </>

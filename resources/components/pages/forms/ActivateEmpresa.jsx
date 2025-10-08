@@ -65,9 +65,8 @@ function ActivateEmpresa() {
                         <p className="text-center text-gray-600 mb-4">
                             Estado:{" "}
                             <span
-                                className={`font-bold ${
-                                    empresa.cuenta_valida ? "text-red-500" : "text-green-500"
-                                }`}
+                                className={`font-bold ${empresa.cuenta_valida ? "text-red-500" : "text-green-500"
+                                    }`}
                             >
                                 {empresa.cuenta_valida ? "No válida" : "Válida"}
                             </span>
@@ -76,11 +75,10 @@ function ActivateEmpresa() {
                             <button
                                 onClick={handleActivate}
                                 disabled={activating}
-                                className={`w-full py-2 px-4 text-white font-bold rounded ${
-                                    activating
-                                        ? "bg-gray-400 cursor-not-allowed"
-                                        : "bg-blue-500 hover:bg-blue-600"
-                                }`}
+                                className={`w-full py-2 px-4 text-white font-medium rounded ${activating
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-blue-500 hover:bg-blue-600"
+                                    }`}
                             >
                                 {activating ? "Activando..." : "Activar Empresa"}
                             </button>
@@ -90,7 +88,13 @@ function ActivateEmpresa() {
                     <p className="text-center text-red-600">{message}</p>
                 )}
                 {message && !loading && (
-                    <p className="text-center text-gray-600 mt-4">{message}</p>
+                    <div className="flex flex-col">
+                        <p className="text-center text-gray-600 mt-4">{message}</p>
+
+                        {empresa.cuenta_valida === 0 && (
+                            <a href="/login" className="bg-blue-500 hover:bg-blue-600 transition-colors duration-500 text-white p-2 rounded text-center mt-3 font-medium">Volver al Login</a>
+                        )}
+                    </div>
                 )}
             </div>
         </div>

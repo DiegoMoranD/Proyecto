@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Config from "../layouts/PageAuth/Config";
 import { Link, useParams } from "react-router-dom";
 import ModalCita from "../ModalCita";
+import Swal from "sweetalert2";
 
 function PacienteData() {
     const { id } = useParams();
@@ -24,6 +25,13 @@ function PacienteData() {
     const [fecha_registro, setFechaRegistro] = useState("");
     const [empresa_id, setEmpresaId] = useState("");
     const [empresas, setEmpresas] = useState([]);
+
+    const getRol = () => {
+        const rol = sessionStorage.getItem('rol');
+        return rol ? JSON.parse(rol) : null;
+    }
+
+    const rol = getRol();
 
     useEffect(() => {
         indexAgenda();
@@ -86,9 +94,41 @@ function PacienteData() {
         setSelectedCitaId(null);
     };
 
-
     const userString = sessionStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
+
+    const cancelCitaPaciente = async (citaId) => {
+        try {
+            Swal.fire({
+                title: "¿Cancelar Cita?",
+                text: "¿Está seguro de cancelar la cita?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, cancelarla!"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await Config.cancelCita(citaId, { estado: "cancelado" });
+                    Swal.fire({
+                        title: "Cancelado!",
+                        text: "La cita ha sido cancelada exitosamente.",
+                        icon: "success"
+                    }).then(() => {
+                        indexAgenda();
+                    });
+                }
+            });
+        } catch (error) {
+            Swal.fire({
+                title: "Hubo un error",
+                text: "Error al cancelar la cita.",
+                icon: "error"
+            });
+            console.error(error);
+        }
+    }
+
 
     return (
         <div className="container mx-auto p-6">
@@ -111,10 +151,7 @@ function PacienteData() {
                     <h3 className='font-bold text-[20px]'>Sexo</h3>
                     <p>{sex}</p>
                 </div>
-                <div>
-                    <h3 className='font-bold text-[20px]'>Empresa</h3>
-                    <p>{empresa_id}</p>
-                </div>
+
                 <div>
                     <h3 className='font-bold text-[20px]'>Peso</h3>
                     <p>{peso}</p>
@@ -138,8 +175,8 @@ function PacienteData() {
                             <th className="px-6 py-4">motivo</th>
                             <th className="px-6 py-4">fecha</th>
                             <th className="px-6 py-4">hora</th>
-                            <th className="px-6 py-4">empresa_id</th>
                             <th className="px-6 py-4">Detalles</th>
+                            <th className="px-6 py-4">Opciones</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 ">
@@ -162,24 +199,53 @@ function PacienteData() {
                                     <td className="px-6 py-4">{cita.motivo}</td>
                                     <td className="px-6 py-4">{cita.fecha}</td>
                                     <td className="px-6 py-4">{cita.hora}</td>
-                                    <td className="px-6 py-4">{cita.empresa_id}</td>
                                     <td>
-                                        {(cita.estado === 'atendido') && (
-                                            <>
-                                                <button
-                                                    onClick={() => handleOpenModal(cita.id)}
-                                                    className='cursor-pointer font-bold text-blue-500 hover:text-blue-600 transition duration-500'
-                                                >
-                                                    Ver detalles
-                                                </button></>
-                                        )
-                                        }
+                                        {cita.estado === 'atendido' ? (
+                                            <button
+                                                onClick={() => handleOpenModal(cita.id)}
+                                                className='cursor-pointer font-bold text-blue-500 hover:text-blue-600 transition duration-500 px-6 py-4'
+                                            >
+                                                Ver detalles
+                                            </button>
+                                        ) : cita.estado === 'cancelado' ? (
+                                            <span className="text-red-500 px-6 py-4 font-bold">Cita cancelada</span>
+                                        ) : (
+                                            <span className="text-gray-400 px-6 py-4 font-bold">Cita sin atender</span>
+                                        )}
+                                    </td>
+
+                                    <td className="px-6 py-4 flex justify-between">
+                                        {cita.estado === 'registrado' ? (
+                                            <a
+                                                href={`/medico/cita-detalles/${cita.id}`}
+                                                className="font-bold text-green-500 hover:text-green-600"
+                                            >
+                                                Atender Cita
+                                            </a>
+                                        ) : cita.estado === 'atendido' ? (
+                                            <span className="font-bold text-gray-400 cursor-not-allowed">
+                                                Cita Atendida
+                                            </span>
+                                        ) : (
+                                            <span className="font-bold text-red-500 cursor-not-allowed">
+                                                Cita Cancelada
+                                            </span>
+                                        )}
+
+                                        {/* Botón cancelar SOLO si está registrada */}
+                                        {cita.estado === 'registrado' && (
+                                            <button
+                                                onClick={() => cancelCitaPaciente(cita.id)}
+                                                className="font-bold text-red-500 -ml-20 hover:text-red-600"
+                                            >
+                                                Cancelar Cita
+                                            </button>
+                                        )}
                                     </td>
                                 </tr>
                             ))
                         )}
                     </tbody>
-
                 </table>
 
             </div>

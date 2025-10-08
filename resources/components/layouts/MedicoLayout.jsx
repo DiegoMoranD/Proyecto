@@ -51,6 +51,7 @@ function MedicoLayout() {
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/agenda" element={<Agenda />} />
                                 <Route path="/agendar-form" element={<AgendarForm />} />
+                                <Route path="/agendar-form/:id" element={<AgendarForm />} />
                                 <Route path="/agendar-update/:id" element={<UpdateAgendar />} />
                                 <Route path="/consulta-form" element={<ConsultaForm />} />
                                 <Route path="/pacientes" element={<Paciente />} />

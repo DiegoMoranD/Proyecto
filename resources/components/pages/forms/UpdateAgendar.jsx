@@ -13,7 +13,7 @@ function UpdateAgendar() {
     const [motivo, setMotivo] = useState("");
 
     useEffect(() => {
-        const fetchEmpresa = async () => {
+        const fetchCita = async () => {
             try {
                 const response = await Config.getCitaById(id);
                 const data = response.data;
@@ -28,7 +28,7 @@ function UpdateAgendar() {
                 console.error("Error al obtener la cita", error);
             }
         };
-        fetchEmpresa();
+        fetchCita();
     }, [id]);
 
     const getRol = () => {
@@ -40,10 +40,13 @@ function UpdateAgendar() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const horaFormateada = hora.length > 5 ? hora.slice(0, 5) : hora;
+
         try {
             const response = await Config.updateCita(id, {
                 fecha,
-                hora,
+                hora: horaFormateada,
                 motivo,
             });
             if (response.status === 201 || response.status === 200) {
@@ -58,7 +61,7 @@ function UpdateAgendar() {
         } catch (error) {
             Swal.fire({
                 title: "Hubo un error",
-                text: "Error al actualizar la empresa o no se cambio todo los campos.",
+                text: "Error al actualizar la cita o no se cambio todo los campos.",
                 icon: "error"
             })
             console.error(error);

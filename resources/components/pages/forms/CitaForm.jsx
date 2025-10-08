@@ -6,6 +6,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function CitaForm() {
+    //evitar registros repetidos 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const { id } = useParams(); // id de la cita
     const { paciente_id } = useParams(); // id de la cita
     const [pdfData, setPdfData] = useState(null);
@@ -166,6 +169,34 @@ function CitaForm() {
 
     const handleSubmitCita = async (e) => {
         e.preventDefault();
+
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
+
+        const camposObligatorios = [
+            "peso",
+            "altura",
+            "sintomas",
+            "alergias",
+            "diagnostico",
+            "recomendaciones",
+        ].filter(Boolean);
+
+        const camposVacios = camposObligatorios.filter(
+            (campo) => !form[campo] || form[campo].toString().trim() === ""
+        );
+
+        if (camposVacios.length > 0) {
+            Swal.fire({
+                title: "Campos incompletos",
+                text: "Por favor, verifique que todos los campos estén completos.",
+                icon: "warning"
+            });
+            setIsSubmitting(false);
+            return;
+        }
+
         const peso = parseFloat(form.peso);
         const altura = parseFloat(form.altura);
         const imc = altura > 0 ? (peso / (altura * altura)).toFixed(2) : 0;
@@ -225,6 +256,8 @@ function CitaForm() {
                     icon: "error"
                 });
             }
+        } finally {
+            setIsSubmitting(false); // habilitar de nuevo
         }
     };
 
@@ -366,7 +399,7 @@ function CitaForm() {
                     <ul>
                         {medicamentos.map((med, idx) => (
                             <li key={idx} className="flex items-center justify-between border-b py-2">
-                                <span>Medicamento ID: {med.medicamento_id} - Indicaciones: {med.indicaciones}</span>
+                                <span>Medicamento: {med.nombre} - Indicaciones: {med.indicaciones}</span>
                                 <button
                                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                                     type="button"
@@ -384,9 +417,13 @@ function CitaForm() {
                 <div className="mt-12 text-center">
                     <button
                         type="submit"
-                        className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition"
+                        disabled={isSubmitting}
+                        className={`px-6 py-2 rounded-md shadow-md transition 
+                        ${isSubmitting
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-green-500 hover:bg-green-600 text-white font-medium"}`}
                     >
-                        Guardar Cita
+                        {isSubmitting ? "Guardando..." : "Guardar Cita"}
                     </button>
                 </div>
             </form>

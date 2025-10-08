@@ -15,8 +15,8 @@ function UpdatePaciente() {
   const [altura, setAltura] = useState("");
   const [imc, setImc] = useState("");
   const [fecha_registro, setFechaRegistro] = useState("");
-  const [empresa_id, setEmpresaId] = useState("");
-  const [empresas, setEmpresas] = useState([]);
+  // const [empresa_id, setEmpresaId] = useState("");
+  // const [empresas, setEmpresas] = useState([]);
 
   const navigate = useNavigate();
 
@@ -41,23 +41,22 @@ function UpdatePaciente() {
         setAltura(data.altura || "");
         setImc(data.imc || "");
         setFechaRegistro(data.fecha_registro || "");
-        setEmpresaId(data.empresa_id || "");
       } catch (error) {
         console.error("Error al obtener paciente", error);
       }
     };
 
-    const fetchEmpresas = async () => {
-      try {
-        const response = await Config.getAlltEmpresa();
-        setEmpresas(response.data);
-      } catch (error) {
-        console.error("Error al obtener empresas", error);
-      }
-    };
+    // const fetchEmpresas = async () => {
+    //   try {
+    //     const response = await Config.getAlltEmpresa();
+    //     setEmpresas(response.data);
+    //   } catch (error) {
+    //     console.error("Error al obtener empresas", error);
+    //   }
+    // };
 
     fetchPaciente();
-    fetchEmpresas();
+    // fetchEmpresas();
   }, [id]);
 
   // Calcular IMC en tiempo real
@@ -83,7 +82,6 @@ function UpdatePaciente() {
         altura,
         imc,
         fecha_registro,
-        empresa_id,
       });
       Swal.fire({
         title: "Paciente Actualizado",
@@ -187,7 +185,7 @@ function UpdatePaciente() {
               className="w-full border border-gray-300 rounded-md px-3 py-2"
             />
           </div>
-          <div>
+          {/* <div>
             <label className="block text-gray-700 font-medium mb-3">Empresa ID</label>
             <select
               value={empresa_id}
@@ -201,7 +199,7 @@ function UpdatePaciente() {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
           <div>
             <label className="block text-gray-700 font-medium mb-3">Sexo</label>

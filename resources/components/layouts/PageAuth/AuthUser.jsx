@@ -38,19 +38,19 @@ function AuthUser() {
         // Rol Admin | Medico | Recepcion | Paciente
 
         if(getRol()==="root"){
-            navigate('/root')
+            navigate('/root/home')
         }
         if(getRol()==="admin"){
-            navigate('/admin')
+            navigate('/admin/home')
         }
         if(getRol()==="medico"){
-            navigate('/medico')
+            navigate('/medico/home')
         }
         if(getRol()==="recepcion"){
-            navigate('/recepcion')
+            navigate('/recepcion/home')
         }
         if(getRol()==="paciente"){
-            navigate('/paciente')
+            navigate('/paciente/home')
         }
     }
 

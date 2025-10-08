@@ -28,8 +28,16 @@ const PacientesForm = () => {
   })
 
   const [empresas, setEmpresaName] = useState([]);
+  //evitar registros repetidos 
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    // Capturar la fecha actual
+    setPaciente((prevPaciente) => ({
+      ...prevPaciente,
+      fecha_registro: new Date().toISOString().slice(0, 10),
+    }));
+
     const fetchEmpresa = async () => {
       try {
         const response = await Config.getAlltEmpresa();
@@ -39,8 +47,9 @@ const PacientesForm = () => {
       }
     };
     fetchEmpresa();
+  }, []);
 
-
+  useEffect(() => {
     const peso = parseFloat(paciente.peso);
     const altura = parseFloat(paciente.altura);
     if (!isNaN(peso) && !isNaN(altura) && altura > 0) {
@@ -65,6 +74,36 @@ const PacientesForm = () => {
 
   const submitPaciente = async (e) => {
     e.preventDefault();
+
+    if (isSubmitting) return; // para evitar doble clic
+
+    setIsSubmitting(true);
+
+    // validar los campos
+    const camposObligatorios = [
+      "nombre",
+      "sex",
+      "fecha_nacimiento",
+      "tipo_sangre",
+      "peso",
+      "altura",
+      "fecha_registro",
+      (rol === 'admin' || rol === 'root') ? "empresa_id" : null
+    ].filter(Boolean);
+
+    const camposVacios = camposObligatorios.filter(
+      (campo) => !paciente[campo] || paciente[campo].toString().trim() === ""
+    );
+
+    if (camposVacios.length > 0) {
+      Swal.fire({
+        title: "Campos incompletos",
+        text: "Por favor, verifique que todos los campos estén completos.",
+        icon: "warning"
+      });
+      setIsSubmitting(false); 
+      return;
+    }
 
     // Calcula el IMC antes de enviar
     const peso = parseFloat(paciente.peso);
@@ -91,7 +130,7 @@ const PacientesForm = () => {
         peso: "",
         altura: "",
         imc: "",
-        fecha_registro: "",
+        fecha_registro: new Date().toISOString().slice(0, 10),
         empresa_id: ""
       });
 
@@ -109,6 +148,8 @@ const PacientesForm = () => {
         icon: "error"
       })
       console.error(error);
+    } finally {
+      setIsSubmitting(false); // habilitar de nuevo
     }
   };
 
@@ -221,9 +262,10 @@ const PacientesForm = () => {
             <input
               type="date"
               name="fecha_registro"
+              readOnly
               value={paciente.fecha_registro}
               onChange={handlePacienteChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-100"
             />
           </div>
 
@@ -282,10 +324,15 @@ const PacientesForm = () => {
         <div className="mt-12 text-center">
           <button
             type="submit"
-            className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition"
+            disabled={isSubmitting}
+            className={`px-6 py-2 rounded-md shadow-md transition 
+    ${isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-600 text-white font-medium"}`}
           >
-            Guardar Paciente
+            {isSubmitting ? "Guardando..." : "Guardar Paciente"}
           </button>
+
         </div>
       </form>
     </div>

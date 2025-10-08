@@ -7,7 +7,7 @@ export default function TopBar({ toggleSidebar }) {
     const user = userString ? JSON.parse(userString) : null;
 
     return (
-        <header className="bg-white h-24 border-gray-900/25 border-b max-h-24 min-h-24 px-4 flex items-center justify-between sm:justify-end">
+        <header className="bg-white h-16 border-gray-900/25 border-b max-h-16 min-h-16 px-4 flex items-center justify-between sm:justify-end">
             <div className="flex items-center sm:hidden">
                 <button onClick={toggleSidebar} className="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
                     <BurgerMenu />
@@ -30,7 +30,7 @@ export default function TopBar({ toggleSidebar }) {
                         />
                     </svg>
                 </div>
-                <div className="text-[18px] font-[600] mr-11">
+                <div className="text-[14px] font-[600] mr-11">
                     {user ? [user.name, "  ", user.paterno] : "Cargando..."}
                 </div>
             </div>

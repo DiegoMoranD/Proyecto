@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import Config from '../layouts/PageAuth/Config'
-import Process from '../imgs/process.jpg'
+import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import Config from '../layouts/PageAuth/Config';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -26,7 +26,6 @@ ChartJS.register(
     PointElement,
     LineElement
 );
-import Swal from 'sweetalert2';
 
 function Home() {
     const [metrics, setMetrics] = useState([
@@ -100,7 +99,8 @@ function Home() {
         datasets: [{
             label: 'Tipos de Sangre',
             data: Object.values(pacienteMetrics.tipos_sangre),
-            backgroundColor: ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6', '#facc15', '#818cf8'],
+            // backgroundColor: ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6', '#facc15', '#818cf8'],
+            backgroundColor: ['#fa0000', '#e10000', '#c80000', '#af0000', '#960000', '#7d0000', '#640000', '#4b0000'],
         }]
     } : null;
 
@@ -112,17 +112,6 @@ function Home() {
             backgroundColor: ['#fbbf24', '#60a5fa', '#34d399', '#a78bfa'],
         }]
     } : null;
-
-    const openAlert = async () => {
-        Swal.fire({
-            title: "The Internet?",
-            html: `
-    You can use <b>bold text</b>,
-    <a href="#" autofocus>links</a>,
-    and other HTML tags`,
-            icon: "success"
-        });
-    }
 
     return (
         <div className='flex flex-col p-4'>
@@ -164,10 +153,6 @@ function Home() {
                         {sangreData && <Doughnut data={sangreData} options={{ responsive: true, }} />}
                     </div>
                 </div>
-            </div>
-
-            <div>
-                <button onClick={openAlert} className='bg-blue-500 text-white hover:bg-blue-600 rounded m-4 py-2 px-4'>alert</button>
             </div>
         </div>
     );

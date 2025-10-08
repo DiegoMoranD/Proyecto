@@ -40,8 +40,6 @@ function ModalCitasPop({ isOpen, onClose, id }) {
 
     const cancelCitaPaciente = async () => {
         try {
-
-
             Swal.fire({
                 title: "¿Cancelar Cita?",
                 text: "¿Esta seguro de cancelar la cita?",

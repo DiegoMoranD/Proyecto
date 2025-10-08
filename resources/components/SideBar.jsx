@@ -54,7 +54,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                 } sm:relative sm:translate-x-0`}>
                 <div>
                     {/* Logo */}
-                    <div className="mb-2 p-4 flex items-center flex-col border-b-1 border-gray-900/25">
+                    <div className="mb-2 p-4 flex items-center flex-col border-b border-gray-900/25">
                         <img src={Logo} alt="Logo" className="h-[63px]" />
                     </div>
 
@@ -67,13 +67,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                         <li>
                                             <Link to={`/${rol}/home`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <HomeSVG />
-                                                <p className="pl-4">Inicio</p>
+                                                <p className="pl-4 font-medium">Inicio</p>
                                             </Link>
                                         </li>
                                         <li>
                                             <Link to={`/${rol}/usuario`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <UserSVG />
-                                                <p className="pl-4">Usuario</p>
+                                                <p className="pl-4 font-medium">Usuario</p>
                                             </Link>
                                         </li>
                                     </>
@@ -84,13 +84,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                         <li>
                                             <Link to={`/${rol}/home`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <HomeSVG />
-                                                <p className="pl-4">Inicio</p>
+                                                <p className="pl-4 font-medium">Inicio</p>
                                             </Link>
                                         </li>
                                         <li>
                                             <Link to={`/${rol}/agenda`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <CalendarSVG />
-                                                <p className="pl-4">Agendar Cita</p>
+                                                <p className="pl-4 font-medium">Ver Citas</p>
                                             </Link>
                                         </li>
                                     </>
@@ -101,7 +101,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                         <li>
                                             <Link to={`/${rol}/empresa`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <CompanySVG />
-                                                <p className="pl-4">Empresa</p>
+                                                <p className="pl-4 font-medium">Empresa</p>
                                             </Link>
                                         </li>
                                     </>
@@ -112,7 +112,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                         <li>
                                             <Link to={`/${rol}/usuario-data`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <UserSVG />
-                                                <p className="pl-4">Mis datos</p>
+                                                <p className="pl-4 font-medium">Mis datos</p>
                                             </Link>
                                         </li>
                                     </>
@@ -123,13 +123,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                         <li>
                                             <Link to={`/${rol}/tipo-usuario`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <EmplooyesSVG />
-                                                <p className="pl-4">Tipo de usuario</p>
+                                                <p className="pl-4 font-medium">Tipo de usuario</p>
                                             </Link>
                                         </li>
                                         <li>
                                             <Link to={`/${rol}/suscripcion`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                                 <ContracSVG />
-                                                <p className="pl-4">Suscripción</p>
+                                                <p className="pl-4 font-medium">Suscripción</p>
                                             </Link>
                                         </li>
                                     </>
@@ -143,13 +143,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                     <li className="">
                                         <Link to={`/${rol}/pacientes`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                             <ActivitySVG />
-                                            <p className="pl-4 ">Paciente</p>
+                                            <p className="pl-4 font-medium ">Ver Pacientes</p>
                                         </Link>
                                     </li>
                                     <li className="">
                                         <Link to={`/${rol}/medicamentos`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
                                             <PiiSVG />
-                                            <p className="pl-4 ">Medicamentos</p>
+                                            <p className="pl-4 font-medium ">Medicamentos</p>
                                         </Link>
                                     </li>
                                 </>
@@ -164,7 +164,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                         <li className="">
                             <button onClick={logoutUser} className="bg-red-500 text-white py-3 px-8 rounded hover:bg-red-600 transition duration-300 flex items-center justify-center w-full cursor-pointer">
                                 <LogoutSVG />
-                                <Link  to={"#"} className="pl-4  font-bold max-2xl:text-[12px] max-2xl:pl-2">
+                                <Link  to={"#"} className="pl-4 font-bold max-2xl:text-[12px] max-2xl:pl-2">
                                     Cerrar Sesion
                                 </Link>
                             </button>
