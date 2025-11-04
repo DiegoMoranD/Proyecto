@@ -36,61 +36,43 @@ function UpdatePassword() {
 
 
     return (
-        <div className="bg-[#dbdbdb] text-black h-screen flex justify-center items-center w-full">
-            <div>
-                <div className="min-w-[450px] bg-[#fff] border border-[#e11a31] rounded-2xl p-12 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
-                    <h1 className="text-4xl text-black font-bold text-center mb-6 py-4">
-                        Recuperar cuenta
-                    </h1>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-300 via-gray-400 to-black/25">
+            <div className="relative bg-white/75 backdrop-blur-md rounded-2xl shadow-2xl p-10 w-full max-w-md border border-black/20">
+                <h1 className="text-3xl font-bold text-black/75 text-center mb-6">
+                    Recuperar contraseña
+                </h1>
+                <p className="text-gray-700 text-center text-sm mb-8">
+                    Ingresa tu correo para recibir un enlace de recuperación
+                </p>
 
-                    {message && (
-                        <div className="mb-4 text-green-600 text-center font-semibold">
-                            {message}
-                        </div>
-                    )}
+                <form onSubmit={submitRecuperar}>
+                    <div className="mb-6">
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Correo electrónico"
+                            className="w-full px-4 py-3 rounded-lg bg-white/90 text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                        {errors.email && (
+                            <p className="text-red-400 text-sm mt-2">{errors.email}</p>
+                        )}
+                    </div>
 
-                    <form action="" onSubmit={submitRecuperar}>
-                        <h1 className='mt-8 text-center mb-2 text-[18px] font-[500]'>Cambiar de contraseña</h1>
-                        <div className="relative my-4">
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className={`block w-[100%] py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.email ? 'border-red-500' : 'border-gray-300'
-                                    } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
-                                placeholder=""
-                            />
-                            <label
-                                htmlFor=""
-                                className="absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                            >
-                                Correo para camio de contraseña
-                            </label>
-                            {errors.email && (
-                                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                            )}
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-all duration-300"
+                    >
+                        Enviar enlace
+                    </button>
 
-                            <button
-                                type="submit"
-                                className={`font-medium text-black w-full mb-1 text-[18px] mt-8 rounded-full bg-slate-300 hover:bg-[#e11a31] hover:text-white cursor-pointer py-2 transition-colors duration-300`}
-                            >
-                                Cambiar contraseña
-                            </button>
-                            <div className='mt-4 -mb-8 flex justify-center'>
-                                <span className="m-4">
-                                    ¿Recordaste tu contraseña?{' '}
-                                    <a
-                                        className="text-blue-500 hover:text-cyan-400 cursor-pointer"
-                                        href="/login"
-                                    >
-                                        Inicia sesión
-                                    </a>
-                                </span>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
+                    <p className="text-center text-gray-800 text-sm mt-6">
+                        ¿Recordaste tu contraseña?{" "}
+                        <a href="/login" className="text-blue-500 hover:underline">
+                            Inicia sesión
+                        </a>
+                    </p>
+                </form>
             </div>
         </div>
     );

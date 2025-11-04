@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Stethoscope, Weight, AlertTriangle, FileText, Clock4 } from 'lucide-react'
+import { Stethoscope, Weight, AlertTriangle, FileText, Clock4, X } from 'lucide-react'
 import Config from './layouts/PageAuth/Config'
 import { useParams } from 'react-router-dom';
 
@@ -70,8 +70,13 @@ function ModalCita({ isOpen, onClose, id }) {
                 }`}>
             <div className={`bg-white rounded-lg shadow-lg w-[1100px] h-[700px] p-8 transform transition-transform duration-300 overflow-auto ${isOpen ? 'scale-100' : 'scale-90'
                 }`}>
-                <h2 className="text-xl font-medium">Detalle de Cita Médica {}</h2>
-                <h2 className="text-[14px] mb-4 font-medium text-black/50">Cita ID: 101 • 14 de enero de 2024 a las 10:30</h2>
+                <div className='flex justify-between'>
+                    <div>
+                        <h2 className="text-xl font-medium">Detalle de Cita Médica { }</h2>
+                        <h2 className="text-[14px] mb-4 font-medium text-black/50">Cita ID: 101 • 14 de enero de 2024 a las 10:30</h2>
+                    </div>
+                    <X className='size-8 cursor-pointer text-white bg-red-500 hover:bg-red-600 rounded transition-colors duration-500' onClick={onClose}></X>
+                </div>
                 <div className="mb-6 border border-gray-500/25 rounded-[6px] p-6 flex flex-col">
                     <div className='flex items-center gap-2'>
                         <Weight className='w-5 h-5 stroke-2'></Weight>

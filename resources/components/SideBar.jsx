@@ -3,18 +3,16 @@ import Logo from './imgs/logo2.png';
 import HomeSVG from './svg/HomeSVG';
 import { Link } from 'react-router-dom';
 import LogoutSVG from './svg/LogoutSVG';
-import ActivitySVG from './svg/ActivitySVG';
 import EmplooyesSVG from './svg/EmplooyesSVG';
 import CompanySVG from './svg/CompanySVG';
 import UserSVG from './svg/UserSVG';
 import ContracSVG from './svg/ContracSVG';
-import AddPacienteSVG from './svg/addPacienteSVG';
-import PiiSVG from './svg/PiiSVG';
 
 import Config from './layouts/PageAuth/Config';
 import AuthUser from './layouts/PageAuth/AuthUser';
 import XSVG from './svg/X';
-import CalendarSVG from './svg/CalendarSVG';
+
+import { House, Calendar1, Activity, PillBottle, Cross } from 'lucide-react';
 
 export default function SideBar({ isOpen, toggleSidebar }) {
 
@@ -54,8 +52,16 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                 } sm:relative sm:translate-x-0`}>
                 <div>
                     {/* Logo */}
-                    <div className="mb-2 p-4 flex items-center flex-col border-b border-gray-900/25">
+                    {/* <div className="mb-2 p-4 flex items-center flex-col border-b border-gray-900/25">
                         <img src={Logo} alt="Logo" className="h-[63px]" />
+                    </div> */}
+
+                    <div className="mb-2 p-4 flex items-center justify-center border-b border-gray-900/25">
+                        <Cross className='bg-blue-500 text-white size-12 m-1 p-2 rounded-xl'/>
+                        <div className='ml-2'>
+                            <p className='text-2xl font-bold'>MEDIC</p>
+                            <span className='font-semibold text-blue-500 text-xl'>TRACK</span>
+                        </div>
                     </div>
 
                     {/* Items */}
@@ -83,13 +89,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                     <>
                                         <li>
                                             <Link to={`/${rol}/home`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
-                                                <HomeSVG />
+                                                <House />
                                                 <p className="pl-4 font-medium">Inicio</p>
                                             </Link>
                                         </li>
                                         <li>
                                             <Link to={`/${rol}/agenda`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
-                                                <CalendarSVG />
+                                                <Calendar1 />
                                                 <p className="pl-4 font-medium">Ver Citas</p>
                                             </Link>
                                         </li>
@@ -142,13 +148,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                                 <>
                                     <li className="">
                                         <Link to={`/${rol}/pacientes`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
-                                            <ActivitySVG />
+                                            <Activity />
                                             <p className="pl-4 font-medium ">Ver Pacientes</p>
                                         </Link>
                                     </li>
                                     <li className="">
                                         <Link to={`/${rol}/medicamentos`} className="px-4 mb-4 hover:bg-gray-200 p-4 rounded transition duration-300 flex items-center max-2xl:p-2">
-                                            <PiiSVG />
+                                            <PillBottle />
                                             <p className="pl-4 font-medium ">Medicamentos</p>
                                         </Link>
                                     </li>
@@ -159,10 +165,10 @@ export default function SideBar({ isOpen, toggleSidebar }) {
                     </div>
                 </div>
                 {/* Logout */}
-                <div className="p-4 rounded w-full border-t-1 border-gray-900/25">
+                <div className="p-4 rounded w-full border-t-1 border-gray-900/25 flex justify-center">
                     <ul>
                         <li className="">
-                            <button onClick={logoutUser} className="bg-red-500 text-white py-3 px-8 rounded hover:bg-red-600 transition duration-300 flex items-center justify-center w-full cursor-pointer">
+                            <button onClick={logoutUser} className="bg-red-500 text-white py-3 px-8 rounded-lg hover:bg-red-600 transition duration-300 flex items-center justify-center w-auto cursor-pointer">
                                 <LogoutSVG />
                                 <Link  to={"#"} className="pl-4 font-bold max-2xl:text-[12px] max-2xl:pl-2">
                                     Cerrar Sesion

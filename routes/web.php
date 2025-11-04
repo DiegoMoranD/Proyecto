@@ -88,6 +88,9 @@ Route::get('/medico/agendar-form/{any}', function () {
 Route::get('/medico/agendar-update/{any}', function () {
     return view('welcome');
 });
+Route::get('/medico/medicamento-update/{any}', function () {
+    return view('welcome');
+});
 
 // ----------------------------------------------
 // todo Rutas para el rol "recepcion"

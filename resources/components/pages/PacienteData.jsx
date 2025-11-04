@@ -3,6 +3,7 @@ import Config from "../layouts/PageAuth/Config";
 import { Link, useParams } from "react-router-dom";
 import ModalCita from "../ModalCita";
 import Swal from "sweetalert2";
+import { CalendarCheck2Icon, CalendarCheckIcon, CalendarClockIcon, CalendarX2Icon, CalendarXIcon, EyeIcon } from "lucide-react";
 
 function PacienteData() {
     const { id } = useParams();
@@ -199,47 +200,68 @@ function PacienteData() {
                                     <td className="px-6 py-4">{cita.motivo}</td>
                                     <td className="px-6 py-4">{cita.fecha}</td>
                                     <td className="px-6 py-4">{cita.hora}</td>
-                                    <td>
+                                    <td className="px-6 py-4 justify-center">
                                         {cita.estado === 'atendido' ? (
-                                            <button
-                                                onClick={() => handleOpenModal(cita.id)}
-                                                className='cursor-pointer font-bold text-blue-500 hover:text-blue-600 transition duration-500 px-6 py-4'
-                                            >
-                                                Ver detalles
-                                            </button>
+                                            // <button
+                                            //     onClick={() => handleOpenModal(cita.id)}
+                                            //     className='cursor-pointer font-bold text-blue-500 hover:text-blue-600 transition duration-500 px-6 py-4'
+                                            // >
+                                            //     Ver detalles
+                                            // </button>
+                                            <EyeIcon className='font-bold text-blue-500 hover:text-blue-600 transition duration-500' onClick={() => handleOpenModal(cita.id)}>
+                                                <title>Ver Detalles</title>
+                                            </EyeIcon>
                                         ) : cita.estado === 'cancelado' ? (
-                                            <span className="text-red-500 px-6 py-4 font-bold">Cita cancelada</span>
+                                            <CalendarCheckIcon className="text-green-500">
+                                                <title>Cita Atendida</title>
+                                            </CalendarCheckIcon>
                                         ) : (
-                                            <span className="text-gray-400 px-6 py-4 font-bold">Cita sin atender</span>
+                                            <CalendarClockIcon className="text-gray-500">
+                                                <title>Cita Sin Atender</title>
+                                            </CalendarClockIcon>
                                         )}
                                     </td>
 
-                                    <td className="px-6 py-4 flex justify-between">
+                                    <td className="px-6 py-4 flex justify-around">
                                         {cita.estado === 'registrado' ? (
-                                            <a
-                                                href={`/medico/cita-detalles/${cita.id}`}
-                                                className="font-bold text-green-500 hover:text-green-600"
-                                            >
-                                                Atender Cita
-                                            </a>
+                                            // <a
+                                            //     href={`/medico/cita-detalles/${cita.id}`}
+                                            //     className="font-bold text-green-500 hover:text-green-600"
+                                            // >
+                                            //     Atender Cita
+                                            // </a>
+                                            <Link to={`/medico/cita-detalles/${cita.id}`}>
+                                                <CalendarCheck2Icon className='font-bold text-green-500 hover:text-green-600 transition duration-500'>
+                                                    <title>Atender Cita</title>
+                                                </CalendarCheck2Icon>
+                                            </Link>
                                         ) : cita.estado === 'atendido' ? (
-                                            <span className="font-bold text-gray-400 cursor-not-allowed">
-                                                Cita Atendida
-                                            </span>
+                                            // <span className="font-bold text-gray-400 cursor-not-allowed">
+                                            //     Cita Atendida
+                                            // </span>
+                                            <CalendarCheckIcon className="text-green-500">
+                                                <title>Cita Atendida</title>
+                                            </CalendarCheckIcon>
                                         ) : (
-                                            <span className="font-bold text-red-500 cursor-not-allowed">
-                                                Cita Cancelada
-                                            </span>
+                                            // <span className="font-bold text-red-500 cursor-not-allowed">
+                                            //     Cita Cancelada
+                                            // </span>
+                                            <CalendarXIcon className="text-red-500">
+                                                <title>Cita Cancelada</title>
+                                            </CalendarXIcon>
                                         )}
 
                                         {/* Botón cancelar SOLO si está registrada */}
                                         {cita.estado === 'registrado' && (
-                                            <button
-                                                onClick={() => cancelCitaPaciente(cita.id)}
-                                                className="font-bold text-red-500 -ml-20 hover:text-red-600"
-                                            >
-                                                Cancelar Cita
-                                            </button>
+                                            // <button
+                                            //     onClick={() => cancelCitaPaciente(cita.id)}
+                                            //     className="font-bold text-red-500 -ml-20 hover:text-red-600"
+                                            // >
+                                            //     Cancelar Cita
+                                            // </button>
+                                            <CalendarX2Icon className='font-bold text-red-500 hover:text-red-600 transition duration-500 cursor-pointer' onClick={() => cancelCitaPaciente(cita.id)}>
+                                                <title>Cancelar Cita</title>
+                                            </CalendarX2Icon>
                                         )}
                                     </td>
                                 </tr>

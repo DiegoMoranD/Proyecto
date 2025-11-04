@@ -5,6 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import es from 'date-fns/locale/es';
 import Config from '../layouts/PageAuth/Config';
 import ModalCitasPop from '../ModalCitasPop';
+import { Link } from 'react-router-dom';
 
 const locales = { 'es': es };
 
@@ -40,6 +41,12 @@ const CalendarView = () => {
         fetchCitas();
     }, []);
 
+    const getRol = () => {
+        const rol = sessionStorage.getItem('rol');
+        return rol ? JSON.parse(rol) : null;
+    }
+    const rol = getRol();
+
     return (
         <div className=" sm:p-4 md:p-6 max-w-full overflow-x-auto">
             <div className="min-w-[600px] w-full">
@@ -48,7 +55,13 @@ const CalendarView = () => {
                     onClose={() => setIsModalOpen(false)}
                     id={selectedCitaId}
                 />
-                <h2 className="text-xl mb-4 font-[500] border-b border-black/20 pb-1 -mt-4">Calendario</h2>
+                <div className='mb-4 font-[500] border-b border-black/20 pb-1 -mt-4 flex justify-between'>
+                    <h2 className="text-xl py-2 ">Calendario</h2>
+
+                    <Link to={`/${rol}/agendar-form`}>
+                        <button className='bg-green-500 text-white rounded-xl py-2 px-12 cursor-pointer mb-3'>Registrar Cita</button>
+                    </Link>
+                </div>
                 <Calendar
                     localizer={localizer}
                     events={events}

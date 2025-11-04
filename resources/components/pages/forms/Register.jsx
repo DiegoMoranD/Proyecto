@@ -229,181 +229,166 @@ function Register() {
     };
 
     return (
-        <div className="bg-[url('/resources/components/imgs/banner4.jpg')] bg-no-repeat bg-cover bg-center text-black h-screen flex justify-center items-center">
-            {/* <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title="Errores en el formulario"
-                message={
-                    <ul>
-                        {Object.values(errors).map((error, index) => (
-                            <li key={index} className="text-red-500">
-                                {error}
-                            </li>
-                        ))}
-                    </ul>
-                }
-            /> */}
-            <div className="bg-[#fff] border border-[#e11a31] rounded-md p-6 md:p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative max-w-lg md:max-w-4xl mx-auto">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl text-black/75 font-bold text-center mb-8">
-                    Registro de Empresa y Usuario
-                </h1>
-                <form onSubmit={submitRegistro} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Datos de la Empresa */}
-                    <h2 className="col-span-2 text-xl sm:text-2xl font-semibold mb-4">
-                        Datos de la Empresa
-                    </h2>
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="nombre"
-                            value={empresa.nombre}
-                            onChange={handleEmpresaChange}
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder="Nombre de la Empresa"
-                        />
-                    </div>
-                    <div className="relative">
-                        <input
-                            type="email"
-                            name="correo"
-                            value={empresa.correo}
-                            onChange={(e) => {
-                                const email = e.target.value;
-                                setEmpresa((prevEmpresa) => ({ ...prevEmpresa, correo: email }));
-                                setUsuario((prevUsuario) => ({ ...prevUsuario, email })); // Sincronizar el correo
-                            }}
-                            onBlur={checkEmailExists}
-                            className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.correo ? "border-red-500" : "border-gray-300"
-                                } appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                            placeholder="Correo de la Empresa"
-                        />
-                        {errors.correo && <span className="text-red-500 text-sm mt-1">{errors.correo}</span>}
-                    </div>
-                    <div className="relative">
-                        <input
-                            type="tel"
-                            name="telefono"
-                            value={empresa.telefono}
-                            onChange={handleEmpresaChange}
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder="Teléfono de la Empresa"
-                        />
-                    </div>
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="cedula"
-                            value={empresa.cedula}
-                            onChange={handleEmpresaChange}
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder="Cédula Profesional"
-                        />
-                    </div>
+        <div className="flex flex-col md:flex-row h-screen w-full bg-white">
+            {/* Imagen lateral */}
+            <div className="hidden md:flex w-1/2 bg-cover bg-center bg-[url('/resources/components/imgs/banner4.jpg')] relative">
+                <div className="absolute inset-0 bg-black/25 flex flex-col justify-center items-center text-white p-8">
+                    <h1 className="text-4xl font-bold mb-3 text-center">Bienvenido al Registro</h1>
+                    <p className="text-center text-lg">Registra tu empresa y usuario para comenzar</p>
+                </div>
+            </div>
 
-                    {/* Datos del Usuario */}
-                    <h2 className="col-span-2 text-xl sm:text-2xl font-semibold mt-8 mb-4">
-                        Datos del Usuario
+            {/* Formulario */}
+            <div className="w-full md:w-1/2 flex justify-center items-center bg-gray-200 px-6 sm:px-10 md:px-16 overflow-y-auto">
+                <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 md:p-10">
+                    <h2 className="text-3xl font-bold text-center text-blue-500 mb-8">
+                        Registro de Empresa y Usuario
                     </h2>
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="name"
-                            value={usuario.name}
-                            onChange={handleUsuarioChange}
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder="Nombre del Usuario"
-                        />
-                    </div>
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="paterno"
-                            value={usuario.paterno}
-                            onChange={handleUsuarioChange}
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder="Apellido Paterno"
-                        />
-                    </div>
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="materno"
-                            value={usuario.materno}
-                            onChange={handleUsuarioChange}
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder="Apellido Materno"
-                        />
-                    </div>
-                    <div className="relative">
-                        <input
-                            type="tel"
-                            name="telefono"
-                            value={usuario.telefono}
-                            onChange={handleUsuarioChange}
-                            className="block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder="Teléfono del Usuario"
-                        />
-                    </div>
-                    <div className="relative">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            name="password"
-                            value={usuario.password}
-                            onChange={(e) => {
-                                setUsuario({ ...usuario, password: e.target.value });
-                                evaluateStrPassword(e.target.value)
-                            }}
-                            className={`block w-full py-2.5 px-0 text-sm text-black bg-transparent border-0 border-b-2 ${errors.password ? "border-red-500" : "border-gray-300"
-                                } appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                            placeholder="Contraseña"
-                        />
-                        {errors.password && <span className="text-red-500 text-sm mt-1">{errors.password}</span>}
-                        <button
-                            type="button"
-                            className="absolute right-1 top-[30%] -translate-y-1/2 focus:outline-none"
-                            onClick={() => setShowPassword((prev) => !prev)}
-                            tabIndex={-1}
-                        >
-                            {showPassword ? <OpenEyeSVG /> : <OffEyeSVG />}
-                        </button>
-                        <div className="mt-3 ">
-                            <div className="w-full h-2 bg-gray-300 rounded">
-                                <div
-                                    className={`h-full rounded transition-all duration-300 ${passwordStr < 50 ? 'bg-red-500' :
-                                        passwordStr < 75 ? 'bg-yellow-500' :
-                                            'bg-green-500'
-                                        }`}
-                                    style={{ width: `${passwordStr}%` }}
-                                ></div>
+
+                    <form onSubmit={submitRegistro} className="space-y-6">
+                        {/* Empresa */}
+                        <div>
+                            <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                                Datos de la Empresa
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input
+                                    type="text"
+                                    name="nombre"
+                                    placeholder="Nombre de la Empresa"
+                                    value={empresa.nombre}
+                                    onChange={handleEmpresaChange}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
+                                <input
+                                    type="email"
+                                    name="correo"
+                                    placeholder="Correo de la Empresa"
+                                    value={empresa.correo}
+                                    onChange={(e) => {
+                                        const email = e.target.value;
+                                        setEmpresa((prev) => ({ ...prev, correo: email }));
+                                        setUsuario((prev) => ({ ...prev, email }));
+                                    }}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
+                                <input
+                                    type="tel"
+                                    name="telefono"
+                                    placeholder="Teléfono"
+                                    value={empresa.telefono}
+                                    onChange={handleEmpresaChange}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
+                                <input
+                                    type="text"
+                                    name="cedula"
+                                    placeholder="Cédula Profesional"
+                                    value={empresa.cedula}
+                                    onChange={handleEmpresaChange}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
                             </div>
-                            <p className="text-sm mt-1 text-gray-600">{strLabel}</p>
                         </div>
-                    </div>
 
-                    <button
-                        type="submit"
-                        className={`col-span-2 w-full md:w-auto mb-4 text-[16px] md:text-[18px] mt-6 rounded-full ${loading
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-slate-300 hover:bg-[#e11a31] hover:text-white"
-                            } py-2 px-6 transition-colors duration-300 font-semibold`}
-                        disabled={loading}
-                    >
-                        {loading ? "Registrando..." : "Registrar"}
-                    </button>
+                        {/* Usuario */}
+                        <div>
+                            <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                                Datos del Usuario
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Nombre"
+                                    value={usuario.name}
+                                    onChange={handleUsuarioChange}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
+                                <input
+                                    type="text"
+                                    name="paterno"
+                                    placeholder="Apellido Paterno"
+                                    value={usuario.paterno}
+                                    onChange={handleUsuarioChange}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
+                                <input
+                                    type="text"
+                                    name="materno"
+                                    placeholder="Apellido Materno"
+                                    value={usuario.materno}
+                                    onChange={handleUsuarioChange}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
+                                <input
+                                    type="tel"
+                                    name="telefono"
+                                    placeholder="Teléfono del Usuario"
+                                    value={usuario.telefono}
+                                    onChange={handleUsuarioChange}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
+                            </div>
 
-                    <div className="col-span-2 text-center">
-                        <span className="m-4">
-                            Ya tienes una cuenta{" "}
-                            <a
-                                className="text-blue-500 hover:text-cyan-400 cursor-pointer"
-                                href={"/login"}
-                            >
+                            {/* Contraseña */}
+                            <div className="mt-4 relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    placeholder="Contraseña"
+                                    value={usuario.password}
+                                    onChange={(e) => {
+                                        setUsuario({ ...usuario, password: e.target.value });
+                                        evaluateStrPassword(e.target.value);
+                                    }}
+                                    className="w-full border-b-2 border-gray-300 focus:border-[#e11a31] focus:outline-none py-2 px-1"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-2 top-2 text-gray-600"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                >
+                                    {showPassword ? <OpenEyeSVG /> : <OffEyeSVG />}
+                                </button>
+                                <div className="mt-2">
+                                    <div className="w-full h-2 bg-gray-200 rounded">
+                                        <div
+                                            className={`h-full rounded transition-all duration-300 ${passwordStr < 50
+                                                    ? "bg-red-500"
+                                                    : passwordStr < 75
+                                                        ? "bg-yellow-500"
+                                                        : "bg-green-500"
+                                                }`}
+                                            style={{ width: `${passwordStr}%` }}
+                                        ></div>
+                                    </div>
+                                    <p className="text-sm mt-1 text-gray-600">{strLabel}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Botón */}
+                        <button
+                            type="submit"
+                            className={`w-full mt-6 py-3 rounded-full text-white font-semibold transition-all ${loading
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-blue-500 hover:bg-blue-600"
+                                }`}
+                            disabled={loading}
+                        >
+                            {loading ? "Registrando..." : "Registrar"}
+                        </button>
+
+                        {/* Link al login */}
+                        <p className="text-center text-sm mt-4">
+                            ¿Ya tienes una cuenta?{" "}
+                            <a href="/login" className="text-blue-500 hover:text-blue-600 font-medium">
                                 Iniciar sesión
                             </a>
-                        </span>
-                    </div>
-                </form>
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
     );

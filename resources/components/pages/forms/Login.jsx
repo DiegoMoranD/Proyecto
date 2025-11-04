@@ -87,99 +87,98 @@ function Login() {
     };
 
     return (
-        <>
-            <div className="bg-[url('/resources/components/imgs/banner2.jpg')] bg-no-repeat bg-cover bg-center text-black h-screen flex justify-center items-center w-full">
-                <div className="w-full max-w-md px-4 sm:px-6 lg:px-8">
-                    <div className="bg-[#fff] border border-[#e11a31] rounded-2xl p-6 sm:p-12 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
-                        <h1 className="text-2xl sm:text-4xl text-black font-bold text-center mb-4 sm:mb-6 py-2 sm:py-4">
-                            Iniciar sesión
-                        </h1>
-                        <form onSubmit={submitLogin}>
-                            {/* Campo de Email */}
-                            <div className="relative my-4 sm:my-8">
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className={`block w-full py-2 sm:py-2.5 px-0 text-sm sm:text-base text-black bg-transparent border-0 border-b-2 ${errors.email ? 'border-red-500' : 'border-gray-300'
-                                        } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
-                                    placeholder=""
-                                />
-                                <label
-                                    htmlFor=""
-                                    className="absolute text-sm sm:text-base text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                                >
-                                    Email
-                                </label>
-                                {errors.email && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                                )}
-                            </div>
+        <div className="flex flex-col md:flex-row h-screen w-full">
+            {/* Sección izquierda con imagen */}
+            <div className="bg-[url('/resources/components/imgs/banner2.jpg')] bg-no-repeat bg-cover bg-center hidden md:flex md:w-1/2">
+                <div className="w-full h-full bg-black/25 bg-opacity-40 flex items-center justify-center">
+                    <h2 className="text-white text-4xl font-bold text-center px-4">
+                        Bienvenido a <span className="text-blue-500">Medic</span>Track
+                    </h2>
+                </div>
+            </div>
 
-                            {/* Campo de Contraseña */}
-                            <div className="relative my-4 sm:my-8">
+            {/* Sección derecha con formulario */}
+            <div className="flex w-full md:w-1/2 items-center justify-center bg-gray-200 p-8">
+                <div className="w-full max-w-md bg-white rounded-3xl shadow-lg p-8 md:p-10">
+                    <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+                        Iniciar Sesión
+                    </h1>
+
+                    <form onSubmit={submitLogin}>
+                        {/* Email */}
+                        <div className="mb-6">
+                            <label className="block text-gray-700 mb-2 text-sm font-medium">Correo electrónico</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className={`w-full border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                placeholder="Ingresa tu correo"
+                            />
+                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                        </div>
+
+                        {/* Contraseña */}
+                        <div className="mb-6">
+                            <label className="block text-gray-700 mb-2 text-sm font-medium">Contraseña</label>
+                            <div className="relative">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className={`block w-full py-2 sm:py-2.5 px-0 text-sm sm:text-base text-black bg-transparent border-0 border-b-2 ${errors.password ? 'border-red-500' : 'border-gray-300'
-                                        } appearance-none focus:outline-none focus:ring-0 focus:text-black focus:border-blue-600 peer`}
-                                    placeholder=""
+                                    className={`w-full border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                    placeholder="Ingresa tu contraseña"
                                 />
-                                <label
-                                    htmlFor=""
-                                    className="absolute text-sm sm:text-base text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-2 text-gray-500 hover:text-gray-700"
                                 >
-                                    Contraseña
-                                </label>
-                                {errors.password && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-                                )}
+                                    {showPassword ? '🙈' : '👁️'}
+                                </button>
                             </div>
+                            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                        </div>
 
-                            {/* Mensaje de error general */}
-                            {message && (
-                                <p className="text-red-500 text-center mb-4">{message}</p>
-                            )}
-                            <div className="flex flex-col sm:flex-row justify-between items-center my-4">
-                                <div className="flex gap-2 items-center">
-                                    <input
-                                        type="checkbox" id="showPassword"
-                                        checked={showPassword}
-                                        onChange={() => setShowPassword(!showPassword)} />
-                                    <label htmlFor="showPassword">Mostrar contraseña</label>
-                                </div>
-                                <p className='text-sm sm:text-base text-end'>
-                                    ¿Olvidaste tu <a href="/recuperar-cuenta" className='text-blue-500 hover:text-cyan-400 cursor-pointer mt-2 sm:mt-0 text-end transition duration-500'>contraseña</a> o expiro el <a href="/recuperar-token" className='text-blue-500 hover:text-cyan-400 cursor-pointer mt-2 sm:mt-0 text-end transition duration-500'>token</a>?
-                                </p>
-                            </div>
-                            <button
-                                onClick={submitLogin}
-                                type="submit"
-                                disabled={!isFormValid}
-                                className={`font-medium text-black w-full mb-6 text-sm sm:text-[18px] my-4 sm:my-6 rounded-full ${isFormValid
-                                    ? 'bg-slate-300 hover:bg-[#e11a31] hover:text-white cursor-pointer'
-                                    : 'bg-gray-300 cursor-not-allowed'
-                                    } py-2 transition-colors duration-300`}
-                            >
-                                Iniciar sesión
-                            </button>
-                            <div>
-                                <span className="text-sm sm:text-base">
-                                    No tienes una cuenta?{' '}
-                                    <a
-                                        className="text-blue-500 hover:text-cyan-400 cursor-pointer"
-                                        href="/register"
-                                    >
-                                        Crea una cuenta
-                                    </a>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
+                        {/* Mensaje de error general */}
+                        {message && (
+                            <p className="text-red-500 text-center mb-4">{message}</p>
+                        )}
+
+                        {/* Checkbox y enlace */}
+                        <div className="flex justify-between items-center mb-6 text-sm">
+                            <label className="flex items-center gap-2 text-gray-600">
+                                <input
+                                    type="checkbox"
+                                    checked={showPassword}
+                                    onChange={() => setShowPassword(!showPassword)}
+                                />
+                                Mostrar contraseña
+                            </label>
+                            <a href="/recuperar-cuenta" className="text-blue-500 hover:underline">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+
+                        {/* Botón */}
+                        <button
+                            type="submit"
+                            disabled={!isFormValid}
+                            className={`w-full py-3 rounded-full text-white font-semibold transition-colors duration-300 ${isFormValid ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'}`}
+                        >
+                            Iniciar sesión
+                        </button>
+
+                        <p className="text-center mt-6 text-gray-600">
+                            ¿No tienes cuenta?{' '}
+                            <a href="/register" className="text-blue-500 hover:underline">
+                                Regístrate aquí
+                            </a>
+                        </p>
+                    </form>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

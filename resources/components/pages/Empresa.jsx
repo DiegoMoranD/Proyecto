@@ -64,8 +64,8 @@ function Empresa() {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
-                <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
+            <div className="flex flex-col lg:flex-row flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-4 w-full lg:w-auto justify-center sm:justify-start">
                     <select
                         value={orderNombre}
                         onChange={e => setOrderNombre(e.target.value)}

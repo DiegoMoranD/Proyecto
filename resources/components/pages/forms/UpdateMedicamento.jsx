@@ -235,9 +235,12 @@ function UpdateMedicamento() {
 
                 {/* Botón de Enviar */}
                 <div className="mt-12 text-center">
+                    <a href={`/${rol}/medicamentos`} className="bg-red-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-red-600 transition font-medium mx-4">
+                        Salir
+                    </a>
                     <button
                         type="submit"
-                        className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition"
+                        className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600 transition mx-4 "
                     >
                         Guardar Medicamento
                     </button>

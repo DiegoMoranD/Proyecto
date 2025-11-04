@@ -11,18 +11,4 @@ export default defineConfig({
         }), tailwindcss(),
         react(),
     ],
-    // server: {
-    //     host: '0.0.0.0',
-    //     port: 8000,
-    //     hmr: false,
-    // },
-
-    // server: {
-    //     host: '0.0.0.0',
-    //     port: 8001,
-    //     hmr: {
-    //         host: 'unlimited-dairy-theme-tray.trycloudflare.com',
-    //         protocol: 'wss',
-    //     },
-    // },
 });

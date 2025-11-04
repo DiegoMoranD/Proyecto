@@ -119,24 +119,24 @@ function Medicamentos() {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
-                <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
+            <div className="flex flex-col lg:flex-row flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-4 w-full lg:w-auto justify-center sm:justify-start">
                     <select
-                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
                         value={orderNombre}
                         onChange={e => setOrderNombre(e.target.value)}
                     >
-                        <option value="">Ordernar nombre por:</option>
+                        <option value="">Ordenar nombre por:</option>
                         <option value="az">De la A-Z</option>
                         <option value="za">De la Z-A</option>
                     </select>
 
                     <select
-                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
                         value={orderCategoria}
                         onChange={e => setOrderCategoria(e.target.value)}
                     >
-                        <option value="">Categoria:</option>
+                        <option value="">Categoría:</option>
                         <option value="Antibióticos">Antibióticos</option>
                         <option value="Analgésicos">Analgésicos</option>
                         <option value="Antiinflamatorios">Antiinflamatorios</option>
@@ -160,11 +160,11 @@ function Medicamentos() {
                     </select>
 
                     <select
-                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
                         value={orderPresentacion}
                         onChange={e => setOrderPresentacion(e.target.value)}
                     >
-                        <option value="">Presentacion:</option>
+                        <option value="">Presentación:</option>
                         <option value="Cápsulas">Cápsulas</option>
                         <option value="Tabletas">Tabletas</option>
                         <option value="Jarabe">Jarabe</option>
@@ -185,7 +185,7 @@ function Medicamentos() {
                     </select>
 
                     <select
-                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
                         value={orderStock}
                         onChange={e => setOrderStock(e.target.value)}
                     >
@@ -195,25 +195,28 @@ function Medicamentos() {
                     </select>
 
                     <select
-                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
                         value={orderReceta}
                         onChange={e => setOrderReceta(e.target.value)}
                     >
                         <option value="">Receta:</option>
-                        <option value="true">Requiere reseta</option>
-                        <option value="false">No requiere rece</option>
+                        <option value="true">Requiere receta</option>
+                        <option value="false">No requiere receta</option>
                     </select>
                 </div>
+
+                {/* Buscador */}
                 <div className="w-full sm:w-auto">
                     <input
                         type="search"
                         value={search}
                         onChange={e => setSearch(e.target.value)}
-                        placeholder="Buscar Medicamento"
+                        placeholder="Buscar medicamento"
                         className="h-10 px-4 w-full sm:w-64 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
             </div>
+
 
             <h2 className="text-2xl font-bold mb-5 border-b border-gray-600/25 pb-4">Catálogo de Medicamentos</h2>
             <div className='mb-5 flex justify-end'>

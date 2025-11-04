@@ -242,8 +242,8 @@ function CitaForm() {
                 title: "Cita Atendida",
                 text: "La cita ha sido atendida , el PDF sera enviado al correo",
                 icon: "success"
-            }).then(() => {
-                navigate(`/${rol}/agenda`);
+            // }).then(() => {
+            //     navigate(`/${rol}/agenda`);
             });
         } catch (error) {
             if (error.response && error.response.data && error.response.data.errors) {
@@ -428,7 +428,7 @@ function CitaForm() {
                 </div>
             </form>
 
-            {/* {pdfData && (
+            {pdfData && (
                 <div className="mt-8">
                     <h3 className="font-bold mb-2">Receta generada:</h3>
                     <PDFViewer width="100%" height={600}>
@@ -452,7 +452,7 @@ function CitaForm() {
                         </PDFDownloadLink>
                     </div>
                 </div>
-            )} */}
+            )}
         </div>
     );
 }

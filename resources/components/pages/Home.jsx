@@ -14,6 +14,7 @@ import {
     PointElement,
     LineElement
 } from 'chart.js';
+import { CalendarClockIcon, CalendarPlus2Icon, UserPlus2Icon } from 'lucide-react';
 
 ChartJS.register(
     CategoryScale,
@@ -113,6 +114,65 @@ function Home() {
         }]
     } : null;
 
+    // ? <--------------------------------------- Metricas de medico --------------------------------------->
+
+    const [medicoMetrics, setMedicoMetrics] = useState({
+        citasPorAtender: 0,
+        citasAtendidasHoy: 0,
+        pacientesNuevosMes: 0,
+    });
+
+    useEffect(() => {
+        const fetchMedicoMetrics = async () => {
+            try {
+                // Obtener todas las citas de la empresa del médico
+                const citasRes = await Config.indexAgenda();
+                const citas = citasRes.data || [];
+
+                // Obtener todos los pacientes de la empresa del médico
+                const pacientesRes = await Config.getAllPaciente();
+                const pacientes = pacientesRes.data || [];
+
+                // Fecha actual y mes actual
+                const hoy = new Date();
+                const hoyStr = hoy.toISOString().slice(0, 10);
+                const mesActual = hoy.getMonth() + 1;
+                const añoActual = hoy.getFullYear();
+
+                // Citas por atender (estado === 'registrado')
+                const citasPorAtender = citas.filter(cita => cita.estado === 'registrado').length;
+
+                // Citas atendidas del día (estado === 'atendido' y fecha === hoy)
+                const citasAtendidasHoy = citas.filter(cita =>
+                    cita.estado === 'atendido' &&
+                    cita.fecha === hoyStr
+                ).length;
+
+                // Pacientes nuevos del mes (fecha_registro en el mes y año actual)
+                const pacientesNuevosMes = pacientes.filter(paciente => {
+                    if (!paciente.fecha_registro) return false;
+                    const fecha = new Date(paciente.fecha_registro);
+                    return (
+                        fecha.getMonth() + 1 === mesActual &&
+                        fecha.getFullYear() === añoActual
+                    );
+                }).length;
+
+                setMedicoMetrics({
+                    citasPorAtender,
+                    citasAtendidasHoy,
+                    pacientesNuevosMes,
+                });
+            } catch (error) {
+                console.error("Error al obtener métricas de médico", error);
+            }
+        };
+
+        if (rol === 'medico') {
+            fetchMedicoMetrics();
+        }
+    }, [rol]);
+
     return (
         <div className='flex flex-col p-4'>
 
@@ -127,6 +187,34 @@ function Home() {
                                 <h3 className={`text-2xl font-bold ${metric.color}`}>{metric.value}</h3>
                             </div>
                         ))}
+                    </div>
+                </>
+            )}
+
+            {(rol === 'medico') && (
+                <>
+                    <div className="grid gap-6 mt-6 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
+                        <div className="bg-white p-6 border border-gray-900/25 rounded-lg shadow-md">
+                            <div className='flex justify-between'>
+                                <p className="text-gray-600 font-medium text-xl">Citas por atender</p>
+                                <CalendarClockIcon className='size-6'></CalendarClockIcon>
+                            </div>
+                            <h3 className="text-2xl font-bold text-blue-500">{medicoMetrics.citasPorAtender}</h3>
+                        </div>
+                        <div className="bg-white p-6 border border-gray-900/25 rounded-lg shadow-md">
+                            <div className='flex justify-between'>
+                                <p className="text-gray-600 font-medium text-xl">Citas atendidas del día</p>
+                                <CalendarPlus2Icon className='size-6'></CalendarPlus2Icon>
+                            </div>
+                            <h3 className="text-2xl font-bold text-green-500">{medicoMetrics.citasAtendidasHoy}</h3>
+                        </div>
+                        <div className="bg-white p-6 border border-gray-900/25 rounded-lg shadow-md">
+                            <div className='flex justify-between'>
+                                <p className="text-gray-600 font-medium text-xl">Pacientes nuevos del mes</p>
+                                <UserPlus2Icon className='size-6'></UserPlus2Icon>
+                            </div>
+                            <h3 className="text-2xl font-bold text-purple-500">{medicoMetrics.pacientesNuevosMes}</h3>
+                        </div>
                     </div>
                 </>
             )}

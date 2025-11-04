@@ -3,7 +3,6 @@ import Config from '../layouts/PageAuth/Config';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Eye, SquarePen, Trash, CalendarPlus } from 'lucide-react';
-import { Tooltip } from 'chart.js';
 
 function Paciente() {
     const [pacientes, setPacientes] = useState([]);
@@ -133,9 +132,8 @@ function Paciente() {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
-                {/* filtros para nombre, */}
-                <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
+            <div className="flex flex-col lg:flex-row flex-wrap gap-4 items-center justify-between bg-gray-100 p-6 rounded-md shadow-sm mb-12">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-4 w-full lg:w-auto justify-center sm:justify-start">
                     <select
                         className="h-10 px-4 rounded border border-gray-300 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value={orderNombre}
